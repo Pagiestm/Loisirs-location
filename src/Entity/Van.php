@@ -1,0 +1,231 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\VanRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: VanRepository::class)]
+#[ORM\Table(name: 'vans')]
+class Van
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id_van')]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $subtitle = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
+    #[ORM\Column(name: 'created_at')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(name: 'updated_at')]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Quote>
+     */
+    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'van')]
+    private Collection $quotes;
+
+    /**
+     * @var Collection<int, VanOption>
+     */
+    #[ORM\OneToMany(targetEntity: VanOption::class, mappedBy: 'van', cascade: ['persist', 'remove'])]
+    private Collection $vanOptions;
+
+    /**
+     * @var Collection<int, Rental>
+     */
+    #[ORM\OneToMany(targetEntity: Rental::class, mappedBy: 'van')]
+    private Collection $rentals;
+
+    public function __construct()
+    {
+        $this->quotes = new ArrayCollection();
+        $this->vanOptions = new ArrayCollection();
+        $this->rentals = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSubtitle(): ?string
+    {
+        return $this->subtitle;
+    }
+
+    public function setSubtitle(string $subtitle): static
+    {
+        $this->subtitle = $subtitle;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quote>
+     */
+    public function getQuotes(): Collection
+    {
+        return $this->quotes;
+    }
+
+    public function addQuote(Quote $quote): static
+    {
+        if (!$this->quotes->contains($quote)) {
+            $this->quotes->add($quote);
+            $quote->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuote(Quote $quote): static
+    {
+        if ($this->quotes->removeElement($quote)) {
+            // set the owning side to null (unless already changed)
+            if ($quote->getVan() === $this) {
+                $quote->setVan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VanOption>
+     */
+    public function getVanOptions(): Collection
+    {
+        return $this->vanOptions;
+    }
+
+    public function addVanOption(VanOption $vanOption): static
+    {
+        if (!$this->vanOptions->contains($vanOption)) {
+            $this->vanOptions->add($vanOption);
+            $vanOption->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVanOption(VanOption $vanOption): static
+    {
+        if ($this->vanOptions->removeElement($vanOption)) {
+            // set the owning side to null (unless already changed)
+            if ($vanOption->getVan() === $this) {
+                $vanOption->setVan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rental>
+     */
+    public function getRentals(): Collection
+    {
+        return $this->rentals;
+    }
+
+    public function addRental(Rental $rental): static
+    {
+        if (!$this->rentals->contains($rental)) {
+            $this->rentals->add($rental);
+            $rental->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRental(Rental $rental): static
+    {
+        if ($this->rentals->removeElement($rental)) {
+            // set the owning side to null (unless already changed)
+            if ($rental->getVan() === $this) {
+                $rental->setVan(null);
+            }
+        }
+
+        return $this;
+    }
+}
