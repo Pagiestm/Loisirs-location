@@ -1,0 +1,59 @@
+<article
+	class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+
+	{# Lien principal — couvre toute la card #}
+	<a href="{{ path('app_vans_show', {id: van.id}) }}" class="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" aria-label="Voir {{ van.name }}"></a>
+
+	{# ── Image avec overlay et titre flottant ── #}
+	<div class="relative overflow-hidden aspect-[4/3] shrink-0">
+		<img
+		src="{{ van.image }}" alt="{{ van.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+		{# Dégradé overlay bas #}
+		<div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/20 to-transparent" aria-hidden="true"></div>
+
+		{# Titre flottant sur l'image #}
+		<div class="absolute bottom-0 left-0 right-0 p-5">
+			<h2 class="font-display text-3xl text-white">{{ van.name }}</h2>
+			<p class="font-body text-xs uppercase tracking-[0.2em] text-white mb-1">{{ van.subtitle }}</p>
+		</div>
+	</div>
+
+	{# ── Contenu bas ── #}
+	<div
+		class="p-5 flex flex-col flex-1 gap-4">
+
+		{# Options (max 3) #}
+		{% if van.vanOptions is not empty %}
+			<ul class="flex flex-wrap gap-2">
+				{% for vo in van.vanOptions|slice(0, 3) %}
+					<li class="inline-flex items-center gap-1.5 bg-beige rounded-full px-3 py-1 font-body text-xs text-brown/70">
+						{% if vo.option.icon %}
+							<twig:ux:icon name="{{ vo.option.icon }}" class="w-3 h-3 text-primary shrink-0" aria-hidden="true"/>
+						{% endif %}
+						{{ vo.option.name }}
+						{% if vo.value %}
+							<span class="text-brown/40">—
+								{{ vo.value }}</span>
+						{% endif %}
+					</li>
+				{% endfor %}
+				{% if van.vanOptions|length > 3 %}
+					<li class="inline-flex items-center bg-beige/80 border border-brown/10 rounded-full px-3 py-1 font-body text-xs text-brown/40">
+						+{{ van.vanOptions|length - 3 }}
+						autres
+					</li>
+				{% endif %}
+			</ul>
+		{% endif %}
+
+		{# Bas de card — CTA #}
+		<div class="mt-auto pt-3 border-t border-beige flex items-center justify-between">
+			<span class="inline-flex items-center gap-2 font-body text-sm font-semibold text-secondary group-hover:text-primary transition-colors duration-200">
+				Voir le van
+				<twig:ux:icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"/>
+			</span>
+			<span class="font-body text-xs text-brown">Devis gratuit</span>
+		</div>
+
+	</div>
+</article>

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ van.name }} — Loisirs Location{% endblock %}
+
+{% block body %}
+<twig:Navbar activePage="vans" />
+<twig:Vans:ShowHero :van="van" />
+<twig:Vans:Equipment :van="van" />
+<twig:Vans:VanCtaBand :van="van" />
+<twig:Footer />
+{% endblock %}

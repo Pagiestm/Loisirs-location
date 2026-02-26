@@ -1,0 +1,31 @@
+<section class="bg-secondary py-24 px-6 relative overflow-hidden" aria-label="Demander un devis">
+	<twig:TextureBackground type="wood" :overlay="0.72"/>
+
+	<div class="max-w-5xl mx-auto relative grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+		<div>
+			<p class="font-body text-xs uppercase tracking-[0.2em] text-primary mb-4">Devis gratuit · Sans engagement</p>
+			<h2 class="font-display text-5xl md:text-6xl text-white leading-tight mb-6">
+				{{ van.name }}<br>vous attend.
+			</h2>
+			<p class="font-body text-white text-sm leading-relaxed max-w-xs">
+				Envoyez votre demande en 2 minutes. Nous vous répondons sous 24h pour confirmer les dates et les conditions.
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-5">
+			<twig:Button label="Demander un devis" href="{{ path('app_home') }}#devis" variant="primary" size="lg" icon="arrow-right"/>
+			<ul class="flex flex-col gap-3">
+				{% for point in [
+                    'Réponse personnalisée sous 24h',
+                    'Aucun paiement en ligne requis',
+                    'Contrat signé à la remise des clés',
+                ] %}
+					<li class="flex items-center gap-3 font-body text-sm text-white">
+						<twig:ux:icon name="lucide:check" class="w-4 h-4 text-primary shrink-0" aria-hidden="true"/>
+						{{ point }}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</section>

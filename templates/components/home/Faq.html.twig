@@ -1,16 +1,17 @@
-<section class="bg-beige py-8 px-6" aria-label="Questions fréquentes">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
+<section class="bg-beige relative overflow-hidden py-8 px-6" aria-label="Questions fréquentes">
+    <twig:TextureBackground type="sand" :overlay="0" :intensity="0.18" />
+    <div class="max-w-6xl mx-auto relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
 
         {# Titre flottant (sticky desktop) #}
         <div class="md:sticky md:top-24">
-            <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">FAQ</p>
+            <p class="font-body text-xs font-medium text-brown uppercase tracking-[0.2em] mb-4">FAQ</p>
             <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">
                 C'est<br>
                 simple,<br>
                 on vous<br>
                 explique.
             </h2>
-            <p class="font-body text-brown/40 text-sm leading-relaxed max-w-xs">
+            <p class="font-body text-brown text-sm leading-relaxed max-w-xs">
                 Vous avez une question qui ne figure pas ici ? Contactez-nous directement.
             </p>
         </div>
@@ -55,13 +56,13 @@
                     </span>
                     <twig:ux:icon
                         name="lucide:plus"
-                        class="w-4 h-4 text-brown/30 shrink-0 transition-transform duration-300 group-[.faq-open]:rotate-45"
+                        class="w-4 h-4 text-brown shrink-0 transition-transform duration-300 group-[.faq-open]:rotate-45"
                         aria-hidden="true"
                     />
                 </button>
                 <div class="grid grid-rows-[0fr] transition-all duration-300 ease-in-out group-[.faq-open]:grid-rows-[1fr]">
                     <div class="overflow-hidden">
-                        <p class="font-body text-sm text-brown/60 leading-relaxed mt-4 max-w-lg">
+                        <p class="font-body text-sm text-brown leading-relaxed mt-4 max-w-lg">
                             {{ item.a }}
                         </p>
                     </div>

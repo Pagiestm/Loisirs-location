@@ -1,0 +1,37 @@
+{% if van.vanOptions is not empty %}
+<section id="equipements" class="bg-white py-24 px-6" aria-label="Équipements">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+            <div>
+                <p class="font-body text-xs uppercase tracking-[0.2em] text-brown/40 mb-3">À bord du {{ van.name }}</p>
+                <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight">
+                    Tout ce dont<br>vous avez besoin
+                </h2>
+            </div>
+            <p class="font-body text-sm text-brown/40 max-w-xs leading-relaxed">
+                {{ van.vanOptions|length }} équipement{{ van.vanOptions|length > 1 ? 's' : '' }} inclus dans votre location.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {% for vo in van.vanOptions %}
+            <div class="group flex items-start gap-4 p-5 bg-beige rounded-2xl">
+                {% if vo.option.icon %}
+                <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+                    <twig:ux:icon name="{{ vo.option.icon }}" class="w-5 h-5 text-primary" aria-hidden="true" />
+                </div>
+                {% endif %}
+                <div class="min-w-0">
+                    <p class="font-body text-sm font-semibold text-secondary">{{ vo.option.name }}</p>
+                    {% if vo.value %}
+                    <p class="font-body text-xs text-brown/50 mt-0.5">{{ vo.value }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos vans — Loisirs Location{% endblock %}
+
+{% block body %}
+<twig:Navbar activePage="vans" />
+<twig:Vans:PageHero :count="vans|length" />
+<twig:Vans:Grid :vans="vans" />
+<twig:Footer />
+{% endblock %}
