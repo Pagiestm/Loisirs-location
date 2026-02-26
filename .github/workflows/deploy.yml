@@ -34,7 +34,7 @@ jobs:
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
             cd www/Loisirs-location && \
             git pull origin develop && \
-            composer install --no-dev --optimize-autoloader && \
+            composer install && \
             php bin/console cache:clear && \
             php bin/console doctrine:migrations:migrate -n || true\
           "
