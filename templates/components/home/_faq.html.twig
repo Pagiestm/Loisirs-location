@@ -1,0 +1,71 @@
+<section class="bg-beige py-8 px-6" aria-label="Questions fréquentes">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
+
+        {# Titre flottant (sticky desktop) #}
+        <div class="md:sticky md:top-24">
+            <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">FAQ</p>
+            <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">
+                C'est<br>
+                simple,<br>
+                on vous<br>
+                explique.
+            </h2>
+            <p class="font-body text-brown/40 text-sm leading-relaxed max-w-xs">
+                Vous avez une question qui ne figure pas ici ? Contactez-nous directement.
+            </p>
+        </div>
+
+        {# Accordéon #}
+        <div class="flex flex-col divide-y divide-brown/10">
+            {% set questions = [
+                {
+                    q: 'Comment réserver un van ?',
+                    a: 'Remplissez le formulaire de devis avec vos dates et vos besoins. Nous vous répondons sous 24h pour confirmer la disponibilité et vous envoyer un devis personnalisé. Pas d\'algorithme — un vrai échange humain.'
+                },
+                {
+                    q: 'Y a-t-il un paiement en ligne ?',
+                    a: 'Non ! Tout se règle directement à la remise des clés en main propre. Pas de caution en ligne, pas de carte bancaire requise à la réservation. La confiance avant tout.'
+                },
+                {
+                    q: 'Quels documents faut-il prévoir ?',
+                    a: "Un permis B suffit pour conduire nos vans. Vous aurez besoin de votre permis de conduire, d'une pièce d'identité valide. Nous signons ensemble le contrat de location sur place."
+                },
+                {
+                    q: 'Les vans sont-ils bien équipés ?',
+                    a: 'Absolument. Chaque van est préparé et vérifié avant votre départ : cuisine équipée (réfrigérateur, plaques gaz), literie complète, chauffage autonome et prises 220V. Vous arrivez, vous partez.'
+                },
+                {
+                    q: 'Puis-je partir hors des Hauts-de-France ?',
+                    a: 'Bien sûr ! Nos vans peuvent partir partout en France et en Europe. Précisez votre itinéraire dans le formulaire de devis et nous adapterons les conditions en conséquence.'
+                },
+                {
+                    q: 'Quelle est la politique d\'annulation ?',
+                    a: "Nous faisons preuve de souplesse. En cas d'imprévu, contactez-nous le plus tôt possible. Chaque situation est traitée humainement — pas de conditions générales kafkaïennes."
+                },
+            ] %}
+
+            {% for item in questions %}
+            <details class="group py-6 cursor-pointer">
+                <summary class="flex items-center justify-between gap-6 list-none focus:outline-none">
+                    <span class="font-body text-sm font-semibold text-secondary group-open:text-primary transition-colors duration-200">
+                        {{ item.q }}
+                    </span>
+                    <svg
+                        class="w-4 h-4 text-brown/30 shrink-0 transition-transform duration-300 group-open:rotate-45"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </summary>
+                <p class="font-body text-sm text-brown/60 leading-relaxed mt-4 max-w-lg">
+                    {{ item.a }}
+                </p>
+            </details>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>

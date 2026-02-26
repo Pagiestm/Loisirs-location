@@ -1,0 +1,40 @@
+<section class="bg-white border-t border-beige py-24 px-6" aria-label="Demander un devis">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+
+        {# Texte #}
+        <div>
+            <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">Gratuit · Sans engagement</p>
+            <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-6">
+                Prêt à<br>prendre<br>la route ?
+            </h2>
+            <p class="font-body text-brown/50 text-sm leading-relaxed max-w-xs">
+                Dites-nous vos dates et votre projet. Réponse sous 24h. Pas de paiement en ligne — tout se règle à la remise des clés.
+            </p>
+        </div>
+
+        {# CTA + détails #}
+        <div class="flex flex-col gap-6">
+            {% include 'components/_button.html.twig' with {
+                label: 'Demander un devis',
+                href: '/devis',
+                variant: 'primary',
+                size: 'lg',
+                icon: 'arrow-right'
+            } %}
+            <ul class="flex flex-col gap-3">
+                {% set points = [
+                    'Réponse personnalisée sous 24h',
+                    'Aucun paiement en ligne requis',
+                    'Contrat signé à la remise des clés',
+                ] %}
+                {% for point in points %}
+                <li class="flex items-center gap-3 font-body text-sm text-brown/50">
+                    <span class="w-1 h-1 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+                    {{ point }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</section>

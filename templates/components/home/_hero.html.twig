@@ -1,0 +1,51 @@
+<section
+    data-navbar-hero-section
+    class="relative h-screen min-h-[640px] flex flex-col items-center justify-center overflow-hidden"
+    aria-label="Loisirs Location – Location de vans aménagés en Hauts-de-France"
+>
+    {# ---- Fond image ---- #}
+    <div class="absolute inset-0">
+        <img
+            src="/images/Home.jpg"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover"
+            aria-hidden="true"
+        >
+        {# Overlay : dégradé brun — fort en haut (navbar) puis vers le bas #}
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-brown/70 via-brown/40 to-brown/75"
+            aria-hidden="true"
+        ></div>
+    </div>
+
+    {# ---- Contenu centré ---- #}
+    <div class="relative z-10 text-center px-6 max-w-3xl pt-16 lg:pt-0">
+        <p class="font-body text-xs uppercase tracking-[0.35em] text-white mb-8">
+            Hauts-de-France · Vans aménagés
+        </p>
+        <h1 class="font-display text-3xl sm:text-5xl md:text-7xl text-white leading-[0.88] mb-8">
+            Des souvenirs à chaque kilomètre
+        </h1>
+        <p class="font-body text-white text-base md:text-lg max-w-md mx-auto mb-12 leading-relaxed">
+            Location de vans aménagés en Hauts‑de‑France. Forêts, dunes, côtes &mdash; partez quand vous voulez, revenez quand vous voulez.
+        </p>
+        {% include 'components/_button.html.twig' with {
+            label: 'Demander un devis',
+            href: '/devis',
+            variant: 'primary',
+            size: 'lg',
+            icon: 'arrow-right'
+        } %}
+    </div>
+
+    {# ---- Indicateur de défilement ---- #}
+    <div
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40"
+        aria-hidden="true"
+    >
+        <span class="font-body text-[10px] tracking-[0.25em] uppercase">Découvrir</span>
+        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
+        </svg>
+    </div>
+</section>

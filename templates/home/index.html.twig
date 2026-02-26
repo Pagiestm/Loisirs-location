@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Loisirs Location – Location de vans aménagés en Hauts-de-France{% endblock %}
+
+{% block body %}
+
+    {% include 'components/_navbar.html.twig' with { activePage: 'home', heroNav: true } %}
+
+    {# 1. Héros plein écran avec vidéo fond #}
+    {% include 'components/home/_hero.html.twig' %}
+
+    {# 2. Bande de réassurance (3 promesses clés) #}
+    {% include 'components/home/_reassurance.html.twig' %}
+
+    {# 3. Nos vans — présentation des véhicules #}
+    {% include 'components/home/_vans.html.twig' %}
+
+    {# 4. Bandeau inspiration — lieux & expériences Hauts-de-France #}
+    {% include 'components/home/_inspiration.html.twig' %}
+
+    {# 5. Atouts — pourquoi nous choisir #}
+    {% include 'components/home/_atouts.html.twig' %}
+
+    {# 6. Avis clients #}
+    {% include 'components/home/_reviews.html.twig' %}
+
+    {# 7. FAQ — questions fréquentes #}
+    {% include 'components/home/_faq.html.twig' %}
+
+    {# 8. Bande finale CTA #}
+    {% include 'components/home/_cta_band.html.twig' %}
+
+    {% include 'components/_footer.html.twig' %}
+
+{% endblock %}

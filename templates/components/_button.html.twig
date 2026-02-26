@@ -1,0 +1,44 @@
+{% set variant = variant ?? 'primary' %}
+{% set size = size ?? 'md' %}
+{% set fullWidth = fullWidth ?? false %}
+{% set type = type ?? 'button' %}
+{% set icon = icon ?? null %}
+
+{# Classes selon variante #}
+{% set variantClasses = {
+    'primary':   'bg-primary text-white hover:bg-opacity-90 shadow-md hover:shadow-lg',
+    'secondary': 'bg-secondary text-white hover:bg-opacity-90 shadow-md hover:shadow-lg',
+    'outline':   'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white',
+    'ghost':     'text-primary hover:bg-primary/10 underline-offset-4 hover:underline',
+} %}
+
+{# Classes selon taille #}
+{% set sizeClasses = {
+    'sm': 'px-4 py-1.5 text-sm',
+    'md': 'px-6 py-2.5 text-base',
+    'lg': 'px-8 py-3.5 text-lg',
+} %}
+
+{% set baseClasses = 'inline-flex items-center justify-center gap-2 font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer' %}
+{% set widthClass = fullWidth ? 'w-full' : '' %}
+{% set allClasses = baseClasses ~ ' ' ~ (variantClasses[variant] ?? variantClasses['primary']) ~ ' ' ~ (sizeClasses[size] ?? sizeClasses['md']) ~ ' ' ~ widthClass %}
+
+{% if href is defined and href %}
+    <a href="{{ href }}" class="{{ allClasses }}" {% if ariaLabel is defined and ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}>
+        {{- label -}}
+        {% if icon == 'arrow-right' %}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        {% endif %}
+    </a>
+{% else %}
+    <button type="{{ type }}" class="{{ allClasses }}" {% if ariaLabel is defined and ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}>
+        {{- label -}}
+        {% if icon == 'arrow-right' %}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        {% endif %}
+    </button>
+{% endif %}
