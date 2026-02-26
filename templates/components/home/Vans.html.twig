@@ -1,6 +1,3 @@
-{# ============================================================
-   NOS VANS — Grille des véhicules disponibles
-   ============================================================ #}
 <section class="bg-white py-24 px-6" aria-label="Nos vans aménagés">
     <div class="max-w-6xl mx-auto">
 
@@ -58,15 +55,11 @@
                     {# Caractéristiques clés #}
                     <div class="flex items-center gap-6 pb-5 border-b border-beige mb-5">
                         <span class="font-body text-xs text-brown/50 flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-brown/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
+                            <twig:ux:icon name="lucide:users" class="w-4 h-4 text-brown/30" aria-hidden="true" />
                             {{ van.places }}
                         </span>
                         <span class="font-body text-xs text-brown/50 flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-brown/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                            </svg>
+                            <twig:ux:icon name="lucide:moon" class="w-4 h-4 text-brown/30" aria-hidden="true" />
                             {{ van.couchages }}
                         </span>
                     </div>
@@ -87,9 +80,7 @@
                         class="mt-auto inline-flex items-center gap-2 font-body text-sm font-semibold text-secondary group-hover:text-primary transition-colors duration-200"
                     >
                         Demander un devis
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
+                        <twig:ux:icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true" />
                     </a>
                 </div>
 

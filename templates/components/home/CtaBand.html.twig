@@ -14,13 +14,7 @@
 
         {# CTA + détails #}
         <div class="flex flex-col gap-6">
-            {% include 'components/_button.html.twig' with {
-                label: 'Demander un devis',
-                href: '/devis',
-                variant: 'primary',
-                size: 'lg',
-                icon: 'arrow-right'
-            } %}
+            <twig:Button label="Demander un devis" href="/devis" variant="primary" size="lg" icon="arrow-right" />
             <ul class="flex flex-col gap-3">
                 {% set points = [
                     'Réponse personnalisée sous 24h',

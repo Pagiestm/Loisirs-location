@@ -4,17 +4,17 @@
 
             {% set items = [
                 {
-                    path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                    icon: 'lucide:circle-check',
                     label: 'Devis gratuit & sans engagement',
                     desc: 'En 5 minutes, sans carte bancaire'
                 },
                 {
-                    path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+                    icon: 'lucide:clock',
                     label: 'Réponse sous 24h',
                     desc: 'Un vrai échange humain, pas un robot'
                 },
                 {
-                    path: 'M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z',
+                    icon: 'lucide:key-round',
                     label: 'Paiement à la remise des clés',
                     desc: 'Aucune caution ni paiement en ligne'
                 },
@@ -22,15 +22,11 @@
 
             {% for item in items %}
             <div class="flex items-center gap-4 px-0 md:px-8 py-5 first:pl-0 last:pr-0">
-                <svg
+                <twig:ux:icon
+                    name="{{ item.icon }}"
                     class="w-5 h-5 text-primary shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
                     aria-hidden="true"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="{{ item.path }}"/>
-                </svg>
+                />
                 <div>
                     <p class="font-body text-sm font-semibold text-white leading-snug">{{ item.label }}</p>
                     <p class="font-body text-xs text-white/40 mt-0.5">{{ item.desc }}</p>

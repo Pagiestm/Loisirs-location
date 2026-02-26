@@ -29,13 +29,7 @@
         <p class="font-body text-white text-base md:text-lg max-w-md mx-auto mb-12 leading-relaxed">
             Location de vans aménagés en Hauts‑de‑France. Forêts, dunes, côtes &mdash; partez quand vous voulez, revenez quand vous voulez.
         </p>
-        {% include 'components/_button.html.twig' with {
-            label: 'Demander un devis',
-            href: '/devis',
-            variant: 'primary',
-            size: 'lg',
-            icon: 'arrow-right'
-        } %}
+        <twig:Button label="Demander un devis" href="/devis" variant="primary" size="lg" icon="arrow-right" />
     </div>
 
     {# ---- Indicateur de défilement ---- #}
@@ -44,8 +38,6 @@
         aria-hidden="true"
     >
         <span class="font-body text-[10px] tracking-[0.25em] uppercase">Découvrir</span>
-        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
-        </svg>
+        <twig:ux:icon name="lucide:chevron-down" class="w-4 h-4 animate-bounce" aria-hidden="true" />
     </div>
 </section>

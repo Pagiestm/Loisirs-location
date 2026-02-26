@@ -16,7 +16,7 @@
         </div>
 
         {# Accordéon #}
-        <div class="flex flex-col divide-y divide-brown/10">
+        <div data-controller="faq" class="flex flex-col divide-y divide-brown/10">
             {% set questions = [
                 {
                     q: 'Comment réserver un van ?',
@@ -45,25 +45,28 @@
             ] %}
 
             {% for item in questions %}
-            <details class="group py-6 cursor-pointer">
-                <summary class="flex items-center justify-between gap-6 list-none focus:outline-none">
-                    <span class="font-body text-sm font-semibold text-secondary group-open:text-primary transition-colors duration-200">
+            <div class="faq-item group py-6">
+                <button
+                    data-action="click->faq#toggle"
+                    class="w-full flex items-center justify-between gap-6 text-left focus:outline-none cursor-pointer"
+                >
+                    <span class="font-body text-sm font-semibold text-secondary group-[.faq-open]:text-primary transition-colors duration-200">
                         {{ item.q }}
                     </span>
-                    <svg
-                        class="w-4 h-4 text-brown/30 shrink-0 transition-transform duration-300 group-open:rotate-45"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    <twig:ux:icon
+                        name="lucide:plus"
+                        class="w-4 h-4 text-brown/30 shrink-0 transition-transform duration-300 group-[.faq-open]:rotate-45"
                         aria-hidden="true"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
-                    </svg>
-                </summary>
-                <p class="font-body text-sm text-brown/60 leading-relaxed mt-4 max-w-lg">
-                    {{ item.a }}
-                </p>
-            </details>
+                    />
+                </button>
+                <div class="grid grid-rows-[0fr] transition-all duration-300 ease-in-out group-[.faq-open]:grid-rows-[1fr]">
+                    <div class="overflow-hidden">
+                        <p class="font-body text-sm text-brown/60 leading-relaxed mt-4 max-w-lg">
+                            {{ item.a }}
+                        </p>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
 
         </div>

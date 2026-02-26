@@ -4,32 +4,32 @@
 
 {% block body %}
 
-    {% include 'components/_navbar.html.twig' with { activePage: 'home', heroNav: true } %}
+    <twig:Navbar activePage="home" :heroNav="true" />
 
     {# 1. Héros plein écran avec vidéo fond #}
-    {% include 'components/home/_hero.html.twig' %}
+    <twig:Home:Hero />
 
     {# 2. Bande de réassurance (3 promesses clés) #}
-    {% include 'components/home/_reassurance.html.twig' %}
+    <twig:Home:Reassurance />
 
     {# 3. Nos vans — présentation des véhicules #}
-    {% include 'components/home/_vans.html.twig' %}
+    <twig:Home:Vans />
 
     {# 4. Bandeau inspiration — lieux & expériences Hauts-de-France #}
-    {% include 'components/home/_inspiration.html.twig' %}
+    <twig:Home:Inspiration />
 
     {# 5. Atouts — pourquoi nous choisir #}
-    {% include 'components/home/_atouts.html.twig' %}
+    <twig:Home:Atouts />
 
     {# 6. Avis clients #}
-    {% include 'components/home/_reviews.html.twig' %}
+    <twig:Home:Reviews :placeData="placeData" />
 
     {# 7. FAQ — questions fréquentes #}
-    {% include 'components/home/_faq.html.twig' %}
+    <twig:Home:Faq />
 
     {# 8. Bande finale CTA #}
-    {% include 'components/home/_cta_band.html.twig' %}
+    <twig:Home:CtaBand />
 
-    {% include 'components/_footer.html.twig' %}
+    <twig:Footer />
 
 {% endblock %}
