@@ -12,16 +12,14 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 		{% block stylesheets %}
-			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-		{% endblock %}
-
-		{% block javascripts %}
-			{% block importmap %}
-				{{ importmap('app') }}
-			{% endblock %}
+			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 	</head>
 	<body>
 		{% block body %}{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
 	</body>
 </html>

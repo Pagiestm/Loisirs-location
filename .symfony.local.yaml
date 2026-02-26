@@ -1,5 +1,5 @@
 # .symfony.local.yaml
 workers:
 
-    tailwind:
-        cmd: ['symfony', 'console', 'tailwind:build', '--watch']
+    webpack:
+        cmd: ['npm', 'run', 'watch']

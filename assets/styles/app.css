@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source not "../../public";
 
 @font-face {
     font-family: 'Custard W00 Regular';
@@ -20,8 +21,8 @@
     --color-brown:     #5a2e15; /* marron foncé */
 
     /* Typographies */
-    --font-body:    'Atkinson Hyperlegible Mono', monospace; /* corps de texte & sous-titres */
-    --font-display: 'Custard W00 Regular', serif; /* gros titres & mots-clés */
+    --font-body:    'Atkinson Hyperlegible Mono', monospace;
+    --font-display: 'Custard W00 Regular', serif;
 
     /* Animations marquee (bandeau inspiration) */
     --animate-marquee:         marquee 35s linear infinite;
