@@ -14,12 +14,40 @@
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
-	</head>
-	<body>
-		{% block body %}{% endblock %}
-
-		{% block javascripts %}
+        {% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
+	</head>
+	<body
+        {{ stimulus_controller('app') }}
+        data-app-modal-outlet=".modal-outlet"
+    >
+		{# Flash messages notifications - Système de pile type Sonner #}
+		<div
+            {{ stimulus_controller('flashes') }}
+            class="fixed top-4 right-4 z-9999 pointer-events-none"
+            style="width: 400px; height: 0;"
+	    >
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <twig:Flash
+                        type="{{ label }}"
+                        message="{{ message }}"
+                    />
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+		{% block body %}{% endblock %}
+
+		{# Modale de connexion/inscription #}
+		{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+			<twig:Modal id="auth" size="sm">
+				<twig:Security:Index
+                    loading="lazy"
+                    key="auth-component"
+                />
+			</twig:Modal>
+		{% endif %}
 	</body>
 </html>

@@ -1586,6 +1586,19 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         namer_keep_extension?: scalar|null|Param, // Default: false
  *         db_driver?: scalar|null|Param, // Default: null
  *     }>,
+ * @psalm-type LiveComponentConfig = array{
+ *     secret?: scalar|null|Param, // The secret used to compute fingerprints and checksums // Default: "%kernel.secret%"
+ * }
+ * @psalm-type MjmlConfig = array{
+ *     renderer?: "binary"|"service"|Param, // Default: "binary"
+ *     options?: array{
+ *         binary?: scalar|null|Param, // Path to the MJML binary // Default: null
+ *         node?: scalar|null|Param, // Path to node // Default: null
+ *         service_id?: scalar|null|Param, // Service id when renderer is defined to "service"
+ *         validation_level?: scalar|null|Param, // Validation level. See https://github.com/mjmlio/mjml/tree/master/packages/mjml-validator#validating-mjml // Default: "strict"
+ *         minify?: bool|Param, // Default: false
+ *         mjml_version?: int|Param, // Mjml version // Default: null
+ *     },
  * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
@@ -1604,6 +1617,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_component?: TwigComponentConfig,
  *     ux_icons?: UxIconsConfig,
  *     vich_uploader?: VichUploaderConfig,
+ *     live_component?: LiveComponentConfig,
+ *     mjml?: MjmlConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1624,6 +1639,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         ux_icons?: UxIconsConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         live_component?: LiveComponentConfig,
+ *         mjml?: MjmlConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1642,6 +1659,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         ux_icons?: UxIconsConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         live_component?: LiveComponentConfig,
+ *         mjml?: MjmlConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1661,6 +1680,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         ux_icons?: UxIconsConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         live_component?: LiveComponentConfig,
+ *         mjml?: MjmlConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

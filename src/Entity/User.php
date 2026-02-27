@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, nullable: true)]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
@@ -36,6 +36,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    #[ORM\Column(name: 'is_verified', type: 'boolean', options: ['default' => false])]
+    private bool $isVerified = false;
+
+    #[ORM\Column(name: 'verification_token', length: 100, nullable: true)]
+    private ?string $verificationToken = null;
+
+    #[ORM\Column(name: 'verification_token_expires_at', nullable: true)]
+    private ?\DateTimeImmutable $verificationTokenExpiresAt = null;
+
+    #[ORM\Column(name: 'reset_password_token', length: 100, nullable: true)]
+    private ?string $resetPasswordToken = null;
+
+    #[ORM\Column(name: 'reset_password_token_expires_at', nullable: true)]
+    private ?\DateTimeImmutable $resetPasswordTokenExpiresAt = null;
+
     #[ORM\Column(name: 'created_at')]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -43,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'users')]
-    #[ORM\JoinColumn(name: 'id_address', referencedColumnName: 'id_address', nullable: false)]
+    #[ORM\JoinColumn(name: 'id_address', referencedColumnName: 'id_address', nullable: true)]
     private ?Address $address = null;
 
     /**
@@ -180,6 +195,84 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $verificationToken): static
+    {
+        $this->verificationToken = $verificationToken;
+
+        return $this;
+    }
+
+    public function getVerificationTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->verificationTokenExpiresAt;
+    }
+
+    public function setVerificationTokenExpiresAt(?\DateTimeImmutable $verificationTokenExpiresAt): static
+    {
+        $this->verificationTokenExpiresAt = $verificationTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function isVerificationTokenExpired(): bool
+    {
+        if (!$this->verificationTokenExpiresAt) {
+            return true;
+        }
+
+        return $this->verificationTokenExpiresAt < new \DateTimeImmutable();
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): static
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getResetPasswordTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->resetPasswordTokenExpiresAt;
+    }
+
+    public function setResetPasswordTokenExpiresAt(?\DateTimeImmutable $resetPasswordTokenExpiresAt): static
+    {
+        $this->resetPasswordTokenExpiresAt = $resetPasswordTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function isResetPasswordTokenExpired(): bool
+    {
+        if (!$this->resetPasswordTokenExpiresAt) {
+            return true;
+        }
+
+        return $this->resetPasswordTokenExpiresAt < new \DateTimeImmutable();
     }
 
     public function getAddress(): ?Address

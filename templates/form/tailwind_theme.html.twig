@@ -1,0 +1,184 @@
+{# templates/form/tailwind_theme.html.twig #}
+
+{# Labels #}
+{% block form_label -%}
+    {% if label is not same as(false) -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) %}
+        {%- endif %}
+        {% if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        <label{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %} class="block text-sm font-medium text-gray-700 mb-1">
+            {{- translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) -}}
+            {%- if required -%}
+                <span class="text-red-500">*</span>
+            {%- endif -%}
+        </label>
+    {%- endif %}
+{%- endblock form_label %}
+
+{# Widgets pour input text, email, password, tel, etc. #}
+{% block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent')|trim}) -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple %}
+
+{# Widget pour textarea #}
+{% block textarea_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent')|trim}) -%}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget %}
+
+{# Widget pour checkbox #}
+{% block checkbox_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' rounded border-gray-300 text-primary focus:ring-primary')|trim}) -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_widget %}
+
+{# Widget pour radio #}
+{% block radio_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' border-gray-300 text-primary focus:ring-primary')|trim}) -%}
+    <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock radio_widget %}
+
+{# Widget pour select #}
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent')|trim}) -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {% if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif %}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed %}
+
+{# Erreurs #}
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul class="mt-1 text-sm text-red-600">
+            {%- for error in errors -%}
+                <li>{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif %}
+{%- endblock form_errors %}
+
+{# Form row - combine label, widget et errors #}
+{% block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div class="mb-4{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row %}
+
+{# Row spécifique pour password avec bouton montrer/cacher #}
+{% block password_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div data-controller="password" class="mb-4{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="flex items-center justify-between mb-1">
+            {{- form_label(form) -}}
+            <button
+                data-live-ignore
+                type="button"
+                data-action="click->password#toggle"
+                class="flex items-center gap-1.5 px-2 py-1 text-xs text-gray-600 hover:text-gray-900 focus:text-gray-900 focus:outline-none transition-colors"
+            >
+                <twig:ux:icon name="lucide:eye" class="w-3.5 h-3.5" data-password-target="iconShow" />
+                <twig:ux:icon name="lucide:eye-off" class="w-3.5 h-3.5 hidden" data-password-target="iconHide" />
+                <span data-password-target="text">Montrer</span>
+            </button>
+        </div>
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock password_row %}
+
+{# Widget pour password avec toggle visibility #}
+{% block password_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent')|trim}) -%}
+    <input type="password" {{ block('widget_attributes') }} data-password-target="input" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock password_widget %}
+
+{# Help text #}
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' mt-1 text-sm text-gray-500')|trim}) -%}
+        <p id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if translation_domain is same as(false) -%}
+                {{- help -}}
+            {%- else -%}
+                {{- help|trans(help_translation_parameters, translation_domain) -}}
+            {%- endif -%}
+        </p>
+    {%- endif %}
+{%- endblock form_help %}
+
+{# Checkbox row spécifique pour mettre le label après #}
+{% block checkbox_row -%}
+    <div class="mb-4 flex items-center{% if not valid %} has-error{% endif %}">
+        {{- form_widget(form) -}}
+        {{- form_label(form, null, {label_attr: {class: 'ml-2 text-sm text-gray-600'}}) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock checkbox_row %}
+
+{# Radio row #}
+{% block radio_row -%}
+    <div class="mb-4 flex items-center{% if not valid %} has-error{% endif %}">
+        {{- form_widget(form) -}}
+        {{- form_label(form, null, {label_attr: {class: 'ml-2 text-sm text-gray-600'}}) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock radio_row %}
+
+{# Button #}
+{% block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors')|trim}) -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        {{- translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) -}}
+    </button>
+{%- endblock button_widget %}
+
+{# Submit button #}
+{% block submit_widget -%}
+    {%- set type = type|default('submit') -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors')|trim}) -%}
+    {{- block('button_widget') -}}
+{%- endblock submit_widget %}

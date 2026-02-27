@@ -1,0 +1,72 @@
+{% set config = {
+    'success': {
+        'icon': 'lucide:check-circle',
+        'title': 'Succès',
+        'borderColor': 'border-secondary',
+        'bgColor': 'bg-secondary/10',
+        'textColor': 'text-secondary',
+        'progressColor': 'bg-secondary'
+    },
+    'error': {
+        'icon': 'lucide:alert-circle',
+        'title': 'Erreur',
+        'borderColor': 'border-red',
+        'bgColor': 'bg-red/10',
+        'textColor': 'text-red',
+        'progressColor': 'bg-red'
+    },
+    'info': {
+        'icon': 'lucide:info',
+        'title': 'Information',
+        'borderColor': 'border-sky',
+        'bgColor': 'bg-sky/10',
+        'textColor': 'text-sky',
+        'progressColor': 'bg-sky'
+    },
+    'warning': {
+        'icon': 'lucide:alert-triangle',
+        'title': 'Attention',
+        'borderColor': 'border-primary',
+        'bgColor': 'bg-primary/10',
+        'textColor': 'text-primary',
+        'progressColor': 'bg-primary'
+    }
+} %}
+
+{% set flashConfig = config[type] ?? config.info %}
+
+<div
+    {{ attributes.defaults({
+        class: 'absolute top-0 right-0 w-96 bg-white border-l-4 rounded-lg shadow-lg overflow-hidden transition-all duration-300 ease-out pointer-events-auto ' ~ flashConfig.borderColor
+    }) }}
+    {{ stimulus_target('flashes', 'flash') }}
+    data-action="mouseenter->flashes#pauseAutoClose mouseleave->flashes#resumeAutoClose"
+    style="transform: translateX(100%) scale(0.95); opacity: 0;"
+    role="alert"
+>
+    <div id="flash-content" class="p-4 flex items-center gap-3">
+        <div class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center {{ flashConfig.bgColor }}">
+            <twig:ux:icon name="{{ flashConfig.icon }}" class="w-4 h-4 {{ flashConfig.textColor }}" />
+        </div>
+        <div class="flex-1">
+            <p class="text-sm font-medium {{ flashConfig.textColor }}">{{ flashConfig.title }}</p>
+            <p class="text-sm text-gray-700 mt-0.5">{{ message }}</p>
+        </div>
+        <button
+            {{ stimulus_action('flashes', 'close') }}
+            type="button"
+            class="shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Fermer"
+        >
+            <twig:ux:icon name="lucide:x" class="w-5 h-5" />
+        </button>
+    </div>
+    {# Barre de progression #}
+    <div class="h-1 bg-gray-100">
+        <div
+            data-progress
+            class="h-full transition-all ease-linear w-full {{ flashConfig.progressColor }}"
+            style="transition-duration: 0ms; width: 100%;"
+        ></div>
+    </div>
+</div>
