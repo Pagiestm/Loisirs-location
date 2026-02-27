@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: VanRepository::class)]
 #[ORM\Table(name: 'vans')]
+#[Vich\Uploadable]
 class Van
 {
     #[ORM\Id]
@@ -26,8 +29,12 @@ class Van
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    // Champ non persisté — contient le fichier uploadé
+    #[Vich\UploadableField(mapping: 'van_image', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
 
     #[ORM\Column(name: 'created_at')]
     private ?\DateTimeImmutable $createdAt = null;
@@ -53,11 +60,19 @@ class Van
     #[ORM\OneToMany(targetEntity: Rental::class, mappedBy: 'van')]
     private Collection $rentals;
 
+    /**
+     * @var Collection<int, VanImage>
+     */
+    #[ORM\OneToMany(targetEntity: VanImage::class, mappedBy: 'van', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $images;
+
     public function __construct()
     {
         $this->quotes = new ArrayCollection();
         $this->vanOptions = new ArrayCollection();
         $this->rentals = new ArrayCollection();
+        $this->images = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -103,14 +118,34 @@ class Van
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImageName(): ?string
     {
-        return $this->image;
+        return $this->imageName;
     }
 
-    public function setImage(string $image): static
+    public function setImageName(?string $imageName): static
     {
-        $this->image = $image;
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * L'injection d'un fichier met automatiquement updatedAt à jour
+     * pour déclencher les lifecycle events Doctrine.
+     */
+    public function setImageFile(?File $imageFile = null): static
+    {
+        $this->imageFile = $imageFile;
+
+        if ($imageFile !== null) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
 
         return $this;
     }
@@ -225,6 +260,31 @@ class Van
                 $rental->setVan(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VanImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(VanImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(VanImage $image): static
+    {
+        $this->images->removeElement($image);
 
         return $this;
     }

@@ -7,7 +7,7 @@
 	{# ── Image avec overlay et titre flottant ── #}
 	<div class="relative overflow-hidden aspect-[4/3] shrink-0">
 		<img
-		src="{{ van.image }}" alt="{{ van.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+		src="{{ van.imageName ? vich_uploader_asset(van, 'imageFile') : 'https://placehold.co/800x600/e8ddd0/8a7560?text=' ~ van.name|url_encode }}" alt="{{ van.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
 		{# Dégradé overlay bas #}
 		<div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/20 to-transparent" aria-hidden="true"></div>
 

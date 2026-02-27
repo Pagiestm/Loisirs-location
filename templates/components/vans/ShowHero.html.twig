@@ -1,13 +1,12 @@
 <section
-	class="bg-secondary relative overflow-hidden pt-36 pb-0 px-6">
+	class="bg-secondary relative overflow-hidden min-h-screen lg:h-screen flex flex-col pt-24 px-6">
 	<twig:TextureBackground type="wood" :overlay="0.72" />
 
 	<div
-		class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end relative">
+		class="flex-1 max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end relative">
 
 		{# ── Texte ── #}
-		<div
-			class="pb-6 sm:pb-20 ">
+		<div class="self-center py-8 lg:py-0">
 			{# Retour #}
 			<a href="{{ path('app_vans_index') }}" class="inline-flex items-center gap-2 font-body text-xs text-white hover:text-white/60 transition-colors duration-200 mb-10 group">
 				<twig:ux:icon name="lucide:arrow-left" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-200" aria-hidden="true"/>
@@ -26,9 +25,61 @@
 			<twig:Button label="Demander un devis" href="{{ path('app_home') }}#devis" variant="primary" size="lg" icon="arrow-right"/>
 		</div>
 
-		{# ── Image ── #}
-		<div class="relative self-end overflow-hidden rounded-t-3xl">
-			<img src="{{ van.image }}" alt="{{ van.name }}" class="w-full max-h-[560px] object-cover object-center">
+		{# ── Galerie d'images ── #}
+		{% set mainImage = van.imageName
+			? vich_uploader_asset(van, 'imageFile')
+			: (van.images is not empty
+				? vich_uploader_asset(van.images.first, 'imageFile')
+				: 'https://placehold.co/800x600/e8ddd0/8a7560?text=' ~ van.name|url_encode)
+		%}
+		<div class="relative self-end" data-controller="gallery">
+
+		<div class="relative w-full h-72 sm:h-96 lg:h-[460px] rounded-t-2xl">
+
+				{# Image principale #}
+				<img
+					data-gallery-target="main"
+					src="{{ mainImage }}"
+					alt="{{ van.name }}"
+					class="w-full h-full object-cover object-center rounded-t-2xl transition-opacity duration-200"
+				>
+
+				{% if van.images is not empty %}
+				{# Dégradé bas #}
+				<div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+
+				{# Vignettes en overlay #}
+				<div class="absolute bottom-4 left-4 right-4 flex gap-2 overflow-x-auto scrollbar-none">
+
+					{# Vignette image principale #}
+					{% if van.imageName %}
+					<button
+						type="button"
+						data-action="click->gallery#select"
+						data-gallery-src-param="{{ vich_uploader_asset(van, 'imageFile') }}"
+						class="shrink-0 w-[72px] h-[50px] overflow-hidden rounded-md opacity-100 focus:outline-none transition-opacity duration-200"
+					>
+						<img src="{{ vich_uploader_asset(van, 'imageFile') }}" alt="" class="w-full h-full object-cover" loading="lazy">
+					</button>
+					{% endif %}
+
+					{# Vignettes galerie #}
+					{% for image in van.images %}
+					<button
+						type="button"
+						data-action="click->gallery#select"
+						data-gallery-src-param="{{ vich_uploader_asset(image, 'imageFile') }}"
+						class="shrink-0 w-[72px] h-[50px] overflow-hidden rounded-md opacity-50 hover:opacity-90 focus:outline-none transition-opacity duration-200"
+					>
+						<img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.caption }}" class="w-full h-full object-cover" loading="lazy">
+					</button>
+					{% endfor %}
+
+				</div>
+				{% endif %}
+
+			</div>
+
 		</div>
 
 	</div>

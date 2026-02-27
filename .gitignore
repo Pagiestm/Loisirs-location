@@ -19,3 +19,14 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> uploads ###
+/public/images/vans/*.jpg
+/public/images/vans/*.jpeg
+/public/images/vans/*.png
+/public/images/vans/*.webp
+/public/images/vans/gallery/*.jpg
+/public/images/vans/gallery/*.jpeg
+/public/images/vans/gallery/*.png
+/public/images/vans/gallery/*.webp
+###< uploads ###
