@@ -7,7 +7,6 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 final class Button
 {
-    public string $label = '';
     public ?string $href = null;
     public string $variant = 'primary';
     public string $size = 'md';
@@ -15,4 +14,5 @@ final class Button
     public string $type = 'button';
     public ?string $icon = null;
     public ?string $ariaLabel = null;
+    public ?string $attr = null;
 }

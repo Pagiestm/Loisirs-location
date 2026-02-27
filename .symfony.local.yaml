@@ -1,5 +1,8 @@
 # .symfony.local.yaml
 workers:
-
     webpack:
-        cmd: ['npm', 'run', 'watch']
+        cmd: ["npm", "run", "watch"]
+
+    messenger_consume_async:
+        cmd: ["symfony", "console", "messenger:consume", "async", "-vv"]
+        watch: ["config", "src", "templates", "vendor/composer/installed.json"]

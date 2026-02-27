@@ -1,0 +1,94 @@
+<div
+    {{ attributes.defaults(stimulus_controller('security')) }}
+    data-security-modal-outlet="#auth"
+>
+    {# Contenu principal - visible par défaut #}
+    <div class="space-y-6">
+        {% if isLogin %}
+            <twig:Security:Login />
+        {% else %}
+            <twig:Security:Register />
+        {% endif %}
+    </div>
+
+    {# Skeleton loader - caché par défaut #}
+    <div class="animate-pulse space-y-6" style="display: none;">
+        {# Skeleton pour le titre #}
+        <div class="flex justify-center">
+            <div class="h-8 w-48 bg-gray-200 rounded-lg"></div>
+        </div>
+
+        {# Skeleton pour les champs du formulaire #}
+        <div class="space-y-4">
+            <div>
+                <div class="h-4 w-24 bg-gray-200 rounded mb-2"></div>
+                <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+            </div>
+
+            <div>
+                <div class="h-4 w-32 bg-gray-200 rounded mb-2"></div>
+                <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+            </div>
+
+            <div>
+                <div class="h-4 w-28 bg-gray-200 rounded mb-2"></div>
+                <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+            </div>
+        </div>
+
+        {# Skeleton pour le bouton #}
+        <div class="pt-2">
+            <div class="h-12 w-full bg-gray-300 rounded-lg"></div>
+        </div>
+
+        {# Animation de points pour indiquer le chargement #}
+        <div class="text-center text-gray-400 text-sm">
+            <span class="inline-flex space-x-1">
+                <span class="animate-bounce">•</span>
+                <span class="animate-bounce" style="animation-delay: 0.1s">•</span>
+                <span class="animate-bounce" style="animation-delay: 0.2s">•</span>
+            </span>
+        </div>
+    </div>
+
+    {% macro placeholder(props) %}
+        <div class="animate-pulse space-y-6">
+            {# Skeleton pour le titre #}
+            <div class="flex justify-center">
+                <div class="h-8 w-48 bg-gray-200 rounded-lg"></div>
+            </div>
+
+            {# Skeleton pour les champs du formulaire #}
+            <div class="space-y-4">
+                <div>
+                    <div class="h-4 w-24 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+                </div>
+
+                <div>
+                    <div class="h-4 w-32 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+                </div>
+
+                <div>
+                    <div class="h-4 w-28 bg-gray-200 rounded mb-2"></div>
+                    <div class="h-10 w-full bg-gray-200 rounded-lg"></div>
+                </div>
+            </div>
+
+            {# Skeleton pour le bouton #}
+            <div class="pt-2">
+                <div class="h-12 w-full bg-gray-300 rounded-lg"></div>
+            </div>
+
+            {# Animation de points pour indiquer le chargement #}
+            <div class="text-center text-gray-400 text-sm">
+                <span class="inline-flex space-x-1">
+                    <span class="animate-bounce">•</span>
+                    <span class="animate-bounce" style="animation-delay: 0.1s">•</span>
+                    <span class="animate-bounce" style="animation-delay: 0.2s">•</span>
+                </span>
+            </div>
+        </div>
+    {% endmacro %}
+</div>

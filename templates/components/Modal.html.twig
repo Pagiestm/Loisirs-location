@@ -1,0 +1,60 @@
+<div
+    {{ stimulus_controller('modal', { id: id }) }}
+    id="{{ id }}"
+    class="fixed inset-0 z-50 overflow-y-auto hidden modal-outlet"
+    aria-labelledby="{{ id }}-title"
+    aria-modal="true"
+    role="dialog"
+>
+    {# Backdrop #}
+    <div
+        {{ stimulus_target('modal', 'backdrop') }}
+        data-action="mousedown->modal#handleMouseDown click->modal#handleBackdropClick"
+        class="fixed inset-0 bg-black/60 transition-opacity duration-300 z-0"
+    ></div>
+
+    {# Modal container #}
+    <div
+        class="relative z-10 flex min-h-full items-center justify-center p-4"
+        data-modal-container
+        data-action="mousedown->modal#handleMouseDown click->modal#handleBackdropClick"
+    >
+        <div
+            {{ stimulus_target('modal', 'panel') }}
+            {{ stimulus_action('modal', 'preventClose', 'click') }}
+            class="relative bg-white rounded-2xl shadow-xl transform transition-all duration-300 w-full
+            {% if size == 'sm' %}
+                max-w-sm
+            {% elseif size == 'lg' %}
+                max-w-3xl
+            {% elseif size == 'xl' %}
+                max-w-5xl
+            {% else %}
+                max-w-lg
+            {% endif %}"
+        >
+            {# Header #}
+            <div
+                {{ stimulus_target('modal', 'header') }}
+                class="hidden items-center justify-between p-6 border-b border-gray-200 {% if title %}flex{% endif %}"
+            >
+                <h3 {{ stimulus_target('modal', 'title') }} id="{{ id }}-title" class="text-2xl font-display font-semibold text-secondary">
+                    {{ title }}
+                </h3>
+                <button
+                    type="button"
+                    {{ stimulus_action('modal', 'close') }}
+                    class="text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Fermer"
+                >
+                    <twig:ux:icon name="lucide:x" class="w-5 h-5" />
+                </button>
+            </div>
+
+            {# Body #}
+            <div class="p-6">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>

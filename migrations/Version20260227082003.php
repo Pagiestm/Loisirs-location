@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260225144752 extends AbstractMigration
+final class Version20260227082003 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20260225144752 extends AbstractMigration
         $this->addSql('CREATE TABLE quote_responses (id_quote_response INT AUTO_INCREMENT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, id_quote INT NOT NULL, id_user INT NOT NULL, INDEX IDX_B6BD06EE85F48AC4 (id_quote), INDEX IDX_B6BD06EE6B3CA4B (id_user), PRIMARY KEY (id_quote_response)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE quotes (id_quote INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, description LONGTEXT DEFAULT NULL, id_van INT NOT NULL, INDEX IDX_A1B588C5E7753313 (id_van), PRIMARY KEY (id_quote)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE rentals (rental_start_date DATETIME NOT NULL, rental_end_date DATETIME NOT NULL, id_user INT NOT NULL, id_van INT NOT NULL, INDEX IDX_35ACDB486B3CA4B (id_user), INDEX IDX_35ACDB48E7753313 (id_van), PRIMARY KEY (id_user, id_van)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE users (id_user INT AUTO_INCREMENT NOT NULL, last_name VARCHAR(50) NOT NULL, first_name VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, phone VARCHAR(20) NOT NULL, password VARCHAR(255) NOT NULL, roles JSON NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, id_address INT NOT NULL, UNIQUE INDEX UNIQ_1483A5E9E7927C74 (email), INDEX IDX_1483A5E9D3D3C6F1 (id_address), PRIMARY KEY (id_user)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE users (id_user INT AUTO_INCREMENT NOT NULL, last_name VARCHAR(50) NOT NULL, first_name VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, phone VARCHAR(20) DEFAULT NULL, password VARCHAR(255) NOT NULL, roles JSON NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, id_address INT DEFAULT NULL, UNIQUE INDEX UNIQ_1483A5E9E7927C74 (email), INDEX IDX_1483A5E9D3D3C6F1 (id_address), PRIMARY KEY (id_user)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE van_options (value VARCHAR(50) DEFAULT NULL, id_van INT NOT NULL, id_option INT NOT NULL, INDEX IDX_16CBD8B7E7753313 (id_van), INDEX IDX_16CBD8B77CB1B55D (id_option), PRIMARY KEY (id_van, id_option)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE vans (id_van INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, subtitle VARCHAR(50) NOT NULL, description LONGTEXT DEFAULT NULL, image VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY (id_van)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL, available_at DATETIME NOT NULL, delivered_at DATETIME DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0E3BD61CE16BA31DBBF396750 (queue_name, available_at, delivered_at, id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');

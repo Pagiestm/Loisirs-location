@@ -18,15 +18,15 @@
 {% set allClasses = baseClasses ~ ' ' ~ (variantClasses[variant] ?? variantClasses['primary']) ~ ' ' ~ (sizeClasses[size] ?? sizeClasses['md']) ~ ' ' ~ widthClass %}
 
 {% if href %}
-    <a href="{{ href }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}>
-        {{- label -}}
+    <a href="{{ href }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
+        {{ block('content') }}
         {% if icon == 'arrow-right' %}
             <twig:ux:icon name="lucide:arrow-right" class="w-4 h-4" aria-hidden="true" />
         {% endif %}
     </a>
 {% else %}
-    <button type="{{ type }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}>
-        {{- label -}}
+    <button type="{{ type }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
+        {{ block('content') }}
         {% if icon == 'arrow-right' %}
             <twig:ux:icon name="lucide:arrow-right" class="w-4 h-4" aria-hidden="true" />
         {% endif %}
