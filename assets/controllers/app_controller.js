@@ -8,14 +8,11 @@ export default class extends Controller {
     static outlets = ["modal"];
 
     connect() {
-        console.log("App controller connected");
-
         // Écouter l'événement de reload après connexion
         window.addEventListener("window:reload", () => {
             window.location.reload();
         });
     }
-
     /**
      * Ouvre une modale spécifique
      * @param {Event} event

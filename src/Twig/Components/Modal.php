@@ -10,4 +10,5 @@ class Modal
     public string $id;
     public string $title = '';
     public string $size = 'md'; // sm, md, lg, xl
+    public bool $initiallyOpen = false;
 }

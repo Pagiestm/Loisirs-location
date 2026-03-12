@@ -20,7 +20,6 @@ export default class extends Controller {
     }
 
     updateUI() {
-        console.log(this.isVisibleValue);
         this.inputTarget.type = this.isVisibleValue ? "text" : "password";
 
         this.iconShowTarget.classList.toggle("hidden", this.isVisibleValue);

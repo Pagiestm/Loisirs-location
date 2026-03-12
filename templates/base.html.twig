@@ -42,7 +42,7 @@
 
 		{# Modale de connexion/inscription #}
 		{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-			<twig:Modal id="auth" size="sm">
+			<twig:Modal id="auth" size="sm" initiallyOpen="{{ app.request.query.get('open_login') == 'true' }}">
 				<twig:Security:Index
                     loading="lazy"
                     key="auth-component"

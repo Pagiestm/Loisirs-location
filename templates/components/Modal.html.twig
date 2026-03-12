@@ -1,5 +1,5 @@
 <div
-    {{ stimulus_controller('modal', { id: id }) }}
+    {{ stimulus_controller('modal', { id: id, initiallyOpen: initiallyOpen }) }}
     id="{{ id }}"
     class="fixed inset-0 z-50 overflow-y-auto hidden modal-outlet"
     aria-labelledby="{{ id }}-title"

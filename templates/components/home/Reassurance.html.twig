@@ -5,18 +5,12 @@
             {% set items = [
                 {
                     icon: 'lucide:circle-check',
-                    label: 'Devis gratuit & sans engagement',
-                    desc: 'En 5 minutes, sans carte bancaire'
                 },
                 {
                     icon: 'lucide:clock',
-                    label: 'Réponse sous 24h',
-                    desc: 'Un vrai échange humain, pas un robot'
                 },
                 {
                     icon: 'lucide:key-round',
-                    label: 'Paiement à la remise des clés',
-                    desc: 'Aucune caution ni paiement en ligne'
                 },
             ] %}
 
@@ -28,8 +22,20 @@
                     aria-hidden="true"
                 />
                 <div>
-                    <p class="font-body text-sm font-semibold text-white leading-snug">{{ item.label }}</p>
-                    <p class="font-body text-xs text-white/40 mt-0.5">{{ item.desc }}</p>
+                    <twig:Editable:Text
+                        page="home"
+                        field="reassurance_label_{{ loop.index }}"
+                        placeholder="Label de l'engagement {{ loop.index }}"
+                    >
+                        <p class="font-body text-sm font-semibold text-white leading-snug">{{ parent() }}</p>
+                    </twig:Editable:Text>
+                    <twig:Editable:Textarea
+                        page="home"
+                        field="reassurance_desc_{{ loop.index }}"
+                        placeholder="Description de l'engagement {{ loop.index }}"
+                    >
+                        <p class="font-body text-xs text-white/40 mt-0.5">{{ parent() }}</p>
+                    </twig:Editable:Textarea>
                 </div>
             </div>
             {% endfor %}

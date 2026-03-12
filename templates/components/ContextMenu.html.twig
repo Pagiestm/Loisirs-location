@@ -1,0 +1,46 @@
+<div
+    {{ stimulus_controller('context-menu', {
+        open: open
+    }) }}
+    {{ stimulus_target('context-menu', 'container') }}
+    {{ stimulus_action('context-menu', 'preventFocus', 'mousedown')|stimulus_action('context-menu', 'close', 'context-menu:close@window') }}
+    tabindex="-1"
+    class="relative inline-block group focus-within:outline-none"
+>
+    {# Zone trigger - clic droit pour ouvrir le menu #}
+    <div
+        {{ stimulus_target('context-menu', 'trigger') }}
+        {{ stimulus_action('context-menu', 'open', 'contextmenu') }}
+        class="cursor-context-menu *:rounded-md *:outline-2 *:outline-transparent *:outline-offset-8 *:outline-dashed *:hover:outline-gray-400 *:group-focus-within:outline-solid! *:group-focus-within:outline-gray-400 *:transition-all"
+    >
+        {% block trigger %}
+            {# Contenu cliquable par défaut #}
+            <div class="inline-block px-4 py-2 text-sm text-gray-700">
+                Right click me
+            </div>
+        {% endblock %}
+    </div>
+
+    {# Content - Le menu contextuel #}
+    <div
+        {{ stimulus_target('context-menu', 'content') }}
+        class="fixed z-50 min-w-55 bg-white rounded-md border border-gray-200 shadow-md opacity-0 scale-95 transition-all duration-100 ease-out pointer-events-none overflow-hidden"
+        style="transform-origin: top left;"
+    >
+        {% block content %}
+            {# Contenu du menu par défaut #}
+            <div class="py-1">
+                <button type="button" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                    <span>Menu Item 1</span>
+                </button>
+                <button type="button" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                    <span>Menu Item 2</span>
+                </button>
+                <div class="border-t border-gray-200 my-1"></div>
+                <button type="button" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                    <span>Delete</span>
+                </button>
+            </div>
+        {% endblock %}
+    </div>
+</div>

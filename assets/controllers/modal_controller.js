@@ -6,6 +6,11 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
     static targets = ["backdrop", "panel", "header", "title"];
 
+    static values = {
+        id: String,
+        initiallyOpen: { type: Boolean, default: false },
+    };
+
     connect() {
         // Initialiser les styles
         this.backdropTarget.style.opacity = "0";
@@ -24,6 +29,11 @@ export default class extends Controller {
         document.addEventListener("modal:open", this.boundHandleOpen);
         document.addEventListener("modal:close", this.boundHandleClose);
         document.addEventListener("keydown", this.boundHandleKeydown);
+
+        // Ouvrir la modale si initiallyOpen est vrai
+        if (this.initiallyOpenValue) {
+            this.open();
+        }
     }
 
     disconnect() {

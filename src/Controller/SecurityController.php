@@ -170,7 +170,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('password_reset/forgot_password.html.twig', [
+        return $this->render('pages/security/forgot_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -215,7 +215,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('password_reset/reset_password.html.twig', [
+        return $this->render('pages/security/reset_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }

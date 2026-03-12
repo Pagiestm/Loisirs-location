@@ -2,8 +2,12 @@
     <twig:TextureBackground type="wood" :overlay="0.72" />
 
     <div class="max-w-6xl mx-auto px-6 text-center mb-14 relative z-10">
-        <p class="font-body text-xs uppercase tracking-[0.35em] text-white mb-4">Hauts-de-France</p>
-        <h2 class="font-display text-4xl md:text-5xl text-white">Partez explorer</h2>
+        <twig:Editable:Text page="home" field="inspiration_subtitle" placeholder="Sous-titre de l'inspiration">
+            <p class="font-body text-xs uppercase tracking-[0.35em] text-white mb-4">{{ parent() }}</p>
+        </twig:Editable:Text>
+        <twig:Editable:Text page="home" field="inspiration_title" placeholder="Titre de l'inspiration">
+            <h2 class="font-display text-4xl md:text-5xl text-white">{{ parent() }}</h2>
+        </twig:Editable:Text>
     </div>
 
     {# Ligne 1 — défilement gauche #}
@@ -48,9 +52,9 @@
     </div>
 
     <div class="max-w-6xl mx-auto px-6 text-center mt-14 relative z-10">
-        <p class="font-body text-white/70 text-sm max-w-sm mx-auto leading-relaxed">
-            Votre van vous attend. À vous de choisir où la route vous mène.
-        </p>
+        <twig:Editable:Textarea page="home" field="inspiration_description" placeholder="Description de l'inspiration">
+            <p class="font-body text-white/70 text-sm max-w-sm mx-auto leading-relaxed">{{ parent() }}</p>
+        </twig:Editable:Textarea>
     </div>
 
 </section>
