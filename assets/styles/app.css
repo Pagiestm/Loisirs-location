@@ -2,10 +2,14 @@
 @source not "../../public";
 
 @font-face {
-    font-family: 'Custard W00 Regular';
-    src: url('../fonts/custard/1120f366a9d75e5743640482b32cfed0.woff2') format('woff2'),
-         url('../fonts/custard/1120f366a9d75e5743640482b32cfed0.woff') format('woff'),
-         url('../fonts/custard/1120f366a9d75e5743640482b32cfed0.ttf') format('truetype');
+    font-family: "Custard W00 Regular";
+    src:
+        url("../fonts/custard/1120f366a9d75e5743640482b32cfed0.woff2")
+            format("woff2"),
+        url("../fonts/custard/1120f366a9d75e5743640482b32cfed0.woff")
+            format("woff"),
+        url("../fonts/custard/1120f366a9d75e5743640482b32cfed0.ttf")
+            format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -13,19 +17,19 @@
 
 @theme {
     /* Couleurs */
-    --color-primary:   #ef7820; /* orange */
+    --color-primary: #ef7820; /* orange */
     --color-secondary: #465b32; /* vert foncé */
-    --color-beige:     #eaccb1; /* beige clair */
-    --color-sky:       #92bfce; /* bleu ciel */
-    --color-red:       #882712; /* rouge foncé */
-    --color-brown:     #5a2e15; /* marron foncé */
+    --color-beige: #eaccb1; /* beige clair */
+    --color-sky: #92bfce; /* bleu ciel */
+    --color-red: #882712; /* rouge foncé */
+    --color-brown: #5a2e15; /* marron foncé */
 
     /* Typographies */
-    --font-body:    'Atkinson Hyperlegible Mono', monospace;
-    --font-display: 'Custard W00 Regular', serif;
+    --font-body: "Atkinson Hyperlegible Mono", monospace;
+    --font-display: "Custard W00 Regular", serif;
 
     /* Animations marquee (bandeau inspiration) */
-    --animate-marquee:         marquee 35s linear infinite;
+    --animate-marquee: marquee 35s linear infinite;
     --animate-marquee-reverse: marquee-reverse 42s linear infinite;
 }
 
@@ -35,11 +39,23 @@ body {
 }
 
 @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 @keyframes marquee-reverse {
-    0%   { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+button {
+    text-align: inherit;
 }

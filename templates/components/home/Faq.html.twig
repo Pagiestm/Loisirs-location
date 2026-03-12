@@ -5,15 +5,12 @@
         {# Titre flottant (sticky desktop) #}
         <div class="md:sticky md:top-24">
             <p class="font-body text-xs font-medium text-brown uppercase tracking-[0.2em] mb-4">FAQ</p>
-            <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">
-                C'est<br>
-                simple,<br>
-                on vous<br>
-                explique.
-            </h2>
-            <p class="font-body text-brown text-sm leading-relaxed max-w-xs">
-                Vous avez une question qui ne figure pas ici ? Contactez-nous directement.
-            </p>
+            <twig:Editable:Text page="home" field="faq_title" placeholder="Titre de la FAQ">
+                <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">{{ parent() }}</h2>
+            </twig:Editable:Text>
+            <twig:Editable:Textarea page="home" field="faq_description" placeholder="Description de la FAQ">
+                <p class="font-body text-brown text-sm leading-relaxed max-w-xs">{{ parent() }}</p>
+            </twig:Editable:Textarea>
         </div>
 
         {# Accordéon #}
@@ -21,27 +18,21 @@
             {% set questions = [
                 {
                     q: 'Comment réserver un van ?',
-                    a: 'Remplissez le formulaire de devis avec vos dates et vos besoins. Nous vous répondons sous 24h pour confirmer la disponibilité et vous envoyer un devis personnalisé. Pas d\'algorithme — un vrai échange humain.'
                 },
                 {
                     q: 'Y a-t-il un paiement en ligne ?',
-                    a: 'Non ! Tout se règle directement à la remise des clés en main propre. Pas de caution en ligne, pas de carte bancaire requise à la réservation. La confiance avant tout.'
                 },
                 {
                     q: 'Quels documents faut-il prévoir ?',
-                    a: "Un permis B suffit pour conduire nos vans. Vous aurez besoin de votre permis de conduire, d'une pièce d'identité valide. Nous signons ensemble le contrat de location sur place."
                 },
                 {
                     q: 'Les vans sont-ils bien équipés ?',
-                    a: 'Absolument. Chaque van est préparé et vérifié avant votre départ : cuisine équipée (réfrigérateur, plaques gaz), literie complète, chauffage autonome et prises 220V. Vous arrivez, vous partez.'
                 },
                 {
                     q: 'Puis-je partir hors des Hauts-de-France ?',
-                    a: 'Bien sûr ! Nos vans peuvent partir partout en France et en Europe. Précisez votre itinéraire dans le formulaire de devis et nous adapterons les conditions en conséquence.'
                 },
                 {
                     q: 'Quelle est la politique d\'annulation ?',
-                    a: "Nous faisons preuve de souplesse. En cas d'imprévu, contactez-nous le plus tôt possible. Chaque situation est traitée humainement — pas de conditions générales kafkaïennes."
                 },
             ] %}
 
@@ -61,10 +52,14 @@
                     />
                 </button>
                 <div class="grid grid-rows-[0fr] transition-all duration-300 ease-in-out group-[.faq-open]:grid-rows-[1fr]">
-                    <div class="overflow-hidden">
-                        <p class="font-body text-sm text-brown leading-relaxed mt-4 max-w-lg">
-                            {{ item.a }}
-                        </p>
+                    <div class="overflow-y-hidden">
+                        <twig:Editable:Textarea
+                            page="home"
+                            field="faq_answer_{{ loop.index }}"
+                            placeholder="Réponse à la question {{ loop.index }}"
+                        >
+                            <p class="font-body text-sm text-brown leading-relaxed mt-4 max-w-lg">{{ parent() }}</p>
+                        </twig:Editable:Textarea>
                     </div>
                 </div>
             </div>

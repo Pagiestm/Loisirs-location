@@ -1,0 +1,21 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content_title %}
+    Gestion du contenu
+    <div class="mt-1 d-flex align-items-start gap-1">
+        <small class="text-muted">
+            Cette page vous permet de gérer les contenus de votre site, tels que les textes et titres affichés sur les différentes pages.
+        </small>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="mb-3">
+        <iframe
+            src="{{ path('app_home', { edit: true }) }}"
+            class="border rounded w-100"
+            style="height: 80vh; border-color: var(--bs-border-color) !important;"
+            title="Prévisualisation de la page d'accueil"
+        ></iframe>
+    </div>
+{% endblock main %}

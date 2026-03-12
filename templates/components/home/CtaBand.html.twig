@@ -3,13 +3,21 @@
 
         {# Texte #}
         <div>
-            <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">Gratuit · Sans engagement</p>
-            <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-6">
-                Prêt à<br>prendre<br>la route ?
-            </h2>
-            <p class="font-body text-brown/50 text-sm leading-relaxed max-w-xs">
-                Dites-nous vos dates et votre projet. Réponse sous 24h. Pas de paiement en ligne — tout se règle à la remise des clés.
-            </p>
+            <twig:Editable:Text page="home" field="cta_subtitle" placeholder="Sous-titre du bandeau CTA">
+                <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">
+                    {{ parent() }}
+                </p>
+            </twig:Editable:Text>
+            <twig:Editable:Text page="home" field="cta_title" placeholder="Titre du bandeau CTA">
+                <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-6">
+                    {{ parent() }}
+                </h2>
+            </twig:Editable:Text>
+            <twig:Editable:Textarea page="home" field="cta_description" placeholder="Description du bandeau CTA">
+                <p class="font-body text-brown/50 text-sm leading-relaxed max-w-xs">
+                    {{ parent() }}
+                </p>
+            </twig:Editable:Textarea>
         </div>
 
         {# CTA + détails #}

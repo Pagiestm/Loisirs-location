@@ -11,6 +11,7 @@ parameters:
     google_place_id: "%env(GOOGLE_PLACE_ID)%"
     mail_from_address: "%env(MAIL_FROM_ADDRESS)%"
     mail_from_name: "%env(MAIL_FROM_NAME)%"
+    translations_pages_directory: "%kernel.project_dir%\\translations\\pages"
 
 services:
     # default configuration for services in *this* file

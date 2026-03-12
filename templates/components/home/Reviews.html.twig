@@ -6,7 +6,9 @@
 		<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
 			<div>
 				<p class="font-body text-xs font-medium text-brown uppercase tracking-[0.2em] mb-4">Témoignages</p>
-				<h2 class="font-display text-5xl md:text-6xl text-secondary">Ce qu'ils en disent</h2>
+			<twig:Editable:Text page="home" field="reviews_title" placeholder="Titre des témoignages">
+                    <h2 class="font-display text-5xl md:text-6xl text-secondary">{{ parent() }}</h2>
+                </twig:Editable:Text>
 			</div>
 			<div
 				class="flex flex-col items-start md:items-end gap-3 pb-1">

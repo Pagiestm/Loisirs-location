@@ -5,13 +5,15 @@
 
             {# Colonne titre — sticky sur desktop #}
             <div class="md:sticky md:top-24">
-                <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">Pourquoi nous choisir</p>
-                <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">
-                    Une location<br>humaine et<br>flexible
-                </h2>
-                <p class="font-body text-brown/50 text-sm leading-relaxed max-w-xs">
-                    Pas d'algorithme, pas de caution en ligne. Juste un contact direct, un van propre, et la route qui s'ouvre devant vous.
-                </p>
+                <twig:Editable:Text page="home" field="atouts_subtitle" placeholder="Sous-titre des atouts">
+                    <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">{{ parent() }}</p>
+                </twig:Editable:Text>
+                <twig:Editable:Text page="home" field="atouts_title" placeholder="Titre des atouts">
+                    <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight mb-8">{{ parent() }}</h2>
+                </twig:Editable:Text>
+                <twig:Editable:Textarea page="home" field="atouts_description" placeholder="Description des atouts">
+                    <p class="font-body text-brown/50 text-sm leading-relaxed max-w-xs">{{ parent() }}</p>
+                </twig:Editable:Textarea>
             </div>
 
             {# Liste des atouts #}
@@ -20,32 +22,26 @@
                     {
                         icon: 'lucide:clock',
                         title: 'Flexibilité totale',
-                        desc: 'Pas de calendrier public rigide. Chaque location est gérée sur-mesure, selon vos dates et votre projet.'
                     },
                     {
                         icon: 'lucide:message-circle',
                         title: 'Réponse sous 24h',
-                        desc: 'Votre demande est traitée rapidement et personnellement. Aucun formulaire perdu dans la nature.'
                     },
                     {
                         icon: 'lucide:shield-check',
                         title: 'Vans bien entretenus',
-                        desc: 'Chaque véhicule est nettoyé et vérifié avant chaque départ. Votre sécurité, notre priorité.'
                     },
                     {
                         icon: 'lucide:users',
                         title: 'Contact humain',
-                        desc: "130+ clients réguliers nous font confiance. Nous privilégions la proximité et l'échange direct."
                     },
                     {
                         icon: 'lucide:credit-card',
                         title: 'Paiement à la remise',
-                        desc: 'Aucun paiement en ligne, aucune caution digitale. Tout se règle directement, en toute simplicité.'
                     },
                     {
                         icon: 'lucide:lock',
                         title: 'Données protégées',
-                        desc: 'Vos informations personnelles sont stockées de façon sécurisée, dans le respect du RGPD.'
                     },
                 ] %}
 
@@ -58,7 +54,13 @@
                     />
                     <div>
                         <h3 class="font-body text-sm font-semibold text-secondary mb-1">{{ atout.title }}</h3>
-                        <p class="font-body text-brown/50 text-sm leading-relaxed">{{ atout.desc }}</p>
+                        <twig:Editable:Textarea
+                            page="home"
+                            field="atout_desc_{{ loop.index }}"
+                            placeholder="Description de l'atout {{ loop.index }}"
+                        >
+                            <p class="font-body text-brown/50 text-sm leading-relaxed">{{ parent() }}</p>
+                        </twig:Editable:Textarea>
                     </div>
                 </div>
                 {% endfor %}

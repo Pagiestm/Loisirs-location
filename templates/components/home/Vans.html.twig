@@ -3,8 +3,12 @@
 
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-                <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">À louer</p>
-                <h2 class="font-display text-5xl md:text-6xl text-secondary">Nos vans aménagés</h2>
+                <twig:Editable:Text page="home" field="vans_subtitle" placeholder="Sous-titre de la section vans">
+                    <p class="font-body text-xs font-medium text-brown/40 uppercase tracking-[0.2em] mb-4">{{ parent() }}</p>
+                </twig:Editable:Text>
+                <twig:Editable:Text page="home" field="vans_title" placeholder="Titre de la section vans">
+                    <h2 class="font-display text-5xl md:text-6xl text-secondary">{{ parent() }}</h2>
+                </twig:Editable:Text>
             </div>
             <a href="{{ path('app_vans_index') }}" class="inline-flex items-center gap-2 font-body text-sm font-semibold text-secondary hover:text-primary transition-colors duration-200 shrink-0">
                 Voir toute la flotte
@@ -13,7 +17,9 @@
         </div>
 
         {% if vans is empty %}
-            <p class="font-body text-brown text-sm">Aucun van disponible pour le moment.</p>
+            <twig:Editable:Textarea page="home" field="vans_empty_message" placeholder="Message à afficher si aucun van n'est disponible">
+                <p class="font-body text-brown text-sm">{{ parent() }}</p>
+            </twig:Editable:Textarea>
         {% else %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for van in vans %}

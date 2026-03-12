@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
@@ -71,7 +72,7 @@ final class Login extends AbstractController
     }
 
     #[LiveAction]
-    public function submitLogin(Security $security): void
+    public function submitLogin(Security $security): Response|null
     {
         $this->success = null;
 
@@ -84,7 +85,7 @@ final class Login extends AbstractController
         // Si le formulaire n'est pas valide, arrêter ici
         if (!$form->isValid()) {
             $this->error = 'Veuillez corriger les erreurs du formulaire.';
-            return;
+            return null;
         }
 
         // Récupérer les données du formulaire
@@ -96,23 +97,22 @@ final class Login extends AbstractController
         $user = $this->userRepository->findOneBy(['email' => $email]);
         if (!$user) {
             $this->error = 'Email ou mot de passe incorrect.';
-            return;
+            return null;
         }
 
         // Vérifier le mot de passe
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {
             $this->error = 'Email ou mot de passe incorrect.';
-            return;
+            return null;
         }
 
         try {
             // Tenter l'authentification
-            $security->login($user);
+            $redirectResponse = $security->login($user);
 
             // Marquer le succès et dispatcher l'événement de reload
             $this->error = null;
-
-            $this->dispatchBrowserEvent('window:reload');
+            return $redirectResponse;
         } catch (CustomUserMessageAccountStatusException $e) {
             // Cas spécial : compte non vérifié
             // Renvoyer un email de vérification
@@ -121,9 +121,11 @@ final class Login extends AbstractController
             } else {
                 $this->error = 'Votre compte n\'est pas encore activé. Veuillez vérifier votre boîte de réception pour activer votre compte.';
             }
+            return null;
         } catch (AuthenticationException $e) {
             // En cas d'échec, afficher l'erreur
             $this->error = 'Email ou mot de passe incorrect.';
+            return null;
         }
     }
 }

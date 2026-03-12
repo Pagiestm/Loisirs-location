@@ -5,14 +5,17 @@
 		class="max-w-6xl w-full mx-auto relative flex items-center gap-12">
 		{# Texte à gauche #}
 		<div class="flex-1">
-			<p class="font-body text-xs uppercase tracking-[0.3em] text-white mb-5">Notre flotte</p>
-			<h1 class="font-display text-6xl md:text-8xl text-white leading-none mb-8">
-				Nos vans<br>
-				<span class="text-primary">aménagés</span>
-			</h1>
-			<p class="font-body text-white text-sm max-w-sm leading-relaxed mb-10">
-				Chaque van est préparé avec soin pour que vous partiez l'esprit libre. Choisissez votre compagnon de route.
-			</p>
+			<twig:Editable:Text page="vans" field="hero_subtitle" placeholder="Sous-titre du hero">
+                <p class="font-body text-xs uppercase tracking-[0.3em] text-white mb-5">{{ parent() }}</p>
+            </twig:Editable:Text>
+            <twig:Editable:Text page="vans" field="hero_title" placeholder="Titre du hero">
+                <h1 class="font-display text-6xl md:text-8xl text-white leading-none mb-8">
+                    {{ parent() }}
+                </h1>
+            </twig:Editable:Text>
+            <twig:Editable:Textarea page="vans" field="hero_description" placeholder="Description du hero">
+                <p class="font-body text-white text-sm max-w-sm leading-relaxed mb-10">{{ parent() }}</p>
+            </twig:Editable:Textarea>
 
 			{% if count > 0 %}
 				<div class="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-5 py-2.5">
