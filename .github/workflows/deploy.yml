@@ -9,7 +9,7 @@ jobs:
         env:
             SSHPASS: ${{ secrets.APP_PASS }}
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
@@ -17,8 +17,14 @@ jobs:
                   node-version: "20"
                   cache: "npm"
 
-            - name: Setup composer
-              uses: php-actions/composer@v6
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.4"
+                  tools: composer
+
+            - name: Install PHP dependencies
+              run: composer install --no-interaction --prefer-dist
 
             - name: Build assets
               run: |
