@@ -1,0 +1,89 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    <div class="bg-light min-vh-100 p-5">
+        <div class="container-lg">
+            <div class="mb-5">
+                <h1 class="h3 fw-bold text-dark mb-2">Galerie des images</h1>
+                <p class="text-muted">Gestion des images par van</p>
+            </div>
+
+            {% if vans is empty %}
+                <div class="card p-5 text-center">
+                    <p class="text-muted mb-0">Aucun van avec images pour le moment.</p>
+                </div>
+            {% else %}
+                {% for van in vans %}
+                    {% if van.images is not empty %}
+                        <div class="mb-5">
+                            {# Header van #}
+                            <div class="card border-start border-5 border-primary mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <div>
+                                            <h2 class="h4 fw-bold text-dark mb-1">{{ van.name }}</h2>
+                                            <p class="text-muted small mb-0">{{ van.images|length }} image(s)</p>
+                                        </div>
+                                        <a href="{{ path('admin_van_edit', { 'entityId': van.id }) }}" class="btn btn-primary m-2">
+                                            <twig:ux:icon name="lucide:edit-2" class="me-1" />
+                                            Éditer
+                                        </a>
+                                    </div>
+                                    {# Galerie images #}
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                                        {% for image in van.images %}
+                                            <div class="col">
+                                                <div class="card h-100 border-0 shadow-sm">
+                                                    {# Image thumbnail #}
+                                                    <div class="ratio ratio-1x1 bg-secondary overflow-hidden">
+                                                        {% if image.imageName %}
+                                                            <img
+                                                                src="{{ asset('images/vans/gallery/' ~ image.imageName) }}"
+                                                                alt="{{ image.caption ?? 'Image ' ~ image.position }}"
+                                                                class="object-fit-cover"
+                                                                loading="lazy"
+                                                            />
+                                                        {% else %}
+                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                <twig:ux:icon name="lucide:image-off" class="text-muted" style="font-size: 2rem;" />
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    {# Infos image #}
+                                                    <div class="card-body py-3">
+                                                        <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                                                            <div class="flex-grow-1" style="min-width: 0;">
+                                                                {% if image.caption %}
+                                                                    <p class="small fw-medium text-dark mb-1 text-truncate">{{ image.caption }}</p>
+                                                                    <p class="text-muted mb-0" style="font-size: 0.75rem;">{{ image.imageName }}</p>
+                                                                {% else %}
+                                                                    <p class="small text-muted mb-0 text-truncate">{{ image.imageName ?? '-' }}</p>
+                                                                {% endif %}
+                                                            </div>
+                                                            <span class="badge bg-primary-subtle text-primary-emphasis fw-semibold text-nowrap">
+                                                                #{{ image.position }}
+                                                            </span>
+                                                        </div>
+
+                                                        {# Actions #}
+                                                        <div class="d-flex gap-2 pt-2 border-top">
+                                                            <a href="{{ path('admin_van_image_delete', { 'entityId': image.id }) }}" type="button" class="btn btn-danger p-2">
+                                                                <twig:ux:icon name="lucide:trash-2" class="me-1" style="width: 0.875rem;" />
+                                                                Supprimer
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

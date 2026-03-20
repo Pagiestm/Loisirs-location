@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Van\Van;
 use App\Repository\QuoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Van\Van;
 use App\Repository\RentalRepository;
 use Doctrine\ORM\Mapping as ORM;
 

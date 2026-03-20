@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Van\OptionCrudController;
+use App\Controller\Admin\Van\VanCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -64,8 +66,13 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Retour au site', 'fa fa-arrow-left', 'app_home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Gestion du contenu', 'fa fa-pencil-alt', 'admin_edit_content');
+        yield MenuItem::subMenu('Gestion des vans', 'fa fa-van-shuttle')->setSubItems([
+            MenuItem::linkTo(VanCrudController::class, 'Vans', 'fa fa-list'),
+            MenuItem::linkTo(OptionCrudController::class, 'Options', 'fa fa-gears'),
+            MenuItem::linkToRoute('Images', 'fa fa-image', 'admin_vans_gallery'),
+        ]);
     }
 }

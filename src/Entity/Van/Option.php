@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Van;
 
-use App\Repository\OptionRepository;
+use App\Entity\Van\VanOption;
+use App\Repository\Van\OptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +58,14 @@ class Option
 
     public function setIcon(?string $icon): static
     {
-        $this->icon = $icon;
+        if ($icon === null || '' === trim($icon)) {
+            $this->icon = null;
+
+            return $this;
+        }
+
+        $normalized = trim($icon);
+        $this->icon = str_contains($normalized, ':') ? $normalized : 'lucide:' . $normalized;
 
         return $this;
     }

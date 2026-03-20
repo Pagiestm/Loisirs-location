@@ -1,0 +1,11 @@
+{% set rawValue = field.value %}
+{% set iconName = rawValue is empty ? null : (':' in rawValue ? rawValue : 'lucide:' ~ rawValue) %}
+
+{% if iconName %}
+    <span class="inline-flex items-center gap-2">
+        <twig:ux:icon name="{{ iconName }}" class="w-4 h-4 text-primary" />
+        <span class="text-xs text-gray-600">{{ iconName }}</span>
+    </span>
+{% else %}
+    <span class="text-gray-400">-</span>
+{% endif %}

@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Van;
 
-use App\Repository\VanRepository;
+use App\Entity\Quote;
+use App\Entity\Rental;
+use App\Repository\Van\VanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: VanRepository::class)]
 #[ORM\Table(name: 'vans')]
-#[Vich\Uploadable]
 class Van
 {
     #[ORM\Id]
@@ -29,13 +28,6 @@ class Van
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageName = null;
-
-    // Champ non persisté — contient le fichier uploadé
-    #[Vich\UploadableField(mapping: 'van_image', fileNameProperty: 'imageName')]
-    private ?File $imageFile = null;
-
     #[ORM\Column(name: 'created_at')]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -51,8 +43,8 @@ class Van
     /**
      * @var Collection<int, VanOption>
      */
-    #[ORM\OneToMany(targetEntity: VanOption::class, mappedBy: 'van', cascade: ['persist', 'remove'])]
-    private Collection $vanOptions;
+    #[ORM\OneToMany(targetEntity: VanOption::class, mappedBy: 'van', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $options;
 
     /**
      * @var Collection<int, Rental>
@@ -70,7 +62,7 @@ class Van
     public function __construct()
     {
         $this->quotes = new ArrayCollection();
-        $this->vanOptions = new ArrayCollection();
+        $this->options = new ArrayCollection();
         $this->rentals = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
@@ -114,38 +106,6 @@ class Van
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-    public function setImageName(?string $imageName): static
-    {
-        $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * L'injection d'un fichier met automatiquement updatedAt à jour
-     * pour déclencher les lifecycle events Doctrine.
-     */
-    public function setImageFile(?File $imageFile = null): static
-    {
-        $this->imageFile = $imageFile;
-
-        if ($imageFile !== null) {
-            $this->updatedAt = new \DateTimeImmutable();
-        }
 
         return $this;
     }
@@ -207,29 +167,24 @@ class Van
     /**
      * @return Collection<int, VanOption>
      */
-    public function getVanOptions(): Collection
+    public function getOptions(): Collection
     {
-        return $this->vanOptions;
+        return $this->options;
     }
 
-    public function addVanOption(VanOption $vanOption): static
+    public function addOption(VanOption $vanOption): static
     {
-        if (!$this->vanOptions->contains($vanOption)) {
-            $this->vanOptions->add($vanOption);
+        if (!$this->options->contains($vanOption)) {
+            $this->options->add($vanOption);
             $vanOption->setVan($this);
         }
 
         return $this;
     }
 
-    public function removeVanOption(VanOption $vanOption): static
+    public function removeOption(VanOption $vanOption): static
     {
-        if ($this->vanOptions->removeElement($vanOption)) {
-            // set the owning side to null (unless already changed)
-            if ($vanOption->getVan() === $this) {
-                $vanOption->setVan(null);
-            }
-        }
+        $this->options->removeElement($vanOption);
 
         return $this;
     }

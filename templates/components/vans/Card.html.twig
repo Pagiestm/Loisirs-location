@@ -7,7 +7,7 @@
 	{# ── Image avec overlay et titre flottant ── #}
 	<div class="relative overflow-hidden aspect-[4/3] shrink-0">
 		<img
-		src="{{ van.imageName ? vich_uploader_asset(van, 'imageFile') : 'https://placehold.co/800x600/e8ddd0/8a7560?text=' ~ van.name|url_encode }}" alt="{{ van.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+		src="{{ van.images[0].imageName ? vich_uploader_asset(van.images[0], 'imageFile') : 'https://placehold.co/800x600/e8ddd0/8a7560?text=' ~ van.name|url_encode }}" alt="{{ van.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
 		{# Dégradé overlay bas #}
 		<div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/20 to-transparent" aria-hidden="true"></div>
 
@@ -23,9 +23,9 @@
 		class="p-5 flex flex-col flex-1 gap-4">
 
 		{# Options (max 3) #}
-		{% if van.vanOptions is not empty %}
+		{% if van.options is not empty %}
 			<ul class="flex flex-wrap gap-2">
-				{% for vo in van.vanOptions|slice(0, 3) %}
+				{% for vo in van.options|slice(0, 3) %}
 					<li class="inline-flex items-center gap-1.5 bg-beige rounded-full px-3 py-1 font-body text-xs text-brown/70">
 						{% if vo.option.icon %}
 							<twig:ux:icon name="{{ vo.option.icon }}" class="w-3 h-3 text-primary shrink-0" aria-hidden="true"/>
@@ -37,9 +37,9 @@
 						{% endif %}
 					</li>
 				{% endfor %}
-				{% if van.vanOptions|length > 3 %}
+				{% if van.options|length > 3 %}
 					<li class="inline-flex items-center bg-beige/80 border border-brown/10 rounded-full px-3 py-1 font-body text-xs text-brown/40">
-						+{{ van.vanOptions|length - 3 }}
+						+{{ van.options|length - 3 }}
 						autres
 					</li>
 				{% endif %}
