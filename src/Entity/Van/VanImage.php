@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Van;
 
-use App\Repository\VanImageRepository;
+use App\Repository\Van\VanImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
@@ -17,21 +18,23 @@ class VanImage
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Gedmo\SortableGroup]
     #[ORM\ManyToOne(targetEntity: Van::class, inversedBy: 'images')]
     #[ORM\JoinColumn(name: 'van_id', referencedColumnName: 'id_van', nullable: false, onDelete: 'CASCADE')]
     private ?Van $van = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(name: 'image_name', length: 255, nullable: true)]
     private ?string $imageName = null;
 
     #[Vich\UploadableField(mapping: 'van_gallery', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(type: 'smallint', options: ['default' => 0])]
-    private int $position = 0;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $caption = null;
+
+    #[Gedmo\SortablePosition]
+    #[ORM\Column(name: 'position', type: 'integer')]
+    private int $position;
 
     #[ORM\Column(name: 'updated_at', nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
@@ -84,18 +87,6 @@ class VanImage
         return $this;
     }
 
-    public function getPosition(): int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): static
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
     public function getCaption(): ?string
     {
         return $this->caption;
@@ -108,8 +99,23 @@ class VanImage
         return $this;
     }
 
+    public function setPosition(int $position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function __toString()
+    {
+        return $this->getImageName() ?? 'Image sans nom';
     }
 }

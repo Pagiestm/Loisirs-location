@@ -2,7 +2,8 @@
     {% set content %}
         {% block content %}{{ value is empty ? placeholder : value|raw }}{% endblock %}
     {% endset %}
-    {% if edit is true and app.user.isAdmin is true %}
+
+    {% if edit is true and app.user is defined and app.user.isAdmin is true %}
         <twig:ContextMenu>
             <twig:block name="trigger">
                 {{ content|raw }}

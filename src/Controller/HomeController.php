@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Interface\EditableControllerInterface;
-use App\Repository\VanRepository;
+use App\Repository\Van\VanRepository;
 use App\Service\GoogleReviewsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

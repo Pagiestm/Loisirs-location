@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Van;
 
-use App\Entity\Van;
+use App\Entity\Van\Van;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,7 +20,7 @@ class VanRepository extends ServiceEntityRepository
     public function findAllWithOptions(): array
     {
         return $this->createQueryBuilder('v')
-            ->leftJoin('v.vanOptions', 'vo')
+            ->leftJoin('v.options', 'vo')
             ->leftJoin('vo.option', 'o')
             ->addSelect('vo', 'o')
             ->orderBy('v.name', 'ASC')
@@ -32,12 +32,24 @@ class VanRepository extends ServiceEntityRepository
     public function findOneWithOptions(int $id): ?Van
     {
         return $this->createQueryBuilder('v')
-            ->leftJoin('v.vanOptions', 'vo')
+            ->leftJoin('v.options', 'vo')
             ->leftJoin('vo.option', 'o')
             ->addSelect('vo', 'o')
             ->where('v.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /** Tous les vans avec leurs images pour la galerie */
+    public function findAllWithImages(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.images', 'i')
+            ->addSelect('i')
+            ->orderBy('v.name', 'ASC')
+            ->addOrderBy('i.position', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

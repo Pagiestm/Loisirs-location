@@ -1,40 +1,43 @@
 name: CD
 on:
-  push:
-    branches: [ develop ]
+    push:
+        branches: [develop]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    env:
-      SSHPASS: ${{ secrets.APP_PASS }}
-    steps:
-      - uses: actions/checkout@v2
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            SSHPASS: ${{ secrets.APP_PASS }}
+        steps:
+            - uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'npm'
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+                  cache: "npm"
 
-      - name: Build assets
-        run: |
-          npm ci
-          npm run build
+            - name: Setup composer
+              uses: php-actions/composer@v6
 
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
+            - name: Build assets
+              run: |
+                  npm ci
+                  npm run build
 
-      - name: Copy built assets to server
-        run: |
-          sshpass -e scp -o StrictHostKeyChecking=no -r public/build ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:~/www/Loisirs-location/public/
+            - name: Install sshpass
+              run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Deploy to AlwaysData
-        run: |
-          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
-            cd www/Loisirs-location && \
-            git pull origin develop && \
-            composer install && \
-            php bin/console cache:clear && \
-            php bin/console doctrine:migrations:migrate -n || true\
-          "
+            - name: Copy built assets to server
+              run: |
+                  sshpass -e scp -o StrictHostKeyChecking=no -r public/build ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:~/www/Loisirs-location/public/
+
+            - name: Deploy to AlwaysData
+              run: |
+                  sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
+                    cd www/Loisirs-location && \
+                    git pull origin develop && \
+                    composer install --no-dev --optimize-autoloader && \
+                    php bin/console cache:clear && \
+                    php bin/console doctrine:migrations:migrate -n || true\
+                  "

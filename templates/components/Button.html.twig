@@ -19,14 +19,18 @@
 
 {% if href %}
     <a href="{{ href }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
-        {{ block('content') }}
+        {% if block('content') is defined %}
+            {{ block('content') }}
+        {% endif %}
         {% if icon == 'arrow-right' %}
             <twig:ux:icon name="lucide:arrow-right" class="w-4 h-4" aria-hidden="true" />
         {% endif %}
     </a>
 {% else %}
     <button type="{{ type }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
-        {{ block('content') }}
+        {% if block('content') is defined %}
+            {{ block('content') }}
+        {% endif %}
         {% if icon == 'arrow-right' %}
             <twig:ux:icon name="lucide:arrow-right" class="w-4 h-4" aria-hidden="true" />
         {% endif %}

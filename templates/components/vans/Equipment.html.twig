@@ -1,4 +1,4 @@
-{% if van.vanOptions is not empty %}
+{% if van.options is not empty %}
 <section id="equipements" class="bg-white py-24 px-6" aria-label="Équipements">
     <div class="max-w-6xl mx-auto">
 
@@ -10,12 +10,12 @@
                 </h2>
             </div>
             <p class="font-body text-sm text-brown/40 max-w-xs leading-relaxed">
-                {{ van.vanOptions|length }} équipement{{ van.vanOptions|length > 1 ? 's' : '' }} inclus dans votre location.
+                {{ van.options|length }} équipement{{ van.options|length > 1 ? 's' : '' }} inclus dans votre location.
             </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {% for vo in van.vanOptions %}
+            {% for vo in van.options %}
             <div class="group flex items-start gap-4 p-5 bg-beige rounded-2xl">
                 {% if vo.option.icon %}
                 <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
