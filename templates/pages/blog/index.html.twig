@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog — Loisirs Location{% endblock %}
+
+{% block body %}
+<twig:Navbar activePage="blog" />
+<twig:Blog:PageHero :count="posts|length" />
+<twig:Blog:Grid :posts="posts" />
+<twig:Footer />
+{% endblock %}

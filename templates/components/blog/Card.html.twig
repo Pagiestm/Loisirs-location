@@ -1,0 +1,71 @@
+<article
+	class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+>
+	{# Lien principal — couvre toute la card #}
+	<a 
+		href="{{ path('app_blog_show', {slug: post.slug}) }}" 
+		class="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+		aria-label="Lire {{ post.title }}"
+	></a>
+
+	{# ── Image avec overlay et titre flottant ── #}
+	<div class="relative overflow-hidden aspect-4/3 shrink-0">
+		{% if post.featuredImage %}
+			<img 
+				src="{{ asset('uploads/blog/' ~ post.featuredImage) }}" 
+				alt="{{ post.title }}"
+				class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+				loading="lazy"
+			>
+		{% else %}
+			{# Image par défaut avec dégradé #}
+			<div class="w-full h-full bg-linear-to-br from-secondary via-brown to-primary flex items-center justify-center">
+				<twig:ux:icon name="lucide:newspaper" class="w-20 h-20 text-white/30" aria-hidden="true" />
+			</div>
+		{% endif %}
+
+		{# Dégradé overlay bas #}
+		<div class="absolute inset-0 bg-linear-to-t from-secondary/90 via-secondary/20 to-transparent" aria-hidden="true"></div>
+	</div>
+
+	{# ── Contenu bas ── #}
+	<div class="p-5 flex flex-col flex-1 gap-4">
+		{# Métadonnées #}
+		<div class="flex items-center gap-3 text-xs font-body text-brown/60">
+			<div class="flex items-center gap-1.5">
+				<twig:ux:icon name="lucide:calendar" class="w-3 h-3 text-primary shrink-0" aria-hidden="true" />
+				<time datetime="{{ post.publishedAt|date('Y-m-d') }}">
+					{{ post.publishedAt|date('d/m/Y') }}
+				</time>
+			</div>
+			{% if post.author %}
+				<span class="text-brown/30">•</span>
+				<div class="flex items-center gap-1.5">
+					<twig:ux:icon name="lucide:user" class="w-3 h-3 text-primary shrink-0" aria-hidden="true" />
+					<span>{{ post.author.firstName }} {{ post.author.lastName }}</span>
+				</div>
+			{% endif %}
+		</div>
+
+		{# Titre #}
+		<h2 class="font-display text-2xl text-secondary leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200">
+			{{ post.title }}
+		</h2>
+
+		{# Excerpt #}
+		{% if post.excerpt %}
+			<p class="font-body text-sm text-brown/70 leading-relaxed line-clamp-3">
+				{{ post.excerpt }}
+			</p>
+		{% endif %}
+
+		{# Bas de card — CTA #}
+		<div class="mt-auto pt-3 border-t border-beige flex items-center justify-between">
+			<span class="inline-flex items-center gap-2 font-body text-sm font-semibold text-secondary group-hover:text-primary transition-colors duration-200">
+				Lire l'article
+				<twig:ux:icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true" />
+			</span>
+			<span class="font-body text-xs text-brown/40">{{ post.content|striptags|length }} car.</span>
+		</div>
+	</div>
+</article>

@@ -1,0 +1,18 @@
+<section class="relative py-16 px-6" aria-label="Articles récents">
+	<twig:TextureBackground type="sand" :overlay="0" :intensity="0.18" />
+
+	<div class="relative max-w-6xl mx-auto">
+		<h2 class="font-display text-4xl text-secondary text-center mb-12">
+			Autres articles
+		</h2>
+
+		{% set currentPostId = currentPostId|default(null) %}
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{% for recentPost in posts %}
+				{% if currentPostId is null or recentPost.id != currentPostId %}
+					<twig:Blog:Card :post="recentPost" />
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</section>

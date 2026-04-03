@@ -1,185 +1,159 @@
 <header
-    {{ stimulus_controller('navbar', { hero: heroNav }) }}
-    class="fixed top-0 left-0 right-0 z-40 transition-[background-color,box-shadow,transform] duration-300 ease-in-out {{ heroNav ? 'bg-transparent' : 'bg-secondary shadow-lg' }}"
->
-    {# ── Backdrop (clic pour fermer) ── #}
-    <div
-        {{ stimulus_target('navbar', 'backdrop') }}
-        {{ stimulus_action('navbar', 'closeMenu') }}
-        class="fixed inset-0 z-20 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"
-        aria-hidden="true"
-    ></div>
+	{{ stimulus_controller('navbar', { hero: heroNav } ) }} class="fixed top-0 left-0 right-0 z-40 transition-[background-color,box-shadow,transform] duration-300 ease-in-out {{ heroNav ? 'bg-transparent' : 'bg-secondary shadow-lg' }}">
+	{# ── Backdrop (clic pour fermer) ── #}
+	<div {{ stimulus_target('navbar', 'backdrop') }} {{ stimulus_action('navbar', 'closeMenu') }} class="fixed inset-0 z-20 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" aria-hidden="true"></div>
 
-    {# ── Barre principale ── #}
-    <div class="relative z-10 max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+	{# ── Barre principale ── #}
+	<div
+		class="relative z-10 max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
 
-        {# Logo #}
-        <a href="{{ path('app_home') }}" class="flex items-center gap-3 group" aria-label="Retour à l'accueil">
-            <span class="text-primary text-3xl font-display leading-none">LL</span>
-            <div class="flex flex-col leading-tight">
-                <span class="text-white font-display text-lg tracking-wide">Loisirs Location</span>
-                <span class="text-beige text-xs font-body opacity-80">Location de vans aménagés</span>
-            </div>
-        </a>
+		{# Logo #}
+		<a href="{{ path('app_home') }}" class="flex items-center gap-3 group w-14 h-14" aria-label="Retour à l'accueil">
+			<img src="{{ asset('images/LL-logo-2.png') }}" alt="Loisirs Location" class="w-full h-full object-contain"/>
+		</a>
 
-        {# Nav desktop #}
-        <nav aria-label="Navigation principale">
-            <ul class="hidden lg:flex items-center gap-8 font-body text-sm font-medium">
-                <li>
-                    <a href="{{ path('app_home') }}"
-                       class="{{ activePage == 'home' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
-                        Accueil
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('app_vans_index') }}"
-                       class="{{ activePage == 'vans' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
-                        Nos vans
-                    </a>
-                </li>
-                <li>
-                    <a href="#test"
-                       class="{{ activePage == 'contact' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
-                        Contact
-                    </a>
-                </li>
+		{# Nav desktop #}
+		<nav aria-label="Navigation principale">
+			<ul class="hidden lg:flex items-center gap-8 font-body text-sm font-medium">
+				<li>
+					<a href="{{ path('app_home') }}" class="{{ activePage == 'home' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
+						Accueil
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_vans_index') }}" class="{{ activePage == 'vans' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
+						Nos vans
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_blog_index') }}" class="{{ activePage == 'blog' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
+						Blog
+					</a>
+				</li>
+				<li>
+					<a href="#test" class="{{ activePage == 'contact' ? 'text-primary border-b-2 border-primary pb-0.5' : 'text-white hover:text-primary' }} transition-colors duration-200">
+						Contact
+					</a>
+				</li>
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {# Utilisateur connecté #}
-                    <li class="relative group">
-                        <button class="text-white hover:text-primary transition-colors flex items-center gap-2">
-                            <twig:ux:icon name="lucide:user-circle" class="w-5 h-5" />
-                            <span>{{ app.user.firstName }}</span>
-                        </button>
-                        {# Dropdown menu #}
-                        <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg">Mon profil</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mes réservations</a>
-                            {% if app.user is defined and app.user.isAdmin is true %}
-                                <a data-turbo="false" href="{{ path('admin') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                    Tableau de bord
-                                </a>
-                            {% endif %}
-                            <hr class="my-1 border-gray-200">
-                            <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg">
-                                Déconnexion
-                            </a>
-                        </div>
-                    </li>
-                {% else %}
-                    {# Utilisateur non connecté #}
-                    <li>
-                        <button
-                            {{ stimulus_action('app', 'openModal', 'click', {
-                                id: 'auth'
-                            }) }}
-                            class="text-white hover:text-primary transition-colors flex items-center gap-1"
-                        >
-                            <twig:ux:icon name="lucide:log-in" class="w-4 h-4" />
-                            Connexion | Inscription
-                        </button>
-                    </li>
-                {% endif %}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					{# Utilisateur connecté #}
+					<li class="relative group">
+						<button class="text-white hover:text-primary transition-colors flex items-center gap-2">
+							<twig:ux:icon name="lucide:user-circle" class="w-5 h-5"/>
+							<span>{{ app.user.firstName }}</span>
+						</button>
+						{# Dropdown menu #}
+						<div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+							<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg">Mon profil</a>
+							<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mes réservations</a>
+							{% if app.user is defined and app.user.isAdmin is true %}
+								<a data-turbo="false" href="{{ path('admin') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+									Tableau de bord
+								</a>
+							{% endif %}
+							<hr class="my-1 border-gray-200">
+							<a href="{{ path('app_logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg">
+								Déconnexion
+							</a>
+						</div>
+					</li>
+				{% else %}
+					{# Utilisateur non connecté #}
+					<li>
+						<button {{ stimulus_action('app', 'openModal', 'click', { id: 'auth' } ) }} class="text-white hover:text-primary transition-colors flex items-center gap-1">
+							<twig:ux:icon name="lucide:log-in" class="w-4 h-4"/>
+							Connexion | Inscription
+						</button>
+					</li>
+				{% endif %}
 
-                <li>
-                    <twig:Button href="#devis" variant="primary" size="sm">
-                        Demander un devis
-                    </twig:Button>
-                </li>
-            </ul>
-        </nav>
+				<li>
+					<twig:Button href="#devis" variant="primary" size="sm">
+						Demander un devis
+					</twig:Button>
+				</li>
+			</ul>
+		</nav>
 
-        {# Burger menu mobile #}
-        <button
-            {{ stimulus_target('navbar', 'burger') }}
-            {{ stimulus_action('navbar', 'toggleMenu') }}
-            class="lg:hidden relative z-10 flex flex-col justify-center gap-1.5 p-2 text-white w-10 h-10"
-            aria-label="Ouvrir le menu"
-            aria-expanded="false"
-        >
-            <span {{ stimulus_target('navbar', 'line1') }} class="block w-6 h-0.5 bg-current origin-center transition-all duration-300"></span>
-            <span {{ stimulus_target('navbar', 'line2') }} class="block w-6 h-0.5 bg-current transition-all duration-300"></span>
-            <span {{ stimulus_target('navbar', 'line3') }} class="block w-6 h-0.5 bg-current origin-center transition-all duration-300"></span>
-        </button>
-    </div>
+		{# Burger menu mobile #}
+		<button {{ stimulus_target('navbar', 'burger') }} {{ stimulus_action('navbar', 'toggleMenu') }} class="lg:hidden relative z-10 flex flex-col justify-center gap-1.5 p-2 text-white w-10 h-10" aria-label="Ouvrir le menu" aria-expanded="false">
+			<span {{ stimulus_target('navbar', 'line1') }} class="block w-6 h-0.5 bg-current origin-center transition-all duration-300"></span>
+			<span {{ stimulus_target('navbar', 'line2') }} class="block w-6 h-0.5 bg-current transition-all duration-300"></span>
+			<span {{ stimulus_target('navbar', 'line3') }} class="block w-6 h-0.5 bg-current origin-center transition-all duration-300"></span>
+		</button>
+	</div>
 
-    {# ── Drawer sidebar (gauche → droite) ── #}
-    <div
-        {{ stimulus_target('navbar', 'menu') }}
-        class="fixed inset-y-0 right-0 z-30 w-72 bg-secondary translate-x-full transition-transform duration-300 ease-in-out flex flex-col pt-24 px-8 pb-8 lg:hidden"
-        aria-label="Menu mobile"
-        aria-hidden="true"
-    >
-        {# Bouton fermer #}
-        <button
-            {{ stimulus_action('navbar', 'closeMenu') }}
-            class="absolute top-5 right-5 text-white/60 hover:text-white transition-colors p-2"
-            aria-label="Fermer le menu"
-        >
-            <twig:ux:icon name="lucide:x" class="w-5 h-5" aria-hidden="true" />
-        </button>
+	{# ── Drawer sidebar (gauche → droite) ── #}
+	<div
+		{{ stimulus_target('navbar', 'menu') }} class="fixed inset-y-0 right-0 z-30 w-72 bg-secondary translate-x-full transition-transform duration-300 ease-in-out flex flex-col pt-10 px-8 pb-8 lg:hidden" aria-label="Menu mobile" aria-hidden="true">
+		{# Bouton fermer #}
+		<button {{ stimulus_action('navbar', 'closeMenu') }} class="absolute top-5 right-5 text-white/60 hover:text-white transition-colors p-2" aria-label="Fermer le menu">
+			<twig:ux:icon name="lucide:x" class="w-5 h-5" aria-hidden="true"/>
+		</button>
 
-        {# Logo dans le drawer #}
-        <div class="mb-10">
-            <span class="text-primary text-2xl font-display">Loisirs Location</span>
-            <p class="text-beige/70 text-xs font-body mt-1">Location de vans aménagés</p>
-        </div>
+		{# Logo dans le drawer #}
+		<div class="mb-4 flex justify-center">
+			<img src="{{ asset('images/LL-logo-2.png') }}" alt="Loisirs Location" class="w-16 h-16 object-contain"/>
+		</div>
 
-        {# Liens #}
-        <nav aria-label="Menu mobile">
-            <ul class="flex flex-col gap-1 font-body text-base">
-                <li>
-                    <a href="{{ path('app_home') }}"
-                       class="{{ activePage == 'home' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
-                        Accueil
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('app_vans_index') }}"
-                       class="{{ activePage == 'vans' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
-                        Nos vans
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                       class="{{ activePage == 'contact' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
-                        Contact
-                    </a>
-                </li>
+		{# Liens #}
+		<nav aria-label="Menu mobile">
+			<ul class="flex flex-col gap-1 font-body text-base">
+				<li>
+					<a href="{{ path('app_home') }}" class="{{ activePage == 'home' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
+						Accueil
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_vans_index') }}" class="{{ activePage == 'vans' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
+						Nos vans
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_blog_index') }}" class="{{ activePage == 'blog' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
+						Blog
+					</a>
+				</li>
+				<li>
+					<a href="#" class="{{ activePage == 'contact' ? 'text-primary' : 'text-white/80 hover:text-white' }} block py-3 border-b border-white/10 transition-colors duration-200">
+						Contact
+					</a>
+				</li>
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {# Utilisateur connecté #}
-                    <li class="pt-4 mt-4 border-t border-white/20">
-                        <div class="text-primary font-medium mb-2 px-3">{{ app.user.firstName }} {{ app.user.lastName }}</div>
-                        <a href="#" class="text-white/80 hover:text-white block py-2 px-3 transition-colors">Mon profil</a>
-                        <a href="#" class="text-white/80 hover:text-white block py-2 px-3 transition-colors">Mes réservations</a>
-                        <a href="{{ path('app_logout') }}" class="text-red-400 hover:text-red-300 block py-2 px-3 transition-colors">
-                            Déconnexion
-                        </a>
-                    </li>
-                {% else %}
-                    {# Utilisateur non connecté #}
-                    <li class="pt-4 mt-4 border-t border-white/20">
-                        <button
-                            {{ stimulus_action('app', 'openModal', 'click', {
-                                id: 'auth'
-                            }) }}
-                            {{ stimulus_action('navbar', 'closeMenu') }}
-                            class="text-white/80 hover:text-white py-3 transition-colors flex items-center gap-2 w-full"
-                        >
-                            <twig:ux:icon name="lucide:log-in" class="w-4 h-4" />
-                            Connexion | Inscription
-                        </button>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					{# Utilisateur connecté #}
+					<li class="mt-4">
+						<div class="text-primary font-medium mb-2">{{ app.user.firstName }}
+							{{ app.user.lastName }}</div>
+						<a href="#" class="text-white/80 hover:text-white block py-2 transition-colors">Mon profil</a>
+						<a href="#" class="text-white/80 hover:text-white block py-2 transition-colors">Mes réservations</a>
+						{% if app.user is defined and app.user.isAdmin is true %}
+							<a data-turbo="false" href="{{ path('admin') }}" class="text-white/80 hover:text-white block py-2 transition-colors">
+								Tableau de bord
+							</a>
+						{% endif %}
+						<a href="{{ path('app_logout') }}" class="text-red-400 hover:text-red-300 block py-2 transition-colors">
+							Déconnexion
+						</a>
+					</li>
+				{% else %}
+					{# Utilisateur non connecté #}
+					<li class="pt-4 mt-4 border-t border-white/20">
+						<button {{ stimulus_action('app', 'openModal', 'click', { id: 'auth' } ) }} {{ stimulus_action('navbar', 'closeMenu') }} class="text-white/80 hover:text-white py-3 transition-colors flex items-center gap-2 w-full">
+							<twig:ux:icon name="lucide:log-in" class="w-4 h-4"/>
+							Connexion | Inscription
+						</button>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
 
-        {# CTA #}
-        <div class="mt-auto">
-            <twig:Button href="#devis" variant="primary" size="md" :fullWidth="true">
-                Demander un devis
-            </twig:Button>
-        </div>
-    </div>
+		{# CTA #}
+		<div class="mt-auto">
+			<twig:Button href="#devis" variant="primary" size="md" :fullwidth="true">
+				Demander un devis
+			</twig:Button>
+		</div>
+	</div>
 </header>
