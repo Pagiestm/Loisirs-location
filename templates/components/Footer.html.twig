@@ -2,11 +2,10 @@
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
 
         {# Bloc identité #}
-        <div>
-            <span class="font-display text-2xl text-primary block mb-3">Loisirs Location</span>
-            <p class="text-sm text-beige/80 leading-relaxed">
-                Location de vans aménagés pour vos aventures. Partez libres, partez bien équipés.
-            </p>
+        <div class="group w-full flex items-center justify-center">
+            <div class="w-40 h-40">
+                <img src="{{ asset('images/LL-logo.png') }}" alt="Loisirs Location" class="w-full h-full object-contain" />
+            </div>
         </div>
 
         {# Liens utiles #}
@@ -15,6 +14,7 @@
             <ul class="space-y-2 text-sm">
                 <li><a href="{{ path('app_home') }}" class="hover:text-primary transition-colors">Accueil</a></li>
                 <li><a href="{{ path('app_vans_index') }}" class="hover:text-primary transition-colors">Nos vans</a></li>
+                <li><a href="{{ path('app_blog_index') }}" class="hover:text-primary transition-colors">Blog</a></li>
                 <li><a href="#devis" class="hover:text-primary transition-colors">Demander un devis</a></li>
                 <li><a href="#" class="hover:text-primary transition-colors">Contact</a></li>
                 <li><a href="#" class="hover:text-primary transition-colors">Mentions légales</a></li>

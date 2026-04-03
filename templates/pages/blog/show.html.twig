@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ post.title }}
+	— Blog — Loisirs Location
+{% endblock %}
+
+{% block body %}
+	<twig:Navbar
+	activepage="blog"/>
+
+	{# Hero avec image de fond #}
+	<section class="relative overflow-hidden h-screen min-h-160 flex items-center justify-center px-6">
+		{% if post.featuredImage %}
+			{# Image de fond #}
+			<div class="absolute inset-0">
+				<img
+				src="{{ asset('uploads/blog/' ~ post.featuredImage) }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+				{# Overlay dégradé #}
+				<div class="absolute inset-0 bg-linear-to-t from-secondary via-secondary/80 to-secondary/40"></div>
+			</div>
+		{% else %}
+			{# Fond uni si pas d'image #}
+			<div class="absolute inset-0 bg-secondary">
+				<twig:TextureBackground type="wood" :overlay="0.72"/>
+			</div>
+		{% endif %}
+
+		<div
+			class="max-w-4xl mx-auto relative z-10 text-center">
+			{# Breadcrumb #}
+			<nav class="mb-6 font-body text-xs text-white/80">
+				<ol class="flex items-center justify-center gap-2">
+					<li>
+						<a href="{{ path('app_home') }}" class="hover:text-primary transition-colors underline decoration-2 underline-offset-2">
+							Accueil
+						</a>
+					</li>
+					<li><twig:ux:icon name="lucide:chevron-right" class="w-3 h-3" aria-hidden="true"/></li>
+					<li>
+						<a href="{{ path('app_blog_index') }}" class="hover:text-primary transition-colors underline decoration-2 underline-offset-2">
+							Blog
+						</a>
+					</li>
+				</ol>
+			</nav>
+
+			{# Métadonnées #}
+			<div class="flex flex-wrap items-center justify-center gap-3 font-body text-xs text-white/90 mb-4">
+				<div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+					<twig:ux:icon name="lucide:calendar" class="w-3 h-3 text-primary" aria-hidden="true"/>
+					<time datetime="{{ post.publishedAt|date('Y-m-d') }}">
+						{{ post.publishedAt|date('d F Y') }}
+					</time>
+				</div>
+				{% if post.author %}
+					<div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+						<twig:ux:icon name="lucide:user" class="w-3 h-3 text-primary" aria-hidden="true"/>
+						<span>{{ post.author.firstName }}
+							{{ post.author.lastName }}</span>
+					</div>
+				{% endif %}
+				<div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+					<twig:ux:icon name="lucide:clock" class="w-3 h-3 text-primary" aria-hidden="true"/>
+					<span>{{ (post.content|striptags|length / 1000)|round }}
+						min de lecture</span>
+				</div>
+			</div>
+
+			{# Titre #}
+			<h1 class="font-display text-4xl md:text-6xl text-white leading-tight mb-4">
+				{{ post.title }}
+			</h1>
+
+			{# Excerpt #}
+			{% if post.excerpt %}
+				<p class="font-body text-lg text-white/90 leading-relaxed">
+					{{ post.excerpt }}
+				</p>
+			{% endif %}
+		</div>
+	</section>
+
+	{# Article Content avec sidebar #}
+	<article class="bg-white py-10 px-6">
+		<div class="max-w-7xl mx-auto">
+			<div
+				class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+				{# Contenu principal #}
+				<div class="lg:col-span-8">
+					<div class="blog-content font-body text-brown/90 text-lg leading-relaxed">
+						{{ post.content|raw }}
+					</div>
+
+					{# Tags ou catégories (optionnel pour plus tard) #}
+					<div class="mt-12 pt-8 border-t border-beige">
+						<div class="flex flex-wrap gap-2">
+							<span class="inline-flex items-center gap-2 bg-beige px-4 py-2 rounded-full font-body text-sm text-brown/70">
+								<twig:ux:icon name="lucide:tag" class="w-3 h-3 text-primary" aria-hidden="true"/>
+								Conseils
+							</span>
+							<span class="inline-flex items-center gap-2 bg-beige px-4 py-2 rounded-full font-body text-sm text-brown/70">
+								<twig:ux:icon name="lucide:tag" class="w-3 h-3 text-primary" aria-hidden="true"/>
+								Vans aménagés
+							</span>
+						</div>
+					</div>
+				</div>
+
+				{# Sidebar sticky #}
+				<aside class="lg:col-span-4">
+					<div
+						class="sticky top-20 xl:top-32 space-y-6 pb-12">
+						{# Bouton retour #}
+						<a href="{{ path('app_blog_index') }}" class="inline-flex items-center gap-2 font-body text-sm font-semibold text-secondary hover:text-primary transition-colors">
+							<twig:ux:icon name="lucide:arrow-left" class="w-4 h-4" aria-hidden="true"/>
+							Retour au blog
+						</a>
+
+						{# Partage social #}
+						<div class="bg-secondary rounded-2xl p-4">
+							<h3 class="font-display text-xl text-white mb-4">Partager cet article</h3>
+							<div class="flex flex-col gap-3">
+								<a href="https://twitter.com/intent/tweet?url={{ url('app_blog_show', {slug: post.slug}) }}&text={{ post.title|url_encode }}" target="_blank" class="flex items-center gap-3 bg-white/10 hover:bg-primary px-4 py-3 rounded-xl transition-all group" title="Partager sur Twitter">
+									<twig:ux:icon name="simple-icons:x" class="w-5 h-5 text-white" aria-hidden="true"/>
+									<span class="font-body text-sm text-white group-hover:translate-x-1 transition-transform">Partager sur X</span>
+								</a>
+								<a href="https://www.facebook.com/sharer/sharer.php?u={{ url('app_blog_show', {slug: post.slug}) }}" target="_blank" class="flex items-center gap-3 bg-white/10 hover:bg-primary px-4 py-3 rounded-xl transition-all group" title="Partager sur Facebook">
+									<twig:ux:icon name="simple-icons:facebook" class="w-5 h-5 text-white" aria-hidden="true"/>
+									<span class="font-body text-sm text-white group-hover:translate-x-1 transition-transform">Partager sur Facebook</span>
+								</a>
+								<a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url('app_blog_show', {slug: post.slug}) }}" target="_blank" class="flex items-center gap-3 bg-white/10 hover:bg-primary px-4 py-3 rounded-xl transition-all group" title="Partager sur LinkedIn">
+									<twig:ux:icon name="simple-icons:linkedin" class="w-5 h-5 text-white" aria-hidden="true"/>
+									<span class="font-body text-sm text-white group-hover:translate-x-1 transition-transform">Partager sur LinkedIn</span>
+								</a>
+							</div>
+						</div>
+
+						{# CTA Devis #}
+						<div class="bg-secondary rounded-2xl p-4 text-center">
+							<twig:ux:icon name="lucide:truck" class="w-12 h-12 text-white mx-auto mb-3" aria-hidden="true"/>
+							<h3 class="font-display text-xl text-white mb-2">Envie de partir à l'aventure ?</h3>
+							<p class="font-body text-sm text-white/90 mb-4">Découvrez nos vans aménagés et demandez votre devis gratuit</p>
+							<twig:Button href="{{ path('app_vans_index') }}" variant="primary" size="sm" :fullwidth="true">
+								Voir nos vans
+							</twig:Button>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</div>
+	</article>
+
+	{# Recent Posts #}
+	{% if recentPosts|length > 1 %}
+		<twig:Blog:RecentPosts :posts="recentPosts|slice(0, 3)" :currentPostId="post.id"/>
+	{% endif %}
+
+	<twig:Footer/>
+{% endblock %}
