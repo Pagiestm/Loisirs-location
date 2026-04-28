@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - Loisirs Location{% endblock %}
+
+{% block body %}
+    <twig:Navbar activePage="contact" />
+
+    <main class="relative min-h-screen flex flex-col bg-beige pb-16">
+        <twig:TextureBackground type="sand" :overlay="0" :intensity="0.18" />
+        
+        <section class="relative min-h-70 md:min-h-80 lg:min-h-90 flex items-center justify-center overflow-hidden bg-secondary">
+            <div class="absolute inset-0">
+                <twig:TextureBackground type="wood" :overlay="0.72" />
+            </div>
+                <div class="relative z-10 text-center px-4 sm:px-6 max-w-3xl pt-12 sm:pt-20">
+                <p class="font-body text-xs uppercase tracking-[0.35em] text-primary mb-4">Besoin d'aide ?</p>
+                <h1 class="font-display text-3xl sm:text-4xl md:text-6xl text-white mb-8 sm:mb-12">Contactez-nous</h1>
+            </div>
+        </section>
+
+        <section class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-20 sm:-mt-16 lg:-mt-24">
+                <div class="bg-white rounded-3xl shadow-2xl shadow-brown/10 overflow-hidden flex flex-col lg:flex-row">
+                
+                <div class="bg-linear-to-br from-brown to-brown/90 p-6 sm:p-8 lg:p-12 lg:w-1/3 flex flex-col justify-between text-white">
+                    <div>
+                        <h2 class="font-display text-2xl sm:text-3xl mb-6">Restons en contact</h2>
+                        <p class="font-body text-white/80 mb-10 leading-relaxed text-sm">
+                            Une question, un projet de road trip, une demande de devis ?
+                            Écrivez-nous et je vous répondrez dans les plus brefs délais.
+                        </p>
+                        
+                        <div class="space-y-6 sm:space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 text-primary">
+                                    <twig:ux:icon name="lucide:mail" class="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p class="font-body text-xs uppercase tracking-wider text-white/60 mb-1">Email</p>
+                                    <a href="mailto:contact@loisirs-location.fr" class="font-body text-white hover:text-primary transition-colors text-sm">contact@loisirs-location.fr</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 text-primary">
+                                    <twig:ux:icon name="lucide:phone" class="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p class="font-body text-xs uppercase tracking-wider text-white/60 mb-1">Téléphone</p>
+                                    <a href="tel:+33123456789" class="font-body text-white hover:text-primary transition-colors text-sm">01 23 45 67 89</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 text-primary">
+                                    <twig:ux:icon name="lucide:map-pin" class="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p class="font-body text-xs uppercase tracking-wider text-white/60 mb-1">Adresse</p>
+                                    <p class="font-body text-white text-sm">Hauts-de-France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12">
+                        <p class="font-body text-xs uppercase tracking-wider text-white/60 mb-4">Suivez-nous</p>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-primary hover:-translate-y-1 transition-all">
+                                <twig:ux:icon name="lucide:instagram" class="w-5 h-5" />
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-primary hover:-translate-y-1 transition-all">
+                                <twig:ux:icon name="lucide:facebook" class="w-5 h-5" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 lg:p-12 lg:w-2/3 bg-white">
+                    <h3 class="font-display text-2xl sm:text-3xl text-secondary mb-6 sm:mb-8">Envoyez-nous un message</h3>
+
+                    {{ form_start(form, {
+                        'attr': {
+                            'class': 'space-y-6',
+                            'novalidate': 'novalidate'
+                        }
+                    }) }}
+
+                    {% if not form.vars.valid %}
+                        <div class="rounded-lg border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm mb-6 flex items-center gap-3">
+                            <twig:ux:icon name="lucide:alert-circle" class="w-5 h-5 shrink-0" />
+                            <p>Merci de corriger les erreurs dans le formulaire ci-dessous.</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div>
+                            {{ form_row(form.firstName) }}
+                        </div>
+                        <div>
+                            {{ form_row(form.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div>
+                            {{ form_row(form.email) }}
+                        </div>
+                        <div>
+                            {{ form_row(form.phone) }}
+                        </div>
+                    </div>
+
+                    <div>
+                        {{ form_row(form.subject) }}
+                    </div>
+
+                    <div>
+                        {{ form_row(form.message) }}
+                    </div>
+
+                    <div class="pt-4">
+                        <div class="sm:hidden">
+                            <twig:Button type="submit" variant="primary" size="md" :fullWidth="true">
+                                Envoyer
+                            </twig:Button>
+                        </div>
+                        <div class="hidden sm:flex sm:justify-end">
+                            <twig:Button type="submit" variant="primary" size="lg" :fullWidth="false">
+                                Envoyer
+                            </twig:Button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+    </main>
+    <twig:Footer />
+{% endblock %}

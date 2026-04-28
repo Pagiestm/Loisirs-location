@@ -24,7 +24,7 @@ class MailService
     /**
      * Envoie un email avec un template Twig
      *
-     * @param string|Address $to Destinataire
+    * @param string|Address|null $to Destinataire (optionnel, utilise l'adresse par defaut si non fourni)
      * @param string $subject Sujet de l'email
      * @param string $template Chemin du template Twig (ex: 'email/welcome.html.twig')
      * @param array<string, mixed> $context Variables à passer au template
@@ -122,14 +122,14 @@ class MailService
      * @throws \Twig\Error\Error
      */
     public function sendMjmlEmail(
-        string|Address $to,
         string $subject,
         string $mjmlTemplate,
         array $context = [],
         string|Address|null $from = null,
         ?string $replyTo = null,
         array $cc = [],
-        array $bcc = []
+        array $bcc = [],
+        string|Address|null $to = null
     ): void {
         // Rendre le template MJML avec Twig
         $mjmlBody = $this->twig->render($mjmlTemplate, $context);
@@ -140,7 +140,7 @@ class MailService
         // Créer et configurer l'email
         $email = (new Email())
             ->from($from ?? new Address($this->defaultFromEmail, $this->defaultFromName))
-            ->to($to)
+            ->to($to ?? new Address($this->defaultFromEmail, $this->defaultFromName))
             ->subject($subject)
             ->html($htmlBody);
 

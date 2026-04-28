@@ -4,15 +4,13 @@
 
 		{% if posts is empty %}
 			{# État vide #}
-			<div class="text-center py-16">
-				<div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-beige flex items-center justify-center">
-					<twig:ux:icon name="lucide:newspaper" class="w-12 h-12 text-brown/30" aria-hidden="true" />
-				</div>
-				<h2 class="font-display text-3xl text-secondary mb-3">Aucun article pour le moment</h2>
-				<p class="font-body text-sm text-brown/60 max-w-md mx-auto leading-relaxed">
+			<div class="flex flex-col items-center justify-center py-28 gap-4">
+                <twig:ux:icon name="lucide:search-x" class="w-10 h-10 text-brown" aria-hidden="true" />
+                <p class="font-body text-brown text-sm">Aucun article pour le moment.</p>
+				<p class="font-body text-sm text-brown/60 leading-relaxed">
 					Revenez bientôt pour découvrir nos derniers articles, conseils et actualités sur la location de vans aménagés.
 				</p>
-			</div>
+            </div>
 		{% else %}
 			{# Grille d'articles #}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
