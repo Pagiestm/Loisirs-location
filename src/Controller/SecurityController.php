@@ -170,9 +170,14 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        $response = new Response();
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         return $this->render('pages/security/forgot_password.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], $response);
     }
 
     /**
@@ -215,9 +220,14 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        $response = new Response();
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         return $this->render('pages/security/reset_password.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], $response);
     }
 
     /**

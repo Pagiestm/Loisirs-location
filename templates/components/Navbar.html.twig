@@ -1,3 +1,13 @@
+{% set currentRoute = app.request.attributes.get('_route')|default('') %}
+{% set heroNav = heroNav|default(currentRoute == 'app_home') %}
+{% set activePage = activePage|default(
+	currentRoute starts with 'app_home' ? 'home' :
+	(currentRoute starts with 'app_vans' ? 'vans' :
+	(currentRoute starts with 'app_blog' ? 'blog' :
+	(currentRoute starts with 'app_contact' ? 'contact' :
+	(currentRoute starts with 'app_profile' ? 'profile' : ''))))
+) %}
+
 <header
 	{{ stimulus_controller('navbar', { hero: heroNav } ) }} class="fixed top-0 left-0 right-0 z-40 transition-[background-color,box-shadow,transform] duration-300 ease-in-out {{ heroNav ? 'bg-transparent' : 'bg-secondary shadow-lg' }}">
 	{# ── Backdrop (clic pour fermer) ── #}
@@ -45,7 +55,7 @@
 						</button>
 						{# Dropdown menu #}
 						<div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-							<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg">Mon profil</a>
+							<a href="{{ path('app_profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg">Mon profil</a>
 							<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mes réservations</a>
 							{% if app.user is defined and app.user.isAdmin is true %}
 								<a data-turbo="false" href="{{ path('admin') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
@@ -126,7 +136,7 @@
 					<li class="mt-4">
 						<div class="text-primary font-medium mb-2">{{ app.user.firstName }}
 							{{ app.user.lastName }}</div>
-						<a href="#" class="text-white/80 hover:text-white block py-2 transition-colors">Mon profil</a>
+						<a href="{{ path('app_profile') }}" class="text-white/80 hover:text-white block py-2 transition-colors">Mon profil</a>
 						<a href="#" class="text-white/80 hover:text-white block py-2 transition-colors">Mes réservations</a>
 						{% if app.user is defined and app.user.isAdmin is true %}
 							<a data-turbo="false" href="{{ path('admin') }}" class="text-white/80 hover:text-white block py-2 transition-colors">
@@ -139,7 +149,7 @@
 					</li>
 				{% else %}
 					{# Utilisateur non connecté #}
-					<li class="pt-4 mt-4 border-t border-white/20">
+					<li>
 						<button {{ stimulus_action('app', 'openModal', 'click', { id: 'auth' } ) }} {{ stimulus_action('navbar', 'closeMenu') }} class="text-white/80 hover:text-white py-3 transition-colors flex items-center gap-2 w-full">
 							<twig:ux:icon name="lucide:log-in" class="w-4 h-4"/>
 							Connexion | Inscription

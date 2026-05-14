@@ -1,0 +1,78 @@
+<mjml>
+    <mj-head>
+        <mj-title>Alerte changement d'email - Loisirs Location</mj-title>
+        <mj-preview>Une demande de changement d'adresse email a ete faite.</mj-preview>
+        <mj-attributes>
+            <mj-all font-family="'Atkinson Hyperlegible', Arial, sans-serif" />
+            <mj-text font-size="14px" color="#5a2e15" line-height="1.6" />
+            <mj-section padding="20px 0" />
+        </mj-attributes>
+        <mj-style inline="inline">
+            .link-nostyle { color: inherit; text-decoration: none; }
+        </mj-style>
+    </mj-head>
+    <mj-body background-color="#eaccb1">
+        <mj-section background-color="#465b32" padding="36px 20px">
+            <mj-column>
+                <mj-text align="center" color="#ffffff" font-size="30px" font-weight="bold">
+                    LOISIRS LOCATION
+                </mj-text>
+                <mj-text align="center" color="#eaccb1" font-size="13px" padding-top="5px">
+                    Alerte securite compte
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section background-color="#ffffff" padding="36px 30px">
+            <mj-column>
+                <mj-text font-size="24px" font-weight="bold" color="#465b32" align="center">
+                    Demande de changement d'adresse email
+                </mj-text>
+
+                <mj-text padding-top="20px">
+                    Bonjour <strong>{{ firstName }}</strong>,
+                </mj-text>
+
+                <mj-text>
+                    Une demande de changement d'email a ete initiee pour votre compte.
+                    Nouvel email demande : <strong>{{ newEmail }}</strong>.
+                </mj-text>
+
+                <mj-text>
+                    Si c'etait bien vous, aucune action n'est necessaire sur cette adresse.
+                    La confirmation se fait depuis le nouvel email.
+                </mj-text>
+
+                <mj-divider border-color="#eaccb1" border-width="2px" padding="20px 0"></mj-divider>
+
+                <mj-text font-size="13px" color="#882712">
+                    Si vous n'etes pas a l'origine de cette demande, contactez-nous rapidement :
+                    <a href="mailto:{{ supportEmail }}" style="color:#ef7820;">{{ supportEmail }}</a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        
+        <!-- Footer -->
+        <mj-section background-color="#5a2e15" padding="30px 20px">
+            <mj-column>
+                <mj-text align="center" color="#eaccb1" font-size="12px">
+                    © {{ "now" | date("Y") }} Loisirs Location - Location de
+                    vans aménagés en Hauts-de-France
+                </mj-text>
+                <mj-text
+                    align="center"
+                    color="#eaccb1"
+                    font-size="11px"
+                    padding-top="10px"
+                >
+                    Des questions ? Contactez-nous à
+                    <a
+                        href="mailto:contact@loisirs-location.fr"
+                        style="color: #ef7820"
+                        >contact@loisirs-location.fr</a
+                    >
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

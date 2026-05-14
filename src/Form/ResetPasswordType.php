@@ -21,10 +21,6 @@ class ResetPasswordType extends AbstractType
                     'attr' => [
                         'placeholder' => '••••••••',
                         'autocomplete' => 'new-password',
-                        'class' => 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all',
-                    ],
-                    'label_attr' => [
-                        'class' => 'block text-sm font-medium text-gray-700 mb-2'
                     ],
                 ],
                 'second_options' => [
@@ -32,10 +28,6 @@ class ResetPasswordType extends AbstractType
                     'attr' => [
                         'placeholder' => '••••••••',
                         'autocomplete' => 'new-password',
-                        'class' => 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all',
-                    ],
-                    'label_attr' => [
-                        'class' => 'block text-sm font-medium text-gray-700 mb-2'
                     ],
                 ],
                 'invalid_message' => 'Les deux mots de passe doivent être identiques',

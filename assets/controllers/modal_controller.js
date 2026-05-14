@@ -12,10 +12,13 @@ export default class extends Controller {
     };
 
     connect() {
-        // Initialiser les styles
-        this.backdropTarget.style.opacity = "0";
-        this.panelTarget.style.transform = "scale(0.95)";
-        this.panelTarget.style.opacity = "0";
+        // Mode Déclencheur (bouton seul) ou Mode Modale
+        if (this.hasBackdropTarget && this.hasPanelTarget) {
+            // Initialiser les styles
+            this.backdropTarget.style.opacity = "0";
+            this.panelTarget.style.transform = "scale(0.95)";
+            this.panelTarget.style.opacity = "0";
+        }
 
         // Variable pour suivre où le mousedown se produit
         this.mouseDownTarget = null;
@@ -40,6 +43,20 @@ export default class extends Controller {
         document.removeEventListener("modal:open", this.boundHandleOpen);
         document.removeEventListener("modal:close", this.boundHandleClose);
         document.removeEventListener("keydown", this.boundHandleKeydown);
+    }
+
+    triggerOpen(event) {
+        if (event) event.preventDefault();
+        document.dispatchEvent(
+            new CustomEvent("modal:open", { detail: { modalId: this.idValue } })
+        );
+    }
+
+    triggerClose(event) {
+        if (event) event.preventDefault();
+        document.dispatchEvent(
+            new CustomEvent("modal:close", { detail: { modalId: this.idValue } })
+        );
     }
 
     handleOpen(event) {
@@ -102,6 +119,8 @@ export default class extends Controller {
     }
 
     open() {
+        if (!this.hasBackdropTarget || !this.hasPanelTarget) return;
+
         this.element.classList.remove("hidden");
         document.body.style.overflow = "hidden";
 
@@ -125,6 +144,8 @@ export default class extends Controller {
     }
 
     close() {
+        if (!this.hasBackdropTarget || !this.hasPanelTarget) return;
+
         // Animation de sortie
         this.backdropTarget.style.opacity = "0";
         this.panelTarget.style.transform = "scale(0.95)";

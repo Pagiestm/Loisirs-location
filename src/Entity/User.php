@@ -51,6 +51,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'reset_password_token_expires_at', nullable: true)]
     private ?\DateTimeImmutable $resetPasswordTokenExpiresAt = null;
 
+    #[ORM\Column(name: 'pending_email', length: 100, nullable: true)]
+    private ?string $pendingEmail = null;
+
+    #[ORM\Column(name: 'email_change_token', length: 100, nullable: true)]
+    private ?string $emailChangeToken = null;
+
+    #[ORM\Column(name: 'email_change_token_expires_at', nullable: true)]
+    private ?\DateTimeImmutable $emailChangeTokenExpiresAt = null;
+
     #[ORM\Column(name: 'created_at')]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -92,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): static
+    public function setLastName(?string $lastName): static
     {
         $this->lastName = $lastName;
 
@@ -104,7 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): static
+    public function setFirstName(?string $firstName): static
     {
         $this->firstName = $firstName;
 
@@ -128,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    public function setPhone(string $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
 
@@ -273,6 +282,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this->resetPasswordTokenExpiresAt < new \DateTimeImmutable();
+    }
+
+    public function getPendingEmail(): ?string
+    {
+        return $this->pendingEmail;
+    }
+
+    public function setPendingEmail(?string $pendingEmail): static
+    {
+        $this->pendingEmail = $pendingEmail;
+
+        return $this;
+    }
+
+    public function getEmailChangeToken(): ?string
+    {
+        return $this->emailChangeToken;
+    }
+
+    public function setEmailChangeToken(?string $emailChangeToken): static
+    {
+        $this->emailChangeToken = $emailChangeToken;
+
+        return $this;
+    }
+
+    public function getEmailChangeTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->emailChangeTokenExpiresAt;
+    }
+
+    public function setEmailChangeTokenExpiresAt(?\DateTimeImmutable $emailChangeTokenExpiresAt): static
+    {
+        $this->emailChangeTokenExpiresAt = $emailChangeTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function isEmailChangeTokenExpired(): bool
+    {
+        if (!$this->emailChangeTokenExpiresAt) {
+            return true;
+        }
+
+        return $this->emailChangeTokenExpiresAt < new \DateTimeImmutable();
+    }
+
+    public function clearEmailChangeRequest(): static
+    {
+        $this->pendingEmail = null;
+        $this->emailChangeToken = null;
+        $this->emailChangeTokenExpiresAt = null;
+
+        return $this;
     }
 
     public function getAddress(): ?Address
