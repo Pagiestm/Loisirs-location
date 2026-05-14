@@ -14,5 +14,4 @@ final class Button
     public string $type = 'button';
     public ?string $icon = null;
     public ?string $ariaLabel = null;
-    public ?string $attr = null;
 }

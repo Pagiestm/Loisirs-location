@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+    <main class="relative min-h-screen flex flex-col bg-beige pb-16">
+        <twig:TextureBackground type="sand" :overlay="0" :intensity="0.18" />
+
+        <section class="relative min-h-70 md:min-h-80 lg:min-h-90 flex items-center justify-center overflow-hidden bg-secondary">
+            <div class="absolute inset-0">
+                <twig:TextureBackground type="wood" :overlay="0.72" />
+            </div>
+            <div class="relative z-10 text-center px-4 sm:px-6 max-w-3xl pt-12 sm:pt-20">
+                <p class="font-body text-xs uppercase tracking-[0.35em] text-primary mb-4">Espace client</p>
+                <h1 class="font-display text-3xl sm:text-4xl md:text-6xl text-white mb-8 sm:mb-12">Mon profil</h1>
+            </div>
+        </section>
+
+        <section class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-20 sm:-mt-16 lg:-mt-24">
+                <div class="bg-white rounded-3xl shadow-2xl shadow-brown/10 overflow-hidden flex flex-col lg:flex-row">
+
+                <div class="bg-linear-to-br from-brown to-brown/90 p-6 sm:p-8 lg:p-12 lg:w-1/3 flex flex-col text-white">
+                    <div>
+                        <h2 class="font-display text-2xl sm:text-3xl mb-3">Mon profil</h2>
+                        <p class="font-body text-white/80 text-sm leading-relaxed">Gère tes informations personnelles et tes coordonnées. Les modifications sont prises en compte immédiatement.</p>
+                    </div>
+
+                    <div class="mt-8">
+                        <p class="font-body text-xs uppercase tracking-wider text-white/60 mb-2">Besoin d'aide ?</p>
+                        <a href="/contact" class="inline-block text-sm text-white hover:underline">Contactez-nous</a>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 lg:p-12 lg:w-2/3 bg-white">
+                    {{ form_start(form, {
+                        'attr': {
+                            'class': 'space-y-6',
+                            'novalidate': 'novalidate'
+                        }
+                    }) }}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div>
+                            {{ form_row(form.firstName) }}
+                        </div>
+                        <div>
+                            {{ form_row(form.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div class="space-y-1">
+                            <label class="block text-sm font-medium text-secondary">Email</label>
+                            <div class="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-sm text-gray-600">
+                                {{ app.user.email }}
+                            </div>
+                        </div>
+                        <div>
+                            {{ form_row(form.phone) }}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <twig:Button type="submit" variant="primary" size="md" :loading="true" class="w-full sm:w-auto">Enregistrer</twig:Button>
+                    </div>
+
+                    {{ form_end(form) }}
+
+                    <div class="mt-8 pt-6 border-t border-gray-100">
+                        <h3 class="font-display text-xl text-secondary mb-2">Changer mon adresse email</h3>
+                        <p class="text-sm text-gray-600 mb-4">Pour securiser votre compte, confirmez votre mot de passe puis validez depuis le lien recu sur votre nouvelle adresse.</p>
+
+                        {{ form_start(emailChangeForm, {
+                            'action': path('app_profile_request_email_change'),
+                            'attr': {
+                                'class': 'space-y-4',
+                                'novalidate': 'novalidate'
+                            }
+                        }) }}
+
+                        <div>
+                            {{ form_row(emailChangeForm.newEmail) }}
+                        </div>
+
+                        <div>
+                            {{ form_row(emailChangeForm.currentPassword) }}
+                        </div>
+
+                        <div class="pt-2">
+                            <twig:Button type="submit" variant="secondary" size="md" class="w-full sm:w-auto">
+                                Modifier
+                            </twig:Button>
+                        </div>
+
+                        {{ form_end(emailChangeForm) }}
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-red-100">
+                        <h3 class="font-display text-xl text-red-700 mb-2">Zone de danger</h3>
+                        <p class="text-sm text-gray-600 mb-4">La suppression du compte est definitive et supprimera aussi ton historique associe.</p>
+
+                        <div {{ stimulus_controller('modal', { id: 'delete-account-modal' }) }}>
+                            <twig:Button type="button" variant="danger" size="md" data-action="click->modal#triggerOpen" class="w-full sm:w-auto">
+                                Supprimer
+                            </twig:Button>
+                        </div>
+
+                        <twig:Modal id="delete-account-modal" title="Supprimer mon compte" size="md">
+                            <div class="space-y-4">
+                                <p class="text-gray-600">
+                                    Êtes-vous sûr de vouloir supprimer définitivement votre compte  ?
+                                </p>
+                                <p class="text-sm text-red-600 font-medium">
+                                    Cette action est irréversible et supprimera tout votre historique.
+                                </p>
+                                
+                                <div class="flex flex-col sm:flex-row sm:justify-end gap-3 pt-4 mt-6">
+                                    <form method="post" action="{{ path('app_profile_delete') }}" class="w-full sm:w-auto">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+                                        <twig:Button type="submit" variant="danger" size="md" :fullWidth="true">
+                                            Confirmer
+                                        </twig:Button>
+                                    </form>
+                                    
+                                    <twig:Button type="button" variant="outline" size="md" data-action="click->modal#close">
+                                        Annuler
+                                    </twig:Button>
+                                </div>
+                            </div>
+                        </twig:Modal>
+                    </div>
+                </div>
+            </div>
+            </section>
+    </main>
+
+{% endblock %}

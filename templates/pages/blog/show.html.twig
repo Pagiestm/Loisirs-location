@@ -6,9 +6,6 @@
 {% endblock %}
 
 {% block body %}
-	<twig:Navbar
-	activepage="blog"/>
-
 	{# Hero avec image de fond #}
 	<section class="relative overflow-hidden h-screen min-h-160 flex items-center justify-center px-6">
 		{% if post.featuredImage %}
@@ -155,6 +152,4 @@
 	{% if recentPosts|length > 1 %}
 		<twig:Blog:RecentPosts :posts="recentPosts|slice(0, 3)" :currentPostId="post.id"/>
 	{% endif %}
-
-	<twig:Footer/>
 {% endblock %}

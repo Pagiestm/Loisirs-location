@@ -38,7 +38,11 @@
             {% endfor %}
         </div>
 
+		<twig:Navbar />
+
 		{% block body %}{% endblock %}
+
+		<twig:Footer />
 
 		{# Modale de connexion/inscription #}
 		{% if not is_granted('IS_AUTHENTICATED_FULLY') %}

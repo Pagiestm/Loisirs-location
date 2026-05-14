@@ -3,6 +3,7 @@
     'primary':   'bg-primary text-white hover:bg-opacity-90 shadow-md hover:shadow-lg',
     'secondary': 'bg-secondary text-white hover:bg-opacity-90 shadow-md hover:shadow-lg',
     'outline':   'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white',
+    'danger':    'bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg',
     'ghost':     'text-primary hover:bg-primary/10 underline-offset-4 hover:underline',
 } %}
 
@@ -13,12 +14,12 @@
     'lg': 'px-8 py-3.5 text-lg',
 } %}
 
-{% set baseClasses = 'inline-flex items-center justify-center gap-2 font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer' %}
+{% set baseClasses = 'inline-flex items-center justify-center gap-2 font-body font-semibold rounded-full transition-all duration-200 cursor-pointer' %}
 {% set widthClass = fullWidth ? 'w-full' : '' %}
 {% set allClasses = baseClasses ~ ' ' ~ (variantClasses[variant] ?? variantClasses['primary']) ~ ' ' ~ (sizeClasses[size] ?? sizeClasses['md']) ~ ' ' ~ widthClass %}
 
 {% if href %}
-    <a href="{{ href }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
+    <a href="{{ href }}" {{ attributes.defaults({ 'class': allClasses, 'aria-label': ariaLabel|default(null) }) }}>
         {% if block('content') is defined %}
             {{ block('content') }}
         {% endif %}
@@ -27,7 +28,7 @@
         {% endif %}
     </a>
 {% else %}
-    <button type="{{ type }}" class="{{ allClasses }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attr|raw }}>
+    <button type="{{ type }}" {{ attributes.defaults({ 'class': allClasses, 'aria-label': ariaLabel|default(null) }) }}>
         {% if block('content') is defined %}
             {{ block('content') }}
         {% endif %}
