@@ -22,7 +22,11 @@
 				</p>
 			{% endif %}
 
-			<twig:Button label="Demander un devis" href="{{ path('app_home') }}#devis" variant="primary" size="lg" icon="arrow-right"/>
+            {% if van.quote is defined and van.quote is not null %}
+			    <twig:Button href="{{ path('app_quote', { 'id': van.id }) }}" variant="primary" size="lg" icon="arrow-right">Demander un devis</twig:Button>
+            {% else %}
+                <p class="text-beige text-xs font-body opacity-80 italic">Aucun devis disponible pour ce van.</p>
+            {% endif %}
 		</div>
 
 		{# ── Galerie d'images ── #}

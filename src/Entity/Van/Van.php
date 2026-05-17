@@ -2,7 +2,7 @@
 
 namespace App\Entity\Van;
 
-use App\Entity\Quote;
+use App\Entity\Quote\Quote;
 use App\Entity\Rental;
 use App\Repository\Van\VanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,11 +34,9 @@ class Van
     #[ORM\Column(name: 'updated_at')]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /**
-     * @var Collection<int, Quote>
-     */
-    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'van')]
-    private Collection $quotes;
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'vans')]
+    #[ORM\JoinColumn(name: 'id_quote', referencedColumnName: 'id_quote', nullable: true)]
+    private ?Quote $quote = null;
 
     /**
      * @var Collection<int, VanOption>
@@ -61,7 +59,6 @@ class Van
 
     public function __construct()
     {
-        $this->quotes = new ArrayCollection();
         $this->options = new ArrayCollection();
         $this->rentals = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -134,33 +131,14 @@ class Van
         return $this;
     }
 
-    /**
-     * @return Collection<int, Quote>
-     */
-    public function getQuotes(): Collection
+    public function getQuote(): ?Quote
     {
-        return $this->quotes;
+        return $this->quote;
     }
 
-    public function addQuote(Quote $quote): static
+    public function setQuote(?Quote $quote): static
     {
-        if (!$this->quotes->contains($quote)) {
-            $this->quotes->add($quote);
-            $quote->setVan($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuote(Quote $quote): static
-    {
-        if ($this->quotes->removeElement($quote)) {
-            // set the owning side to null (unless already changed)
-            if ($quote->getVan() === $this) {
-                $quote->setVan(null);
-            }
-        }
-
+        $this->quote = $quote;
         return $this;
     }
 
@@ -242,5 +220,10 @@ class Van
         $this->images->removeElement($image);
 
         return $this;
+    }
+
+    public function isQuoteAvailable(): bool
+    {
+        return $this->quote !== null;
     }
 }

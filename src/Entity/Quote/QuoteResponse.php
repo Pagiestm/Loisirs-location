@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Quote;
 
-use App\Repository\QuoteResponseRepository;
+use App\Entity\User;
+use App\Repository\Quote\QuoteResponseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

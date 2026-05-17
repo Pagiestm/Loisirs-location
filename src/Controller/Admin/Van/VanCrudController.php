@@ -6,9 +6,10 @@ use App\Entity\Van\Van;
 use App\Form\Type\Van\VanImageType;
 use App\Form\Type\Van\VanOptionType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class VanCrudController extends AbstractCrudController
@@ -38,24 +39,30 @@ class VanCrudController extends AbstractCrudController
             ->setColumns('col-md-6')
             ->onlyOnForms();
 
-        yield TextareaField::new('description', 'Description')
+        yield TextEditorField::new('description', 'Description')
             ->setColumns('col-12')
             ->setNumOfRows(5)
             ->onlyOnForms();
 
-        yield FormField::addTab('Configuration', 'fa fa-sliders')->onlyOnForms();
-        yield FormField::addFieldset('Équipements', 'fa fa-list-check')->onlyOnForms();
+        yield FormField::addTab('Équipements', 'fa fa-list-check')->onlyOnForms();
+
         yield CollectionField::new('options', 'Options')
             ->setEntryType(VanOptionType::class)
             ->setFormTypeOption('by_reference', false)
             ->setColumns('col-12')
             ->onlyOnForms();
 
-        yield FormField::addFieldset('Galerie', 'fa fa-images')->onlyOnForms();
+        yield FormField::addTab('Galerie', 'fa fa-images')->onlyOnForms();
+
         yield CollectionField::new('images', 'Images')
             ->setEntryType(VanImageType::class)
             ->setFormTypeOption('by_reference', false)
             ->setColumns('col-12')
             ->onlyOnForms();
+
+        yield FormField::addTab('Devis', 'fa fa-file-invoice')->onlyOnForms();
+
+        yield AssociationField::new('quote', 'Devis associé')
+            ->autocomplete();
     }
 }

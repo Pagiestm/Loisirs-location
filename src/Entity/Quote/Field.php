@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Quote;
 
-use App\Repository\FieldRepository;
+use App\Enum\FieldEnum;
+use App\Repository\Quote\FieldRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: FieldRepository::class)]
 #[ORM\Table(name: 'fields')]
@@ -19,11 +22,12 @@ class Field
     #[ORM\Column(type: 'json')]
     private array $options = [];
 
-    #[ORM\Column]
+    #[Gedmo\SortablePosition]
+    #[ORM\Column(name: 'position', type: 'integer')]
     private ?int $position = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $type = null;
+    #[ORM\Column(length: 100, nullable: false, type: Types::ENUM)]
+    private FieldEnum $type;
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'fields')]
     #[ORM\JoinColumn(name: 'id_quote', referencedColumnName: 'id_quote', nullable: false)]
@@ -69,12 +73,12 @@ class Field
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): FieldEnum
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(FieldEnum $type): static
     {
         $this->type = $type;
 
@@ -121,5 +125,15 @@ class Field
         }
 
         return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->options['label'] ?? null;
+    }
+
+    public function __toString()
+    {
+        return $this->getLabel() ?? 'Champ #' . $this->getId();
     }
 }

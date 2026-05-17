@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Quote\FieldCrudController;
+use App\Controller\Admin\Quote\QuoteCrudController;
 use App\Controller\Admin\Van\OptionCrudController;
 use App\Controller\Admin\Van\VanCrudController;
 use App\Entity\BlogPost;
@@ -74,7 +76,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Gestion des vans', 'fa fa-van-shuttle')->setSubItems([
             MenuItem::linkTo(VanCrudController::class, 'Vans', 'fa fa-list'),
             MenuItem::linkTo(OptionCrudController::class, 'Options', 'fa fa-gears'),
-            MenuItem::linkToRoute('Images', 'fa fa-image', 'admin_vans_gallery'),
+            MenuItem::linkToRoute('Galerie', 'fa fa-image', 'admin_vans_gallery'),
+        ]);
+        yield MenuItem::subMenu('Gestion des devis', 'fa fa-file-invoice')->setSubItems([
+            MenuItem::linkTo(QuoteCrudController::class, 'Devis', 'fa fa-list'),
         ]);
     }
 }
