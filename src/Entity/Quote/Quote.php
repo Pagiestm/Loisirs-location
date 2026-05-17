@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Quote;
 
 use App\Entity\Van\Van;
-use App\Repository\QuoteRepository;
+use App\Repository\Quote\QuoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,14 +25,14 @@ class Quote
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Van::class, inversedBy: 'quotes')]
-    #[ORM\JoinColumn(name: 'id_van', referencedColumnName: 'id_van', nullable: false)]
-    private ?Van $van = null;
+    #[ORM\OneToMany(targetEntity: Van::class, mappedBy: 'quote')]
+    private Collection $vans;
 
     /**
      * @var Collection<int, Field>
      */
-    #[ORM\OneToMany(targetEntity: Field::class, mappedBy: 'quote', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Field::class, mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $fields;
 
     /**
@@ -44,6 +45,7 @@ class Quote
     {
         $this->fields = new ArrayCollection();
         $this->quoteResponses = new ArrayCollection();
+        $this->vans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,14 +77,32 @@ class Quote
         return $this;
     }
 
-    public function getVan(): ?Van
+    /**
+     * @return Collection<int, Van>
+     */
+    public function getVans(): Collection
     {
-        return $this->van;
+        return $this->vans;
     }
 
-    public function setVan(?Van $van): static
+    public function addVan(Van $van): static
     {
-        $this->van = $van;
+        if (!$this->vans->contains($van)) {
+            $this->vans->add($van);
+            $van->setQuote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVan(Van $van): static
+    {
+        if ($this->vans->removeElement($van)) {
+            // set the owning side to null (unless already changed)
+            if ($van->getQuote() === $this) {
+                $van->setQuote(null);
+            }
+        }
 
         return $this;
     }
@@ -145,5 +165,10 @@ class Quote
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name ?? 'Devis #' . $this->id;
     }
 }

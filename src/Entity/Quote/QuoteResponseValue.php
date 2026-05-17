@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Quote;
 
-use App\Repository\QuoteResponseValueRepository;
+use App\Repository\Quote\QuoteResponseValueRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

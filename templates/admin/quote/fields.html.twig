@@ -1,0 +1,16 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content_title %}
+    Champs du formulaire de devis : <i>{{ quote.name }}</i>
+    <div class="mt-1 d-flex align-items-start gap-1">
+        <small class="text-muted">
+            Les champs sont affichés dans l'ordre défini ici sur le formulaire de demande de devis.
+        </small>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="mb-3">
+        <twig:Quotes:FieldsForm quote="{{ quote }}" />
+    </div>
+{% endblock main %}
