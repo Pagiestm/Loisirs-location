@@ -36,6 +36,12 @@ class QuoteResponseCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield AssociationField::new('user', 'Utilisateur')->hideOnForm();
+        yield AssociationField::new('user', 'Email de l\'utilisateur')
+            ->formatValue(function ($value, $entity) {
+                /** @var QuoteResponse $entity */
+                return $entity->getUser() ? '<a href="mailto:' . $entity->getUser()->getEmail() . '">' . $entity->getUser()->getEmail() . '</a>' : 'N/A';
+            })
+            ->hideOnForm();
         yield AssociationField::new('van', 'Van')->hideOnForm();
         yield AssociationField::new('quote', 'Formulaire de devis associé')->hideOnForm();
         yield DateTimeField::new('createdAt', 'Date de demande')

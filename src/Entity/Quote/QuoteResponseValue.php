@@ -5,9 +5,12 @@ namespace App\Entity\Quote;
 use App\Repository\Quote\QuoteResponseValueRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: QuoteResponseValueRepository::class)]
 #[ORM\Table(name: 'quote_response_values')]
+#[Vich\Uploadable]
 class QuoteResponseValue
 {
     #[ORM\Id]
@@ -25,6 +28,12 @@ class QuoteResponseValue
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
+
+    #[Vich\UploadableField(mapping: 'quote_response_file', fileNameProperty: 'value')]
+    private ?File $documentFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -63,6 +72,34 @@ class QuoteResponseValue
     public function setValue(?string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getDocumentFile(): ?File
+    {
+        return $this->documentFile;
+    }
+
+    public function setDocumentFile(?File $documentFile = null): void
+    {
+        $this->documentFile = $documentFile;
+
+        if (null !== $documentFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
