@@ -10,6 +10,9 @@ enum FieldEnum: string
     case SELECT = 'select';
     case CHECKBOX = 'checkbox';
     case RADIO = 'radio';
+    case PHONE = 'phone';
+    case FILE = 'file';
+    case DATE = 'date';
 
     public function label(): string
     {
@@ -20,6 +23,9 @@ enum FieldEnum: string
             self::SELECT => 'Liste déroulante',
             self::CHECKBOX => 'Cases à cocher',
             self::RADIO => 'Choix multiples',
+            self::PHONE => 'Numéro de téléphone',
+            self::FILE => 'Fichier / Document',
+            self::DATE => 'Date',
         };
     }
 
@@ -32,6 +38,9 @@ enum FieldEnum: string
             self::SELECT => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
             self::CHECKBOX => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
             self::RADIO => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            self::PHONE => 'Symfony\Component\Form\Extension\Core\Type\TelType',
+            self::FILE => 'Symfony\Component\Form\Extension\Core\Type\FileType',
+            self::DATE => 'Symfony\Component\Form\Extension\Core\Type\DateType',
         };
     }
 }

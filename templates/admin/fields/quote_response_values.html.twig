@@ -9,7 +9,41 @@
                 </th>
                 <td class="align-middle">
                     {% if responseValue.value %}
-                        <span class="fw-medium">{{ responseValue.value }}</span>
+                        {% if responseValue.field.type.value == 'file' %}
+                            {% set fileUrl = vich_uploader_asset(responseValue, 'documentFile') %}
+                            {% set extension = responseValue.value|split('.')|last|lower %}
+                            {% set isImage = extension in ['jpg', 'jpeg', 'png', 'webp', 'gif'] %}
+
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#fileModal-{{ responseValue.id }}">
+                                    <i class="fa {% if isImage %}fa-image{% else %}fa-file-pdf-o{% endif %}"></i> Voir le document
+                                </a>
+                                <a href="{{ fileUrl }}" download="{{ responseValue.value }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa fa-download"></i> Télécharger
+                                </a>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="fileModal-{{ responseValue.id }}" tabindex="-1" aria-labelledby="fileModalLabel-{{ responseValue.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="fileModalLabel-{{ responseValue.id }}">Document : {{ responseValue.value }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body p-0 bg-light d-flex justify-content-center align-items-center" style="height: 80vh;">
+                                            {% if isImage %}
+                                                <img src="{{ fileUrl }}" alt="{{ responseValue.value }}" style="max-height: 100%; max-width: 100%; object-fit: contain; padding: 1rem;">
+                                            {% else %}
+                                                <iframe src="{{ fileUrl }}" width="100%" height="100%" style="border: none;"></iframe>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <span class="fw-medium">{{ responseValue.value }}</span>
+                        {% endif %}
                     {% else %}
                         <span class="text-muted fst-italic">Non renseigné</span>
                     {% endif %}

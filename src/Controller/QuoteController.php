@@ -68,6 +68,32 @@ final class QuoteController extends AbstractController
                 unset($options['choices_list']);
             }
 
+            $constraints = $options['constraints'] ?? [];
+
+            if ($field->getType() === \App\Enum\FieldEnum::PHONE) {
+                $constraints[] = new \Symfony\Component\Validator\Constraints\Regex([
+                    'pattern' => '/^[0-9\-\+\s\(\)]{10,20}$/',
+                    'message' => 'Le numéro de téléphone n\'est pas valide.'
+                ]);
+            } elseif ($field->getType() === \App\Enum\FieldEnum::FILE) {
+                $constraints[] = new \Symfony\Component\Validator\Constraints\File([
+                    'maxSize' => '5M',
+                    'mimeTypes' => [
+                        'application/pdf',
+                        'application/x-pdf',
+                        'image/jpeg',
+                        'image/png',
+                    ],
+                    'mimeTypesMessage' => 'Veuillez transférer un document valide (PDF, JPG, PNG).',
+                ]);
+            } elseif ($field->getType() === \App\Enum\FieldEnum::DATE) {
+                $options['widget'] = 'single_text';
+            }
+
+            if (!empty($constraints)) {
+                $options['constraints'] = $constraints;
+            }
+
             $form->add((string) $field->getId(), $field->getType()->formType(), $options);
         }
 
@@ -86,13 +112,22 @@ final class QuoteController extends AbstractController
                 $fieldId = (string) $field->getId();
                 $value = $form->get($fieldId)->getData();
                 $quoteResponseValue = new QuoteResponseValue();
-                if (is_array($value)) {
-                    $value = empty($value) ? null : implode(', ', $value);
+
+                if ($value instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
+                    $quoteResponseValue->setDocumentFile($value);
+                    // VichUploaderBundle will handle the file upload and setting the filename in "value".
+                } else {
+                    if ($value instanceof \DateTimeInterface) {
+                        $value = $value->format('d/m/Y');
+                    } elseif (is_array($value)) {
+                        $value = empty($value) ? null : implode(', ', $value);
+                    }
+                    $quoteResponseValue->setValue($value);
                 }
+
                 $quoteResponseValue
                     ->setQuoteResponse($quoteResponse)
                     ->setField($field)
-                    ->setValue($value)
                 ;
                 $em->persist($quoteResponseValue);
             }

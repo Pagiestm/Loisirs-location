@@ -23,6 +23,7 @@ class QuoteCrudController extends AbstractCrudController
         yield TextEditorField::new('description', 'Description du devis');
 
         yield CollectionField::new('fields', 'Champs')
-            ->setEntryType(FieldType::class);
+            ->setEntryType(FieldType::class)
+            ->hideOnIndex();
     }
 }
