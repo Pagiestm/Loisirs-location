@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Quote;
 
-use App\DTO\Quote\ChoiceOption;
+use App\Dto\Quote\ChoiceOption;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Quote\FieldCrudController;
 use App\Controller\Admin\Quote\QuoteCrudController;
+use App\Controller\Admin\Quote\QuoteResponseCrudController;
 use App\Controller\Admin\Van\OptionCrudController;
 use App\Controller\Admin\Van\VanCrudController;
 use App\Entity\BlogPost;
@@ -80,6 +81,7 @@ class DashboardController extends AbstractDashboardController
         ]);
         yield MenuItem::subMenu('Gestion des devis', 'fa fa-file-invoice')->setSubItems([
             MenuItem::linkTo(QuoteCrudController::class, 'Devis', 'fa fa-list'),
+            MenuItem::linkTo(QuoteResponseCrudController::class, 'Réponses', 'fa fa-reply'),
         ]);
     }
 }

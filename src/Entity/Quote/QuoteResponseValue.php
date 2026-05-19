@@ -11,17 +11,25 @@ use Doctrine\ORM\Mapping as ORM;
 class QuoteResponseValue
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\ManyToOne(targetEntity: Field::class, inversedBy: 'quoteResponseValues')]
     #[ORM\JoinColumn(name: 'id_field', referencedColumnName: 'id_field', nullable: false)]
     private ?Field $field = null;
 
-    #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: QuoteResponse::class, inversedBy: 'quoteResponseValues')]
     #[ORM\JoinColumn(name: 'id_quote_response', referencedColumnName: 'id_quote_response', nullable: false)]
     private ?QuoteResponse $quoteResponse = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getField(): ?Field
     {
@@ -52,7 +60,7 @@ class QuoteResponseValue
         return $this->value;
     }
 
-    public function setValue(string $value): static
+    public function setValue(?string $value): static
     {
         $this->value = $value;
 
