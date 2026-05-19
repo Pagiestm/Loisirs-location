@@ -3,6 +3,7 @@
 namespace App\Entity\Van;
 
 use App\Entity\Quote\Quote;
+use App\Entity\Quote\QuoteResponse;
 use App\Entity\Rental;
 use App\Repository\Van\VanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,6 +46,12 @@ class Van
     private Collection $options;
 
     /**
+     * @var Collection<int, QuoteResponse>
+     */
+    #[ORM\OneToMany(targetEntity: QuoteResponse::class, mappedBy: 'van')]
+    private Collection $quoteResponses;
+
+    /**
      * @var Collection<int, Rental>
      */
     #[ORM\OneToMany(targetEntity: Rental::class, mappedBy: 'van')]
@@ -64,6 +71,12 @@ class Van
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->quoteResponses = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? 'Van' . ($this->id ? " (#{$this->id})" : '');
     }
 
     public function getId(): ?int
@@ -225,5 +238,35 @@ class Van
     public function isQuoteAvailable(): bool
     {
         return $this->quote !== null;
+    }
+
+    /**
+     * @return Collection<int, QuoteResponse>
+     */
+    public function getQuoteResponses(): Collection
+    {
+        return $this->quoteResponses;
+    }
+
+    public function addQuoteResponse(QuoteResponse $quoteResponse): static
+    {
+        if (!$this->quoteResponses->contains($quoteResponse)) {
+            $this->quoteResponses->add($quoteResponse);
+            $quoteResponse->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuoteResponse(QuoteResponse $quoteResponse): static
+    {
+        if ($this->quoteResponses->removeElement($quoteResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($quoteResponse->getVan() === $this) {
+                $quoteResponse->setVan(null);
+            }
+        }
+
+        return $this;
     }
 }

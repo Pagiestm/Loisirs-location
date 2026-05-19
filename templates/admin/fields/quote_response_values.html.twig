@@ -1,0 +1,29 @@
+{# templates/admin/fields/quote_response_values.html.twig #}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0">
+        <tbody>
+        {% for responseValue in field.value %}
+            <tr>
+                <th class="w-25 text-muted bg-light align-middle" style="min-width: 200px;">
+                    {{ responseValue.field.options.label|default('Champ') }}
+                </th>
+                <td class="align-middle">
+                    {% if responseValue.value %}
+                        <span class="fw-medium">{{ responseValue.value }}</span>
+                    {% else %}
+                        <span class="text-muted fst-italic">Non renseigné</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">
+                    <div class="alert alert-secondary mb-0" role="alert">
+                        <i class="fa fa-info-circle me-2"></i> Aucune réponse pour ce devis.
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

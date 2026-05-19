@@ -3,6 +3,7 @@
 namespace App\Entity\Quote;
 
 use App\Entity\User;
+use App\Entity\Van\Van;
 use App\Repository\Quote\QuoteResponseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,6 +31,10 @@ class QuoteResponse
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'quoteResponses')]
     #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id_user', nullable: false)]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Van::class, inversedBy: 'quoteResponses')]
+    #[ORM\JoinColumn(name: 'id_van', referencedColumnName: 'id_van', nullable: true)]
+    private ?Van $van = null;
 
     /**
      * @var Collection<int, QuoteResponseValue>
@@ -123,6 +128,18 @@ class QuoteResponse
                 $quoteResponseValue->setQuoteResponse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVan(): ?Van
+    {
+        return $this->van;
+    }
+
+    public function setVan(?Van $van): static
+    {
+        $this->van = $van;
 
         return $this;
     }

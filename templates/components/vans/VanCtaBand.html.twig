@@ -13,7 +13,9 @@
 		</div>
 
 		<div class="flex flex-col gap-5">
-			<twig:Button label="Demander un devis" href="{{ path('app_home') }}#devis" variant="primary" size="lg" icon="arrow-right"/>
+			<twig:Button href="{{ path('app_quote', { id: van.id }) }}" variant="primary" size="lg" icon="arrow-right">
+                Demander un devis
+            </twig:Button>
 			<ul class="flex flex-col gap-3">
 				{% for point in [
                     'Réponse personnalisée sous 24h',
