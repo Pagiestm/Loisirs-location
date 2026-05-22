@@ -17,18 +17,30 @@ jobs:
                   php-version: "8.4"
                   tools: composer
 
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
             - name: Install PHP dependencies
               run: composer install --no-interaction --prefer-dist
 
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass
 
+            - name: Prepare and upload node_modules (via SCP/SFTP)
+              run: |
+                  npm install --omit=dev
+                  tar -czf node_modules.tar.gz node_modules
+                  sshpass -e scp -o StrictHostKeyChecking=no node_modules.tar.gz ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
+
             - name: Deploy to AlwaysData
               run: |
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
                     cd www/Loisirs-location && \
                     git pull origin develop && \
-                    npm ci --production && \
+                    tar -xzf node_modules.tar.gz && \
+                    rm node_modules.tar.gz && \
                     npm run build && \
                     composer install --no-dev --optimize-autoloader && \
                     php bin/console cache:clear --env=prod --no-debug && \
@@ -36,4 +48,3 @@ jobs:
                     php bin/console doctrine:migrations:status --env=prod --no-debug || true && \
                     php bin/console doctrine:migrations:migrate -n --env=prod --no-debug\
                   "
-
