@@ -11,12 +11,6 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "20"
-                  cache: "npm"
-
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
@@ -25,12 +19,6 @@ jobs:
 
             - name: Install PHP dependencies
               run: composer install --no-interaction --prefer-dist
-
-            - name: Install Node dependencies
-              run: npm install
-
-            - name: Build assets
-              run: npm run build
 
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass
@@ -44,6 +32,8 @@ jobs:
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
                     cd www/Loisirs-location && \
                     git pull origin develop && \
+                    npm install && \
+                    npm run build && \
                     composer install --no-dev --optimize-autoloader && \
                     php bin/console cache:clear --env=prod --no-debug && \
                     php bin/console doctrine:migrations:sync-metadata-storage --env=prod --no-debug || true && \
