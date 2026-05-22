@@ -11,7 +11,6 @@
 				Envoyez votre demande en 2 minutes. Nous vous répondons sous 24h pour confirmer les dates et les conditions.
 			</p>
 		</div>
-
         {% if van.quote is defined and van.quote is not null %}
             <div class="flex flex-col gap-5">
                 <twig:Button href="{{ path('app_quote', { id: van.id }) }}" variant="primary" size="lg" icon="arrow-right">

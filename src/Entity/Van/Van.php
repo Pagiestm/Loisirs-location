@@ -48,7 +48,7 @@ class Van
     /**
      * @var Collection<int, QuoteResponse>
      */
-    #[ORM\OneToMany(targetEntity: QuoteResponse::class, mappedBy: 'van')]
+    #[ORM\OneToMany(targetEntity: QuoteResponse::class, mappedBy: 'van', cascade: ['persist', 'remove'])]
     private Collection $quoteResponses;
 
     /**
