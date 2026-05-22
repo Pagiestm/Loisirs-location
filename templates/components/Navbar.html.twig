@@ -18,7 +18,7 @@
 		class="relative z-10 max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
 
 		{# Logo #}
-		<a href="{{ path('app_home') }}" class="flex items-center gap-3 group w-14 h-14" aria-label="Retour à l'accueil">
+		<a href="{{ path('app_home') }}" class="flex items-center gap-3 group w-17 h-17" aria-label="Retour à l'accueil">
 			<img src="{{ asset('images/LL-logo-2.png') }}" alt="Loisirs Location" class="w-full h-full object-contain"/>
 		</a>
 
@@ -56,7 +56,6 @@
 						{# Dropdown menu #}
 						<div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
 							<a href="{{ path('app_profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-t-lg">Mon profil</a>
-							<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mes réservations</a>
 							{% if app.user is defined and app.user.isAdmin is true %}
 								<a data-turbo="false" href="{{ path('admin') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
 									Tableau de bord
@@ -77,12 +76,6 @@
 						</button>
 					</li>
 				{% endif %}
-
-				<li>
-					<twig:Button href="#devis" variant="primary" size="sm">
-						Demander un devis
-					</twig:Button>
-				</li>
 			</ul>
 		</nav>
 
@@ -137,7 +130,6 @@
 						<div class="text-primary font-medium mb-2">{{ app.user.firstName }}
 							{{ app.user.lastName }}</div>
 						<a href="{{ path('app_profile') }}" class="text-white/80 hover:text-white block py-2 transition-colors">Mon profil</a>
-						<a href="#" class="text-white/80 hover:text-white block py-2 transition-colors">Mes réservations</a>
 						{% if app.user is defined and app.user.isAdmin is true %}
 							<a data-turbo="false" href="{{ path('admin') }}" class="text-white/80 hover:text-white block py-2 transition-colors">
 								Tableau de bord
@@ -158,12 +150,5 @@
 				{% endif %}
 			</ul>
 		</nav>
-
-		{# CTA #}
-		<div class="mt-auto">
-			<twig:Button href="#devis" variant="primary" size="md" :fullwidth="true">
-				Demander un devis
-			</twig:Button>
-		</div>
 	</div>
 </header>

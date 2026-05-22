@@ -17,8 +17,9 @@ final class LucideIconField implements FieldInterface
             ->setLabel($label ?? 'Icone')
             ->setTemplatePath('admin/field/lucide_icon.html.twig')
             ->setFormType(TextType::class)
-            ->setHelp('Entrez le nom de l\'icône Lucide (ex: "user", "camera", "heart", etc.). Vous pouvez consulter la liste complète des icônes sur <a href="https://lucide.dev/icons/" target="_blank" class="underline">le site de Lucide</a>.')
-            ->setFormTypeOption('attr.placeholder', 'user-circle')
-            ->setFormTypeOption('attr.autocomplete', 'off');
+            ->setHelp('Choisissez une icône visuellement dans la galerie.')
+            ->setFormTypeOption('attr.placeholder', 'Rechercher une icône')
+            ->setFormTypeOption('attr.autocomplete', 'off')
+            ->setFormTypeOption('attr.data-controller', 'lucide-icon-picker');
     }
 }

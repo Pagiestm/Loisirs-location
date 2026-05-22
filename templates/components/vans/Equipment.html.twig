@@ -4,12 +4,12 @@
 
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <div>
-                <p class="font-body text-xs uppercase tracking-[0.2em] text-brown/40 mb-3">À bord du {{ van.name }}</p>
+                <p class="font-body text-xs uppercase tracking-[0.2em] text-brown mb-3">À bord du {{ van.name }}</p>
                 <h2 class="font-display text-5xl md:text-6xl text-secondary leading-tight">
                     Tout ce dont<br>vous avez besoin
                 </h2>
             </div>
-            <p class="font-body text-sm text-brown/40 max-w-xs leading-relaxed">
+            <p class="font-body text-sm text-brown max-w-xs leading-relaxed">
                 {{ van.options|length }} équipement{{ van.options|length > 1 ? 's' : '' }} inclus dans votre location.
             </p>
         </div>
@@ -25,7 +25,7 @@
                 <div class="min-w-0">
                     <p class="font-body text-sm font-semibold text-secondary">{{ vo.option.name }}</p>
                     {% if vo.value %}
-                    <p class="font-body text-xs text-brown/50 mt-0.5">{{ vo.value }}</p>
+                    <p class="font-body text-xs text-brown mt-0.5">{{ vo.value }}</p>
                     {% endif %}
                 </div>
             </div>

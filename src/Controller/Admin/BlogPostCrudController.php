@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -90,15 +89,6 @@ class BlogPostCrudController extends AbstractCrudController
                 'published' => 'success',
             ]);
 
-        yield AssociationField::new('author', 'Auteur')
-            ->setRequired(true)
-            ->setColumns('col-md-6')
-            ->hideOnIndex();
-
-        yield DateTimeField::new('publishedAt', 'Date de publication')
-            ->setColumns('col-md-6')
-            ->setHelp('Laissez vide pour publier immédiatement');
-
         yield FormField::addFieldset('Contenu')->onlyOnForms();
 
         yield TextareaField::new('excerpt', 'Résumé')
@@ -133,6 +123,10 @@ class BlogPostCrudController extends AbstractCrudController
 
         yield DateTimeField::new('createdAt', 'Créé le')
             ->hideOnForm();
+
+        yield DateTimeField::new('publishedAt', 'Date de publication')
+            ->hideOnForm()
+            ->hideOnIndex();
 
         yield DateTimeField::new('updatedAt', 'Modifié le')
             ->hideOnForm()
@@ -169,7 +163,7 @@ class BlogPostCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance instanceof BlogPost) {
-            if ($entityInstance->getStatus() === 'published' && $entityInstance->getPublishedAt() === null) {
+            if ($entityInstance->getPublishedAt() === null) {
                 $entityInstance->setPublishedAt(new \DateTimeImmutable());
             }
 
@@ -223,6 +217,8 @@ class BlogPostCrudController extends AbstractCrudController
         if ($user instanceof User) {
             $post->setAuthor($user);
         }
+
+        $post->setPublishedAt(new \DateTimeImmutable());
 
         return $post;
     }

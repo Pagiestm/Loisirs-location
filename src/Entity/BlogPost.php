@@ -105,9 +105,6 @@ class BlogPost
             if ($this->publishedAt === null) {
                 $this->publishedAt = new \DateTimeImmutable();
             }
-        } else {
-            // Permet de réinitialiser la date quand on repasse en brouillon
-            $this->publishedAt = null;
         }
     }
 

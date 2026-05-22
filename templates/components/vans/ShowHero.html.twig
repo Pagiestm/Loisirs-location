@@ -17,9 +17,9 @@
 			<h1 class="font-display text-7xl md:text-9xl text-white leading-none mb-8">{{ van.name }}</h1>
 
 			{% if van.description %}
-				<p class="font-body text-white text-sm leading-relaxed max-w-sm mb-10">
-					{{ van.description }}
-				</p>
+				<div class="font-body text-white text-sm leading-relaxed max-w-sm mb-10 space-y-4">
+					{{ van.description|raw }}
+				</div>
 			{% endif %}
 
             {% if van.quote is defined and van.quote is not null %}

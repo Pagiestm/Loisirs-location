@@ -26,10 +26,11 @@ jobs:
             - name: Install PHP dependencies
               run: composer install --no-interaction --prefer-dist
 
+            - name: Install Node dependencies
+              run: npm install
+
             - name: Build assets
-              run: |
-                  npm ci
-                  npm run build
+              run: npm run build
 
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass

@@ -29,4 +29,6 @@ yarn-error.log
 /public/images/vans/gallery/*.jpeg
 /public/images/vans/gallery/*.png
 /public/images/vans/gallery/*.webp
+/public/uploads/blog
+/uploads/quotes
 ###< uploads ###
