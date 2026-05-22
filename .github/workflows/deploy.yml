@@ -28,20 +28,21 @@ jobs:
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass
 
-            - name: Prepare and upload node_modules (via SCP/SFTP)
+            - name: Build assets and upload (via SCP/SFTP)
               run: |
-                  npm install --omit=dev
-                  tar -czf node_modules.tar.gz node_modules
-                  sshpass -e scp -o StrictHostKeyChecking=no node_modules.tar.gz ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
+                  npm install
+                  npm run build
+                  npm prune --omit=dev
+                  tar -czf artifacts.tar.gz node_modules public/build
+                  sshpass -e scp -o StrictHostKeyChecking=no artifacts.tar.gz ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
 
             - name: Deploy to AlwaysData
               run: |
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
                     cd www/Loisirs-location && \
                     git pull origin develop && \
-                    tar -xzf node_modules.tar.gz && \
-                    rm node_modules.tar.gz && \
-                    npm run build && \
+                    tar -xzf artifacts.tar.gz && \
+                    rm artifacts.tar.gz && \
                     composer install --no-dev --optimize-autoloader && \
                     php bin/console cache:clear --env=prod --no-debug && \
                     php bin/console doctrine:migrations:sync-metadata-storage --env=prod --no-debug || true && \
