@@ -23,10 +23,6 @@ jobs:
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass
 
-            - name: Copy built assets to server
-              run: |
-                  sshpass -e scp -o StrictHostKeyChecking=no -r public/build ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:~/www/Loisirs-location/public/
-
             - name: Deploy to AlwaysData
               run: |
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
