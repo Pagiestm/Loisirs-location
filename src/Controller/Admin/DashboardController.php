@@ -27,7 +27,8 @@ class DashboardController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         return Assets::new()
-            ->addWebpackEncoreEntry('admin');
+            ->addWebpackEncoreEntry('admin')
+            ->addHtmlContentToHead('<meta name="turbo-visit-control" content="reload">');
     }
 
     public function index(): Response
@@ -70,7 +71,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToRoute('Retour au site', 'fa fa-arrow-left', 'app_home');
+        $appHome = $this->generateUrl('app_home');
+        yield MenuItem::linkToUrl('Retour au site', 'fa fa-arrow-left', $appHome);
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Gestion du contenu', 'fa fa-pencil-alt', 'admin_edit_content');
         yield MenuItem::linkToCrud('Blog', 'fa fa-newspaper', BlogPost::class);
