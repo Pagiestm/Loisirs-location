@@ -19,6 +19,13 @@ final class QuoteController extends AbstractController
     #[Route('/devis/{id}', name: 'app_quote')]
     public function index(int $id, VanRepository $vanRepository, Request $request, EntityManagerInterface $em, MailService $mailService): Response
     {
+        $user = $this->getUser();
+
+        if (!$user || !$user instanceof User) {
+            $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page.');
+            return $this->redirectToRoute('app_home', ['open_login' => 'true']);
+        }
+
         /** @var ?Van $van */
         $van = $vanRepository->find($id);
 
