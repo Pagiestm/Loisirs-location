@@ -8,9 +8,12 @@ export default class extends Controller {
     static outlets = ["modal"];
 
     connect() {
+        this.parentModal = this.element.closest("[data-controller='modal']");
+
         this.boundHandleRegistrationSuccess =
             this.handleRegistrationSuccess.bind(this);
         this.boundHandleModalOpened = this.handleModalOpened.bind(this);
+        this.boundHandleModalClosed = this.handleModalClosed.bind(this);
 
         document.addEventListener(
             "registration:success",
@@ -18,9 +21,15 @@ export default class extends Controller {
         );
 
         // Écouter l'événement d'ouverture du modal
-        this.element.addEventListener(
+        this.parentModal.addEventListener(
             "modal:opened",
             this.boundHandleModalOpened,
+        );
+
+        // Écouter l'événement de fermeture du modal
+        this.parentModal.addEventListener(
+            "modal:closed",
+            this.boundHandleModalClosed,
         );
 
         // Focus sur le premier input au chargement initial
@@ -32,9 +41,13 @@ export default class extends Controller {
             "registration:success",
             this.boundHandleRegistrationSuccess,
         );
-        this.element.removeEventListener(
+        this.parentModal.removeEventListener(
             "modal:opened",
             this.boundHandleModalOpened,
+        );
+        this.parentModal.removeEventListener(
+            "modal:closed",
+            this.boundHandleModalClosed,
         );
     }
 
@@ -121,6 +134,17 @@ export default class extends Controller {
      */
     handleModalOpened() {
         this.focusFirstInput();
+    }
+
+    /**
+     * Gère l'événement de fermeture du modal
+     */
+    handleModalClosed() {
+        const url = new URL(window.location);
+        if (url.searchParams.has("open_login")) {
+            url.searchParams.delete("open_login");
+            window.history.replaceState({}, "", url);
+        }
     }
 
     /**

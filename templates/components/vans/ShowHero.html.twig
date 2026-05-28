@@ -23,7 +23,11 @@
 			{% endif %}
 
             {% if van.quote is defined and van.quote is not null %}
-			    <twig:Button href="{{ path('app_quote', { 'id': van.id }) }}" variant="primary" size="lg" icon="arrow-right">Demander un devis</twig:Button>
+                {% if app.user is not null %}
+                    <twig:Button href="{{ path('app_quote', { 'id': van.id }) }}" variant="primary" size="lg" icon="arrow-right">Demander un devis</twig:Button>
+                {% else %}
+                    <twig:Button href="?open_login=true" variant="primary" size="lg" icon="arrow-right">Se connecter</twig:Button>
+                {% endif %}
             {% else %}
                 <p class="text-beige text-xs font-body opacity-80 italic">Aucun devis disponible pour ce van.</p>
             {% endif %}

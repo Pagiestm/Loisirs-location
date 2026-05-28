@@ -48,14 +48,18 @@ export default class extends Controller {
     triggerOpen(event) {
         if (event) event.preventDefault();
         document.dispatchEvent(
-            new CustomEvent("modal:open", { detail: { modalId: this.idValue } })
+            new CustomEvent("modal:open", {
+                detail: { modalId: this.idValue },
+            }),
         );
     }
 
     triggerClose(event) {
         if (event) event.preventDefault();
         document.dispatchEvent(
-            new CustomEvent("modal:close", { detail: { modalId: this.idValue } })
+            new CustomEvent("modal:close", {
+                detail: { modalId: this.idValue },
+            }),
         );
     }
 
@@ -155,6 +159,17 @@ export default class extends Controller {
             this.element.classList.add("hidden");
             document.body.style.overflow = "";
         }, 300);
+
+        // Dispatcher un événement pour signaler que le modal est fermé
+        // Cela permet aux contrôleurs enfants de réagir (ex: focus sur input)
+        setTimeout(() => {
+            this.element.dispatchEvent(
+                new CustomEvent("modal:closed", {
+                    bubbles: true,
+                    detail: { modalId: this.element.id },
+                }),
+            );
+        }, 100);
     }
 
     // Enregistrer où le mousedown se produit
