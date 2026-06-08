@@ -30,13 +30,13 @@ class Field
     private FieldEnum $type;
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'fields')]
-    #[ORM\JoinColumn(name: 'id_quote', referencedColumnName: 'id_quote', nullable: false)]
+    #[ORM\JoinColumn(name: 'id_quote', referencedColumnName: 'id_quote', nullable: false, onDelete: 'CASCADE')]
     private ?Quote $quote = null;
 
     /**
      * @var Collection<int, QuoteResponseValue>
      */
-    #[ORM\OneToMany(targetEntity: QuoteResponseValue::class, mappedBy: 'field')]
+    #[ORM\OneToMany(targetEntity: QuoteResponseValue::class, mappedBy: 'field', orphanRemoval: true)]
     private Collection $quoteResponseValues;
 
     public function __construct()

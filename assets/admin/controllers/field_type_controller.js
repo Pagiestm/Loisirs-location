@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import { Controller } from "@hotwired/stimulus";
 
 /*
  * This is an example Stimulus controller!
@@ -8,7 +8,7 @@ import { Controller } from '@hotwired/stimulus';
  * field_type_controller.js -> "field-type"
  */
 export default class extends Controller {
-    static targets = ['type', 'choicesContainer'];
+    static targets = ["type", "choicesContainer", "watermarkContainer"];
 
     connect() {
         this.toggleChoices();
@@ -16,12 +16,19 @@ export default class extends Controller {
 
     toggleChoices() {
         const type = this.typeTarget.value;
-        const needsChoices = ['select', 'checkbox', 'radio'].includes(type);
-        
+        const needsChoices = ["select", "checkbox", "radio"].includes(type);
+
         if (needsChoices) {
-            this.choicesContainerTarget.classList.remove('d-none');
+            this.choicesContainerTarget.classList.remove("d-none");
         } else {
-            this.choicesContainerTarget.classList.add('d-none');
+            this.choicesContainerTarget.classList.add("d-none");
+        }
+
+        const isFile = type === "file";
+        if (isFile) {
+            this.watermarkContainerTarget.classList.remove("d-none");
+        } else {
+            this.watermarkContainerTarget.classList.add("d-none");
         }
     }
 }

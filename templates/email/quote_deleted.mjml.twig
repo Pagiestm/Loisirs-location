@@ -1,0 +1,50 @@
+<mjml>
+    <mj-head>
+        <mj-title>Suppression de votre demande de devis</mj-title>
+        <mj-preview>Votre demande de devis a été supprimée</mj-preview>
+    </mj-head>
+
+    <mj-body background-color="#eaccb1">
+
+        <mj-section background-color="#465b32" padding="40px 20px">
+            <mj-column>
+                <mj-text align="center" color="#ffffff" font-size="28px" font-weight="bold">
+                    LOISIRS LOCATION
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section background-color="#ffffff" padding="40px 30px">
+            <mj-column>
+
+                <mj-text font-size="22px" font-weight="bold" color="#465b32">
+                    Demande de devis supprimée
+                </mj-text>
+
+                <mj-divider border-color="#eaccb1" />
+
+                <mj-text>
+                    Bonjour {{ user.firstName|default(user.email) }},
+                </mj-text>
+
+                <mj-text>
+                    Nous vous informons que votre demande de devis pour le van
+                    <strong>{{ van.name }}</strong>,
+                    effectuée le
+                    <strong>{{ quoteResponse.createdAt|date('d/m/Y à H:i') }}</strong>,
+                    a été supprimée de notre système.
+                </mj-text>
+
+                <mj-text>
+                    Si vous pensez qu'il s'agit d'une erreur, vous pouvez nous recontacter.
+                </mj-text>
+
+                <mj-text>
+                    L'équipe Loisirs Location
+                </mj-text>
+
+            </mj-column>
+        </mj-section>
+
+    </mj-body>
+</mjml>
