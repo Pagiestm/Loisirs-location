@@ -87,6 +87,22 @@ class FieldType extends AbstractType
                         'class' => 'd-none',
                     ],
                 ])
+                ->add('watermark', ChoiceType::class, [
+                    'required' => true,
+                    'mapped' => false,
+                    'label' => 'Ajouter un filigrane',
+                    'choices' => [
+                        'Oui' => true,
+                        'Non' => false,
+                    ],
+                    'expanded' => true,
+                    'multiple' => false,
+                    'row_attr' => [
+                        'data-field-type-target' => 'watermarkContainer',
+                        'class' => 'd-none',
+                    ],
+                    'data' => $data ? ($data->getOptions()['attr']['watermark'] ?? false) : false,
+                ])
                 ->add('required', ChoiceType::class, [
                     'required' => true,
                     'mapped' => false,
@@ -156,6 +172,9 @@ class FieldType extends AbstractType
                     $options['expanded'] = false;
                     $options['multiple'] = false;
                 }
+            } else if ($type && $type->value === 'file') {
+                $options['attr']['accept'] = '.pdf, .jpg, .jpeg, .png';
+                $options['attr']['watermark'] = $form->get('watermark')->getData();
             }
 
 

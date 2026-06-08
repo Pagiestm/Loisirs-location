@@ -120,6 +120,11 @@ final class QuoteController extends AbstractController
                 $value = $form->get($fieldId)->getData();
                 $quoteResponseValue = new QuoteResponseValue();
 
+                if (empty($value) && $field->getOptions()['required'] ?? false) {
+                    $this->addFlash('error', sprintf('Le champ "%s" est obligatoire.', $field->getLabel()));
+                    return $this->redirectToRoute('app_quote', ['id' => $id]);
+                }
+
                 if ($value instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
                     $quoteResponseValue->setDocumentFile($value);
                     // VichUploaderBundle will handle the file upload and setting the filename in "value".
