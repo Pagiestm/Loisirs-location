@@ -2,10 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\Quote\FieldCrudController;
 use App\Controller\Admin\Quote\QuoteCrudController;
 use App\Controller\Admin\Quote\QuoteResponseCrudController;
-use App\Controller\Admin\Van\OptionCrudController;
+use App\Controller\Admin\Van\EquipmentCrudController;
 use App\Controller\Admin\Van\VanCrudController;
 use App\Entity\BlogPost;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -78,7 +77,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Blog', 'fa fa-newspaper', BlogPost::class);
         yield MenuItem::subMenu('Gestion des vans', 'fa fa-van-shuttle')->setSubItems([
             MenuItem::linkTo(VanCrudController::class, 'Vans', 'fa fa-list'),
-            MenuItem::linkTo(OptionCrudController::class, 'Options', 'fa fa-gears'),
+            MenuItem::linkTo(EquipmentCrudController::class, 'Équipements', 'fa fa-gears'),
             MenuItem::linkToRoute('Galerie', 'fa fa-image', 'admin_vans_gallery'),
         ]);
         yield MenuItem::subMenu('Gestion des devis', 'fa fa-file-invoice')->setSubItems([

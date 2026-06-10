@@ -16,7 +16,7 @@ class HomeController extends AbstractController implements EditableControllerInt
     {
         return $this->render('pages/home/index.html.twig', [
             'placeData' => $googleReviews->getPlaceData(5),
-            'vans'      => $vanRepository->findAllWithOptions(),
+            'vans'      => $vanRepository->findAllWithEquipments(),
         ]);
     }
 }

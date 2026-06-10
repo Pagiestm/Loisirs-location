@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Van;
 
 use App\Entity\Van\Van;
 use App\Form\Type\Van\VanImageType;
+use App\Form\Type\Van\VanEquipmentType;
 use App\Form\Type\Van\VanOptionType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -44,7 +45,13 @@ class VanCrudController extends AbstractCrudController
             ->setNumOfRows(5)
             ->onlyOnForms();
 
-        yield FormField::addTab('Équipements', 'fa fa-list-check')->onlyOnForms();
+        yield FormField::addTab('Équipements et options', 'fa fa-list-check')->onlyOnForms();
+
+        yield CollectionField::new('equipments', 'Équipements')
+            ->setEntryType(VanEquipmentType::class)
+            ->setFormTypeOption('by_reference', false)
+            ->setColumns('col-12')
+            ->onlyOnForms();
 
         yield CollectionField::new('options', 'Options')
             ->setEntryType(VanOptionType::class)

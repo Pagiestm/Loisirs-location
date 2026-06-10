@@ -16,24 +16,24 @@ class VanRepository extends ServiceEntityRepository
         parent::__construct($registry, Van::class);
     }
 
-    /** Tous les vans avec options chargées en une seule requête */
-    public function findAllWithOptions(): array
+    /** Tous les vans avec équipements chargés en une seule requête */
+    public function findAllWithEquipments(): array
     {
         return $this->createQueryBuilder('v')
-            ->leftJoin('v.options', 'vo')
-            ->leftJoin('vo.option', 'o')
+            ->leftJoin('v.equipments', 'vo')
+            ->leftJoin('vo.equipment', 'o')
             ->addSelect('vo', 'o')
             ->orderBy('v.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
 
-    /** Un van avec toutes ses options */
-    public function findOneWithOptions(int $id): ?Van
+    /** Un van avec toutes ses équipements */
+    public function findOneWithEquipments(int $id): ?Van
     {
         return $this->createQueryBuilder('v')
-            ->leftJoin('v.options', 'vo')
-            ->leftJoin('vo.option', 'o')
+            ->leftJoin('v.equipments', 'vo')
+            ->leftJoin('vo.equipment', 'o')
             ->addSelect('vo', 'o')
             ->where('v.id = :id')
             ->setParameter('id', $id)

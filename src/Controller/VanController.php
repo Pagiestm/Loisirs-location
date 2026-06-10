@@ -15,14 +15,14 @@ class VanController extends AbstractController implements EditableControllerInte
     public function index(VanRepository $vanRepository): Response
     {
         return $this->render('pages/vans/index.html.twig', [
-            'vans' => $vanRepository->findAllWithOptions(),
+            'vans' => $vanRepository->findAllWithEquipments(),
         ]);
     }
 
     #[Route('/{id}', name: '_show', requirements: ['id' => '\d+'])]
     public function show(int $id, VanRepository $vanRepository): Response
     {
-        $van = $vanRepository->findOneWithOptions($id);
+        $van = $vanRepository->findOneWithEquipments($id);
 
         if (!$van) {
             throw $this->createNotFoundException('Van introuvable.');

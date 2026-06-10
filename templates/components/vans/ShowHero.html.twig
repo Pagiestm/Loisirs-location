@@ -1,5 +1,5 @@
 <section
-	class="bg-secondary relative overflow-hidden min-h-screen lg:h-screen flex flex-col pt-24 px-6">
+	class="bg-secondary relative overflow-hidden min-h-screen xl:h-screen flex flex-col pt-24 px-6">
 	<twig:TextureBackground type="wood" :overlay="0.72" />
 
 	<div
@@ -22,15 +22,18 @@
 				</div>
 			{% endif %}
 
-            {% if van.quote is defined and van.quote is not null %}
-                {% if app.user is not null %}
-                    <twig:Button href="{{ path('app_quote', { 'id': van.id }) }}" variant="primary" size="lg" icon="arrow-right">Demander un devis</twig:Button>
+            <div class="lg:max-xl:mb-8">
+                {% if van.quote is defined and van.quote is not null %}
+
+                    {% if app.user is not null %}
+                        <twig:Button href="{{ path('app_quote', { 'id': van.id }) }}" variant="primary" size="lg" icon="arrow-right">Demander un devis</twig:Button>
+                    {% else %}
+                        <twig:Button href="?open_login=true" variant="primary" size="lg" icon="arrow-right">Se connecter</twig:Button>
+                    {% endif %}
                 {% else %}
-                    <twig:Button href="?open_login=true" variant="primary" size="lg" icon="arrow-right">Se connecter</twig:Button>
+                    <p class="text-beige text-xs font-body opacity-80 italic">Aucun devis disponible pour ce van.</p>
                 {% endif %}
-            {% else %}
-                <p class="text-beige text-xs font-body opacity-80 italic">Aucun devis disponible pour ce van.</p>
-            {% endif %}
+            </div>
 		</div>
 
 		{# ── Galerie d'images ── #}

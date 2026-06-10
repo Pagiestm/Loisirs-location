@@ -40,9 +40,15 @@ class Van
     private ?Quote $quote = null;
 
     /**
-     * @var Collection<int, VanOption>
+     * @var Collection<int, VanEquipment>
      */
-    #[ORM\OneToMany(targetEntity: VanOption::class, mappedBy: 'van', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: VanEquipment::class, mappedBy: 'van', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $equipments;
+
+    /**
+     * @var Collection<int, Option>
+     */
+    #[ORM\OneToMany(targetEntity: Option::class, mappedBy: 'van', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $options;
 
     /**
@@ -156,26 +162,26 @@ class Van
     }
 
     /**
-     * @return Collection<int, VanOption>
+     * @return Collection<int, VanEquipment>
      */
-    public function getOptions(): Collection
+    public function getEquipments(): Collection
     {
-        return $this->options;
+        return $this->equipments;
     }
 
-    public function addOption(VanOption $vanOption): static
+    public function addEquipment(VanEquipment $vanEquipment): static
     {
-        if (!$this->options->contains($vanOption)) {
-            $this->options->add($vanOption);
-            $vanOption->setVan($this);
+        if (!$this->equipments->contains($vanEquipment)) {
+            $this->equipments->add($vanEquipment);
+            $vanEquipment->setVan($this);
         }
 
         return $this;
     }
 
-    public function removeOption(VanOption $vanOption): static
+    public function removeEquipment(VanEquipment $vanEquipment): static
     {
-        $this->options->removeElement($vanOption);
+        $this->equipments->removeElement($vanEquipment);
 
         return $this;
     }
@@ -264,6 +270,33 @@ class Van
             // set the owning side to null (unless already changed)
             if ($quoteResponse->getVan() === $this) {
                 $quoteResponse->setVan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): static
+    {
+        if (!$this->options->contains($option)) {
+            $this->options->add($option);
+            $option->setVan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): static
+    {
+        if ($this->options->removeElement($option)) {
+            // set the owning side to null (unless already changed)
+            if ($option->getVan() === $this) {
+                $option->setVan(null);
             }
         }
 
