@@ -1,0 +1,56 @@
+error:
+    400:
+        title: "Requête invalide"
+        message: "La requête envoyée est incorrecte ou mal formée. Vérifiez les données et réessayez."
+
+    401:
+        title: "Non autorisé"
+        message: "Vous devez être authentifié pour accéder à cette ressource."
+
+    403:
+        title: "Accès interdit"
+        message: "Vous n'avez pas les permissions nécessaires pour accéder à cette page."
+
+    404:
+        title: "Page introuvable"
+        message: "Cette page a pris la clé des champs — ou n'a jamais existé. Retournez à l'accueil pour reprendre la route."
+
+    405:
+        title: "Méthode non autorisée"
+        message: "La méthode utilisée n'est pas autorisée pour cette requête."
+
+    408:
+        title: "Délai d'attente dépassé"
+        message: "Le serveur a mis trop de temps à répondre. Veuillez réessayer."
+
+    409:
+        title: "Conflit"
+        message: "Une incohérence est survenue avec l'état actuel de la ressource."
+
+    422:
+        title: "Erreur de validation"
+        message: "Certaines données sont invalides ou manquantes. Vérifiez votre saisie."
+
+    429:
+        title: "Trop de requêtes"
+        message: "Vous avez envoyé trop de requêtes en peu de temps. Réessayez plus tard."
+
+    500:
+        title: "Erreur interne du serveur"
+        message: "Oups, quelque chose a mal tourné de notre côté. Essayez de rafraîchir la page ou revenez plus tard."
+
+    502:
+        title: "Mauvaise passerelle"
+        message: "Le serveur a reçu une réponse invalide en amont."
+
+    503:
+        title: "Service indisponible"
+        message: "Le service est temporairement indisponible. Veuillez réessayer plus tard."
+
+    504:
+        title: "Temps d'attente dépassé"
+        message: "Le serveur n'a pas répondu à temps."
+
+    default:
+        title: "Une erreur est survenue"
+        message: "Oups, quelque chose a mal tourné. Essayez de rafraîchir la page ou revenez plus tard."
