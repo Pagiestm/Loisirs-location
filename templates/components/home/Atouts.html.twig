@@ -45,15 +45,21 @@
                     },
                 ] %}
 
-                {% for atout in atouts %}
+                {% for i in 0..5 %}
                 <div class="group flex items-start gap-5 py-6 first:pt-0">
                     <twig:ux:icon
-                        name="{{ atout.icon }}"
+                        name="{{ atouts[i].icon }}"
                         class="w-5 h-5 text-secondary/30 mt-0.5 shrink-0 group-hover:text-primary transition-colors duration-200"
                         aria-hidden="true"
                     />
                     <div>
-                        <h3 class="font-body text-sm font-semibold text-secondary mb-1">{{ atout.title }}</h3>
+                        <twig:Editable:Text
+                            page="home"
+                            field="atout_title_{{ loop.index }}"
+                            placeholder="Titre de l'atout {{ loop.index }}"
+                        >
+                        <h3 class="font-body text-sm font-semibold text-secondary mb-1">{{ parent() }}</h3>
+                         </twig:Editable:Text>
                         <twig:Editable:Textarea
                             page="home"
                             field="atout_desc_{{ loop.index }}"

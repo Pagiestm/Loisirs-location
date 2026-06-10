@@ -22,19 +22,18 @@
 
         {# CTA + détails #}
         <div class="flex flex-col gap-6">
-            <ul class="flex flex-col gap-3">
-                {% set points = [
-                    'Réponse personnalisée sous 24h',
-                    'Aucun paiement en ligne requis',
-                    'Contrat signé à la remise des clés',
-                ] %}
-                {% for point in points %}
-                <li class="flex items-center gap-3 font-body text-sm text-brown/50">
-                    <span class="w-1 h-1 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
-                    {{ point }}
-                </li>
-                {% endfor %}
-            </ul>
+            <twig:Editable:UnorderedList page="home" field="cta_points" placeholder="Points du bandeau CTA" class="flex items-center gap-3 font-body text-sm text-brown/50">
+                    {% block list %}
+                        <ul class="flex flex-col gap-3">
+                            {% for item in items %}
+                            <li class="flex items-center gap-3 font-body text-sm text-brown/50">
+                                <span class="w-1 h-1 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+                                {{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+            </twig:Editable:UnorderedList>
         </div>
 
     </div>

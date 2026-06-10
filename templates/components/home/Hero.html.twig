@@ -5,15 +5,15 @@
 >
     {# ---- Fond image ---- #}
     <div class="absolute inset-0">
-        <img
-            src="/images/Home.jpg"
-            alt=""
+        <twig:Editable:Image
+            page="home"
+            field="hero_image"
             class="absolute inset-0 w-full h-full object-cover"
-            aria-hidden="true"
-        >
+        />
+
         {# Overlay : dégradé brun — fort en haut (navbar) puis vers le bas #}
         <div
-            class="absolute inset-0 bg-gradient-to-b from-brown/70 via-brown/40 to-brown/75"
+            class="absolute inset-0 bg-gradient-to-b from-brown/70 via-brown/40 to-brown/75 pointer-events-none"
             aria-hidden="true"
         ></div>
     </div>
