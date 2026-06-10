@@ -5,13 +5,13 @@
     {{ stimulus_target('context-menu', 'container') }}
     {{ stimulus_action('context-menu', 'preventFocus', 'mousedown')|stimulus_action('context-menu', 'close', 'context-menu:close@window') }}
     tabindex="-1"
-    class="relative inline-block group focus-within:outline-none"
+    class="relative inline-block group/context has-focus:outline-none w-full h-full"
 >
     {# Zone trigger - clic droit pour ouvrir le menu #}
     <div
         {{ stimulus_target('context-menu', 'trigger') }}
         {{ stimulus_action('context-menu', 'open', 'contextmenu') }}
-        class="cursor-context-menu *:rounded-md *:outline-2 *:outline-transparent *:outline-offset-8 *:outline-dashed *:hover:outline-gray-400 *:group-focus-within:outline-solid! *:group-focus-within:outline-gray-400 *:transition-all"
+        class="cursor-context-menu *:rounded-md *:outline-2 *:outline-transparent *:outline-offset-2 *:outline-dashed *:hover:outline-gray-400 *:group-focus-within/context:outline-solid! *:group-focus-within/context:outline-gray-400 *:transition-all"
     >
         {% block trigger %}
             {# Contenu cliquable par défaut #}

@@ -36,3 +36,20 @@ hero_cta: 'Demander un devis'
 cta_subtitle: 'Gratuit · Sans engagement'
 cta_title: 'Prêt à<br>prendre<br>la route ?'
 cta_description: 'Dites-nous vos dates et votre projet. Réponse sous 24h. Pas de paiement en ligne — tout se règle à la remise des clés.'
+atout_title_1: 'Flexibilité totale'
+atout_title_2: 'Réponse sous 24h'
+atout_title_3: 'Vans bien entretenus'
+atout_title_4: 'Contact humain'
+atout_title_5: 'Paiement à la remise'
+atout_title_6: 'Données protégées'
+faq_q_1: 'Comment réserver un van ?'
+faq_q_2: 'Y a-t-il un paiement en ligne ?'
+faq_q_3: 'Quels documents faut-il prévoir ?'
+faq_q_4: 'Les vans sont-ils bien équipés ?'
+faq_q_5: 'Puis-je partir hors des Hauts-de-France ?'
+faq_q_6: "Quelle est la politique d'annulation ?"
+cta_points: 'Réponse personnalisée sous 24h||Aucun paiement en ligne requis||Contrat signé à la remise des clés'
+hero_image_src: ''
+hero_image_alt: test
+hero_image.src: /uploads/images/6a297aaf4fb46.jpg
+hero_image.alt: Description

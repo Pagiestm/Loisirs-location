@@ -38,19 +38,21 @@
 
             {% for item in questions %}
             <div class="faq-item group py-6">
-                <button
-                    data-action="click->faq#toggle"
-                    class="w-full flex items-center justify-between gap-6 text-left focus:outline-none cursor-pointer"
-                >
-                    <span class="font-body text-sm font-semibold text-secondary group-[.faq-open]:text-primary transition-colors duration-200">
-                        {{ item.q }}
-                    </span>
-                    <twig:ux:icon
-                        name="lucide:plus"
-                        class="w-4 h-4 text-brown shrink-0 transition-transform duration-300 group-[.faq-open]:rotate-45"
-                        aria-hidden="true"
-                    />
-                </button>
+                <twig:Editable:Button page="home" field="faq_q_{{ loop.index }}" placeholder="Question {{ loop.index }}">
+                    <button
+                        data-action="click->faq#toggle"
+                        class="w-full flex items-center justify-between gap-6 text-left focus:outline-none cursor-pointer"
+                    >
+                        <span class="font-body text-sm font-semibold text-secondary group-[.faq-open]:text-primary transition-colors duration-200">
+                            {{ parent() }}
+                        </span>
+                        <twig:ux:icon
+                            name="lucide:plus"
+                            class="w-4 h-4 text-brown shrink-0 transition-transform duration-300 group-[.faq-open]:rotate-45"
+                            aria-hidden="true"
+                        />
+                    </button>
+                </twig:Editable:Button>
                 <div class="grid grid-rows-[0fr] transition-all duration-300 ease-in-out group-[.faq-open]:grid-rows-[1fr]">
                     <div class="overflow-y-hidden">
                         <twig:Editable:Textarea
