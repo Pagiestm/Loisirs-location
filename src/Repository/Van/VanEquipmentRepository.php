@@ -2,17 +2,17 @@
 
 namespace App\Repository\Van;
 
-use App\Entity\Van\VanOption;
+use App\Entity\Van\VanEquipment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<VanOption>
+ * @extends ServiceEntityRepository<VanEquipment>
  */
-class VanOptionRepository extends ServiceEntityRepository
+class VanEquipmentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, VanOption::class);
+        parent::__construct($registry, VanEquipment::class);
     }
 }

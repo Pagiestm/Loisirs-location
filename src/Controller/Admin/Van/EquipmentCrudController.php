@@ -3,15 +3,15 @@
 namespace App\Controller\Admin\Van;
 
 use App\EasyAdmin\Field\LucideIconField;
-use App\Entity\Van\Option;
+use App\Entity\Van\Equipment;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class OptionCrudController extends AbstractCrudController
+class EquipmentCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Option::class;
+        return Equipment::class;
     }
 
     public function configureFields(string $pageName): iterable

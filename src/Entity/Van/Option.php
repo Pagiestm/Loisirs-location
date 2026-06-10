@@ -2,36 +2,32 @@
 
 namespace App\Entity\Van;
 
-use App\Entity\Van\VanOption;
 use App\Repository\Van\OptionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
-#[ORM\Table(name: 'options')]
+#[ORM\Table(name: '`option`')]
 class Option
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_option')]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $icon = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var Collection<int, VanOption>
-     */
-    #[ORM\OneToMany(targetEntity: VanOption::class, mappedBy: 'option', cascade: ['persist', 'remove'])]
-    private Collection $vanOptions;
+    #[ORM\ManyToOne(targetEntity: Van::class)]
+    #[ORM\JoinColumn(name: 'id_van', referencedColumnName: 'id_van', nullable: false)]
+    private ?Van $van = null;
 
-    public function __construct()
+    public function __toString()
     {
-        $this->vanOptions = new ArrayCollection();
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -51,51 +47,26 @@ class Option
         return $this;
     }
 
-    public function getIcon(): ?string
+    public function getDescription(): ?string
     {
-        return $this->icon;
+        return $this->description;
     }
 
-    public function setIcon(?string $icon): static
+    public function setDescription(?string $description): static
     {
-        if ($icon === null || '' === trim($icon)) {
-            $this->icon = null;
-
-            return $this;
-        }
-
-        $normalized = trim($icon);
-        $this->icon = str_contains($normalized, ':') ? $normalized : 'lucide:' . $normalized;
+        $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, VanOption>
-     */
-    public function getVanOptions(): Collection
+    public function getVan(): ?Van
     {
-        return $this->vanOptions;
+        return $this->van;
     }
 
-    public function addVanOption(VanOption $vanOption): static
+    public function setVan(?Van $van): static
     {
-        if (!$this->vanOptions->contains($vanOption)) {
-            $this->vanOptions->add($vanOption);
-            $vanOption->setOption($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVanOption(VanOption $vanOption): static
-    {
-        if ($this->vanOptions->removeElement($vanOption)) {
-            // set the owning side to null (unless already changed)
-            if ($vanOption->getOption() === $this) {
-                $vanOption->setOption(null);
-            }
-        }
+        $this->van = $van;
 
         return $this;
     }

@@ -1,7 +1,8 @@
-{% if van.options is not empty %}
-<section id="equipements" class="bg-white py-24 px-6" aria-label="Équipements">
+{% if van.equipments is not empty or van.options is not empty %}
+<section id="equipements" class="bg-white py-24 px-6" aria-label="Équipements et options">
     <div class="max-w-6xl mx-auto">
 
+        {# En-tête de la section #}
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <div>
                 <p class="font-body text-xs uppercase tracking-[0.2em] text-brown mb-3">À bord du {{ van.name }}</p>
@@ -9,21 +10,25 @@
                     Tout ce dont<br>vous avez besoin
                 </h2>
             </div>
+            {% if van.equipments is not empty %}
             <p class="font-body text-sm text-brown max-w-xs leading-relaxed">
-                {{ van.options|length }} équipement{{ van.options|length > 1 ? 's' : '' }} inclus dans votre location.
+                {{ van.equipments|length }} équipement{{ van.equipments|length > 1 ? 's' : '' }} inclus dans votre location.
             </p>
+            {% endif %}
         </div>
 
+        {# Grille des Équipements de base #}
+        {% if van.equipments is not empty %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {% for vo in van.options %}
+            {% for vo in van.equipments %}
             <div class="group flex items-start gap-4 p-5 bg-beige rounded-2xl">
-                {% if vo.option.icon %}
+                {% if vo.equipment.icon %}
                 <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
-                    <twig:ux:icon name="{{ vo.option.icon }}" class="w-5 h-5 text-primary" aria-hidden="true" />
+                    <twig:ux:icon name="{{ vo.equipment.icon }}" class="w-5 h-5 text-primary" aria-hidden="true" />
                 </div>
                 {% endif %}
                 <div class="min-w-0">
-                    <p class="font-body text-sm font-semibold text-secondary">{{ vo.option.name }}</p>
+                    <p class="font-body text-sm font-semibold text-secondary">{{ vo.equipment.name }}</p>
                     {% if vo.value %}
                     <p class="font-body text-xs text-brown mt-0.5">{{ vo.value }}</p>
                     {% endif %}
@@ -31,6 +36,39 @@
             </div>
             {% endfor %}
         </div>
+        {% endif %}
+
+        {# --- NOUVELLE SECTION : OPTIONS --- #}
+        {% if van.options is not empty %}
+        <div class="mt-16 pt-12 border-t border-beige">
+            <h3 class="font-body text-xs uppercase tracking-[0.2em] text-brown mb-6">Options disponibles en supplément</h3>
+
+            <div class="flex flex-wrap gap-3">
+                {% for option in van.options %}
+                <div class="group relative flex items-center gap-2 px-5 py-2.5 border border-primary text-primary rounded-full hover:bg-primary/5 transition-colors duration-200 cursor-help">
+
+                    {# Nom de l'option #}
+                    <span class="font-body text-sm font-medium">{{ option.name }}</span>
+
+                    {# Icône d'information (uniquement si une description existe) #}
+                    {% if option.description %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0 opacity-70">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                    </svg>
+
+                    {# Tooltip (Bulle d'aide au survol) #}
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-80 p-4 bg-secondary text-white text-sm font-semibold rounded-xl shadow-xl pointer-events-none invisible opacity-0 scale-95 group-hover:visible group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 z-10 font-body leading-relaxed">
+                        <p>{{ option.description|nl2br }}</p>
+                        {# Petite flèche du tooltip #}
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-secondary"></div>
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 </section>
