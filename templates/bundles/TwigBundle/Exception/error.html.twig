@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur {{ status_code }} - Loisirs Location{% endblock %}
+
+{% block body %}
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&display=swap');
+    .ep-wrap {
+        background: #eaccb1;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        font-family: 'Atkinson Hyperlegible Mono', monospace;
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius-lg);
+    }
+    .ep-code {
+        font-size: 96px;
+        font-weight: 700;
+        color: #5a2e15;
+        opacity: 0.12;
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: -4px;
+    }
+    .ep-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #5a2e15;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .ep-icon svg { width: 28px; height: 28px; stroke: #eaccb1; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .ep-badge {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        color: #5a2e15;
+        background: rgba(90,46,21,0.12);
+        padding: 4px 12px;
+        border-radius: 99px;
+        margin-bottom: 16px;
+    }
+    .ep-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #5a2e15;
+        text-align: center;
+        margin: 0 0 12px;
+    }
+    .ep-msg {
+        font-size: 13px;
+        color: #7a4a28;
+        text-align: center;
+        max-width: 360px;
+        line-height: 1.7;
+        margin: 0 0 32px;
+    }
+    .ep-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #5a2e15;
+        color: #eaccb1;
+        font-family: inherit;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        padding: 12px 28px;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+    .ep-btn svg { width: 16px; height: 16px; stroke: #eaccb1; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .ep-deco {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 80px;
+        opacity: 0.07;
+        width: 100%;
+        pointer-events: none;
+    }
+    .ep-van {
+        position: absolute;
+        bottom: 1px;
+        width: 60px;
+        height: auto;
+        pointer-events: none;
+        animation: driveRight 10s linear infinite;
+    }
+
+    @keyframes driveRight {
+        0% {
+            right: 110%;
+            transform: scaleX(1);
+        }
+        100% {
+            right: -20%;
+            transform: scaleX(1);
+        }
+    }
+    </style>
+    <main class="relative mt-20">
+    <div class="ep-wrap">
+    <div class="ep-code">{{ status_code }}</div>
+    <div class="ep-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <div class="ep-badge">Erreur {{ status_code }}</div>
+
+    {% set base = 'error.' ~ status_code %}
+
+    {% set titleKey = base ~ '.title' %}
+    {% set messageKey = base ~ '.message' %}
+
+    {% set titleTranslated = titleKey|trans({}, 'error') %}
+    {% set messageTranslated = messageKey|trans({}, 'error') %}
+
+    {% set title = titleTranslated == titleKey
+        ? 'error.default.title'|trans({}, 'error')
+        : titleTranslated
+    %}
+
+    {% set message = messageTranslated == messageKey
+        ? 'error.default.message'|trans({}, 'error')
+        : messageTranslated
+    %}
+
+    <h1 class="ep-title">{{ title }}</h1>
+    <p class="ep-msg">{{ message }}</p>
+    <a class="ep-btn" href="#">
+        <svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+        Retour à l'accueil
+    </a>
+
+    <img src="{{ asset('images/LL-favicon.png') }}" alt="Van Loisirs Location" class="ep-van">
+
+    <svg class="ep-deco" viewBox="0 0 680 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 Q170,0 340,40 T680,40 L680,80 L0,80 Z" fill="#5a2e15"/>
+    </svg>
+    </div>
+    </main>
+{% endblock %}
