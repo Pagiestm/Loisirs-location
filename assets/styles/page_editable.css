@@ -1,0 +1,173 @@
+.page-content {
+    font-family: var(--font-body);
+    color: rgba(90, 46, 21, 0.9); /* --color-brown */
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+/* =========================
+   TITRES
+   ========================= */
+
+.page-content h1 {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    color: var(--color-secondary);
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .page-content h1 {
+        font-size: 3rem;
+        line-height: 3.5rem;
+    }
+}
+
+.page-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    color: var(--color-secondary);
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.page-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 2rem;
+    color: var(--color-secondary);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* =========================
+   TEXTES
+   ========================= */
+
+.page-content p {
+    margin-bottom: 1rem;
+}
+
+.page-content strong {
+    font-weight: 700;
+    color: #5a2e15;
+}
+
+.page-content em {
+    font-style: italic;
+    color: rgba(90, 46, 21, 0.8);
+}
+
+/* =========================
+   LIENS
+   ========================= */
+
+.page-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+}
+
+.page-content a:hover {
+    opacity: 0.8;
+}
+
+/* =========================
+   LISTES
+   ========================= */
+
+.page-content ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-content ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-content ul li,
+.page-content ol li {
+    margin-bottom: 0.25rem;
+}
+
+/* =========================
+   BLOCKQUOTE
+   ========================= */
+
+.page-content blockquote {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1rem;
+    font-style: italic;
+    color: rgba(90, 46, 21, 0.7);
+    margin: 1.5rem 0;
+}
+
+/* =========================
+   CODE / PRE
+   ========================= */
+
+.page-content pre {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+}
+
+.page-content code {
+    background-color: var(--color-beige);
+    color: var(--color-brown);
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+/* =========================
+   IMAGES
+   ========================= */
+
+.page-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   TABLES
+   ========================= */
+
+.page-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+.page-content th,
+.page-content td {
+    border: 1px solid var(--color-beige);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+/* =========================
+   HR
+   ========================= */
+
+.page-content hr {
+    border: none;
+    border-top: 1px solid var(--color-beige);
+    margin: 2.5rem 0;
+}
