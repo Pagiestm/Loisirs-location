@@ -23,15 +23,12 @@ class Image extends AbstractController
     #[LiveProp]
     public string $field;
 
-    /** Classe CSS passée à l'élément <img> */
     #[LiveProp]
     public string $class = '';
 
-    /** Chemin de l'image (stocké en YAML) */
     #[LiveProp(writable: true)]
     public string $src = '';
 
-    /** Texte alternatif (stocké en YAML) */
     #[LiveProp(writable: true)]
     public string $alt = '';
 
