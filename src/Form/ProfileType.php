@@ -43,12 +43,16 @@ class ProfileType extends AbstractType
                 'attr' => [
                     'placeholder' => '06 12 34 56 78',
                     'autocomplete' => 'tel',
+                    'maxlength' => 20,
                 ],
                 'constraints' => [
-                    new Assert\Length(max: 20),
+                    new Assert\Length(
+                        max: 20,
+                        maxMessage: 'Le numero de telephone ne peut pas depasser {{ limit }} caracteres.'
+                    ),
                     new Assert\Regex(
                         pattern: '/^$|^[+0-9][0-9\s().-]{7,19}$/',
-                        message: 'Veuillez saisir un numero de telephone valide.',
+                        message: 'Veuillez saisir un numero de telephone valide.'
                     ),
                 ],
             ])

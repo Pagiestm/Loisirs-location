@@ -1,12 +1,22 @@
-<div {{ attributes }}>
-    <h2 class="text-3xl font-display font-bold text-center text-secondary mb-8">Connexion</h2>
-    {% if success or error %}
-        <div class="mb-4 p-4 border rounded-lg {% if success %}bg-green-50 border-green-200 text-green-800{% elseif error %}bg-red-50 border-red-200 text-red-800{% endif %}">
-            {{ success ? success : error }}
-        </div>
-    {% endif %}
+<div {{ attributes }} class="max-w-md mx-auto">
 
-    {{ form_start(form, {
+	<h2 class="text-3xl font-display font-bold text-center text-secondary mb-8">
+		Connexion
+	</h2>
+
+	{% if success or error %}
+		<div class="mb-4 p-4 border rounded-lg
+								            {% if success %}
+								                bg-green-50 border-green-200 text-green-800
+								            {% elseif error %}
+								                bg-red-50 border-red-200 text-red-800
+								            {% endif %}
+								        ">
+			{{ success ? success : error }}
+		</div>
+	{% endif %}
+
+	{{ form_start(form, {
         attr: {
             'data-action': 'submit->live#action:prevent',
             'data-live-action-param': 'submitLogin',
@@ -14,41 +24,48 @@
         }
     }) }}
 
-        {{ form_row(form.email) }}
+	<div class="space-y-6">
+		{{ form_row(form.email) }}
 
-        {{ form_row(form.password) }}
+		{{ form_row(form.password) }}
+	</div>
 
-        <div class="flex flex-col gap-2 items-center justify-between mb-6 [&>div]:mb-0">
-            {{ form_row(form.rememberMe) }}
-            <a href="{{ path('app_forgot_password') }}" class="text-sm text-primary hover:underline font-medium">
-                Mot de passe oublié ?
-            </a>
-        </div>
+	<div class="mt-6 mb-6">
 
-        <div class="w-full flex justify-center items-center">
-            <twig:Button
-                type="submit"
-                variant="primary"
-                size="md"
-                attr="data-loading-class='opacity-50 cursor-not-allowed' data-loading-attr='disabled'"
-            >Se connecter</twig:Button>
-        </div>
+		<div class="flex items-center gap-2">
+			{{ form_widget(form.rememberMe) }}
+			{{ form_label(form.rememberMe) }}
+		</div>
 
-    {{ form_end(form) }}
+		<div class="mt-2 text-right">
+			<a href="{{ path('app_forgot_password') }}" class="text-sm text-primary hover:underline font-medium">
+				Mot de passe oublié ?
+			</a>
+		</div>
 
-    <div class="mt-6 text-center">
-        <p class="text-sm text-gray-600 mb-4">
-            Pas encore de compte ?
-            <button
-                type="button"
-                {{ stimulus_action('security', 'toRegister') }}
-                class="text-primary hover:underline font-medium"
-            >
-                Inscrivez-vous
-            </button>
-        </p>
-        <a href="{{ path('app_home') }}" class="text-sm text-primary hover:underline">
-            Retour à l'accueil
-        </a>
-    </div>
+	</div>
+
+	<div class="w-full flex justify-center">
+		<twig:Button type="submit" variant="primary" size="md" attr="data-loading-class='opacity-50 cursor-not-allowed' data-loading-attr='disabled'">
+			Se connecter
+		</twig:Button>
+	</div>
+
+	{{ form_end(form) }}
+
+	<div class="mt-6 text-center space-y-3">
+
+		<p class="text-sm text-gray-600">
+			Pas encore de compte ?
+			<button type="button" {{ stimulus_action('security', 'toRegister') }} class="text-primary hover:underline font-medium">
+				Inscrivez-vous
+			</button>
+		</p>
+
+		<a href="{{ path('app_home') }}" class="text-sm text-primary hover:underline">
+			Retour à l'accueil
+		</a>
+
+	</div>
+
 </div>

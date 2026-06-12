@@ -55,9 +55,18 @@ class RegisterType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => '06 12 34 56 78',
+                    'autocomplete' => 'tel',
+                    'maxlength' => 20,
                 ],
                 'constraints' => [
-                    new Assert\Length(max: 20, maxMessage: 'Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères', min: 10, minMessage: 'Le numéro de téléphone doit contenir au moins {{ limit }} caractères'),
+                    new Assert\Length(
+                        max: 20,
+                        maxMessage: 'Le numero de telephone ne peut pas depasser {{ limit }} caracteres.'
+                    ),
+                    new Assert\Regex(
+                        pattern: '/^$|^[+0-9][0-9\s().-]{7,19}$/',
+                        message: 'Veuillez saisir un numero de telephone valide.'
+                    ),
                 ],
             ])
             ->add('password', PasswordType::class, [

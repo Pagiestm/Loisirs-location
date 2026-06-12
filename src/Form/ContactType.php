@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,9 +74,9 @@ class ContactType extends AbstractType
                     new Assert\Email(message: 'Veuillez saisir une adresse email valide.'),
                 ],
             ])
-            ->add('phone', TextType::class, [
+            ->add('phone', TelType::class, [
+                'label' => 'Téléphone',
                 'required' => false,
-                'label' => 'Telephone',
                 'attr' => [
                     'placeholder' => '06 12 34 56 78',
                     'autocomplete' => 'tel',
