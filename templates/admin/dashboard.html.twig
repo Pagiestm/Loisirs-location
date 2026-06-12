@@ -1,5 +1,358 @@
 {% extends '@!EasyAdmin/layout.html.twig' %}
 
+{% block head_stylesheets %}
+	{{ parent() }}
+	<style>
+		.dashboard-wrapper {
+			background-color: #ffffff;
+		}
+
+		.dashboard-header h1 {
+			font-weight: 700;
+			color: var(--color-secondary);
+		}
+
+		.dashboard-header p {
+			color: #6c757d;
+			font-size: 0.875rem;
+		}
+
+		.chart-container {
+			position: relative;
+			height: 220px;
+		}
+
+		.chart-container-lg {
+			position: relative;
+			height: 260px;
+		}
+
+		/* Cartes KPI */
+		.kpi-card {
+			background: #fff;
+			border-radius: 0.5rem;
+			padding: 1.25rem;
+			border: 1px solid #e9ecef;
+			height: 100%;
+		}
+
+		.kpi-card .kpi-label {
+			font-size: 0.7rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: #6c757d;
+			margin-bottom: 0.25rem;
+		}
+
+		.kpi-card .kpi-value {
+			font-size: 1.875rem;
+			font-weight: 800;
+			color: #343a40;
+		}
+
+		.kpi-card .kpi-sub {
+			font-size: 0.75rem;
+			color: #6c757d;
+			margin-top: 0.25rem;
+			margin-bottom: 0;
+		}
+
+		.kpi-card-highlight {
+			background: var(--color-primary);
+			border-radius: 0.5rem;
+			padding: 1.25rem;
+			height: 100%;
+			color: #fff;
+		}
+
+		.kpi-card-highlight .kpi-label {
+			font-size: 0.7rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: rgba(255, 255, 255, 0.85);
+			margin-bottom: 0.25rem;
+		}
+
+		.kpi-card-highlight .kpi-value {
+			font-size: 1.875rem;
+			font-weight: 800;
+			color: #fff;
+		}
+
+		.kpi-card-highlight .kpi-sub {
+			font-size: 0.75rem;
+			color: rgba(255, 255, 255, 0.85);
+			margin-top: 0.25rem;
+			margin-bottom: 0;
+		}
+
+		/* Cartes graphiques */
+		.chart-card {
+			background: #fff;
+			border-radius: 0.5rem;
+			border: 1px solid #e9ecef;
+			padding: 1.5rem;
+			height: 100%;
+		}
+
+		.chart-card h2,
+		.table-card h2 {
+			font-size: 1rem;
+			font-weight: 600;
+			color: #343a40;
+			margin-bottom: 0.25rem;
+		}
+
+		.chart-card .chart-subtitle,
+		.table-card .table-subtitle {
+			font-size: 0.75rem;
+			color: #6c757d;
+			margin-bottom: 1rem;
+		}
+
+		.badge-primary-soft {
+			font-size: 0.75rem;
+			font-weight: 600;
+			background-color: rgba(13, 110, 253, 0.1);
+			color: var(--color-primary);
+			padding: 0.25rem 0.75rem;
+			border-radius: 999px;
+		}
+
+		/* Table */
+		.table-card {
+			background: #fff;
+			border-radius: 0.5rem;
+			border: 1px solid #e9ecef;
+			overflow: hidden;
+		}
+
+		.table-card-header {
+			padding: 1rem 1.5rem;
+			border-bottom: 1px solid #e9ecef;
+		}
+
+		.table-card table {
+			margin-bottom: 0;
+		}
+
+		.table-card thead th {
+			font-size: 0.7rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: #6c757d;
+			border-bottom: 1px solid #e9ecef;
+			vertical-align: middle;
+		}
+
+		.table-card tbody td {
+			vertical-align: middle;
+		}
+
+		.rank-number {
+			font-weight: 700;
+			color: var(--color-primary);
+		}
+
+		.van-name {
+			font-weight: 500;
+			color: #343a40;
+		}
+
+		.van-count {
+			font-weight: 700;
+			color: var(--color-primary);
+		}
+
+		/* État vide */
+		.empty-state {
+			text-align: center;
+			padding: 2.5rem 1.5rem;
+			color: #6c757d;
+		}
+
+		.empty-state .empty-title {
+			font-weight: 600;
+			color: #495057;
+			margin-bottom: 0.25rem;
+		}
+
+		.empty-state .empty-text {
+			font-size: 0.85rem;
+			margin-bottom: 0;
+		}
+	</style>
+{% endblock %}
+
 {% block main %}
-    {{ render_chart(chart, {'data-controller': 'chart'}) }}
-{% endblock main %}
+	<div
+		class="dashboard-wrapper">
+
+		<div class="dashboard-header mb-4">
+			<h1 class="h3 mb-1">Tableau de bord</h1>
+			<p class="mb-0">{{ "now"|date("d/m/Y") }}
+				- Vue d'ensemble de l'activité</p>
+		</div>
+
+		<div class="row g-3 mb-4">
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card">
+					<p class="kpi-label">Formulaires de devis</p>
+					<p class="kpi-value">{{ stats.quotes_total }}</p>
+					<p class="kpi-sub">au total</p>
+				</div>
+			</div>
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card">
+					<p class="kpi-label">Réponses aux devis</p>
+					<p class="kpi-value">{{ stats.responses_total }}</p>
+					<p class="kpi-sub">au total</p>
+				</div>
+			</div>
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card">
+					<p class="kpi-label">Ce mois</p>
+					<p class="kpi-value">{{ stats.responses_month }}</p>
+					<p class="kpi-sub">réponses</p>
+				</div>
+			</div>
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card">
+					<p class="kpi-label">30 derniers jours</p>
+					<p class="kpi-value">{{ stats.responses_last_30_days }}</p>
+					<p class="kpi-sub">réponses</p>
+				</div>
+			</div>
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card">
+					<p class="kpi-label">Vans</p>
+					<p class="kpi-value">{{ stats.vans_total }}</p>
+					<p class="kpi-sub">disponibles</p>
+				</div>
+			</div>
+
+			<div class="col-6 col-lg-4 col-xl-2">
+				<div class="kpi-card-highlight">
+					<p class="kpi-label">Conversion</p>
+					<p class="kpi-value">{{ stats.conversion_rate > 100 ? 100 : stats.conversion_rate }}%</p>
+					<p class="kpi-sub">devis → réponse</p>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row g-3 mb-4">
+
+			<div class="col-12 col-lg-6">
+				<div class="chart-card">
+					<h2>Vans les plus demandés</h2>
+					<p class="chart-subtitle">Classement par nombre de demandes</p>
+
+					{% if stats.van_usage|length > 0 %}
+						<div class="chart-container">
+							{{ render_chart(vanChart) }}
+						</div>
+					{% else %}
+						<div class="empty-state">
+							<p class="empty-title">Aucune donnée de van</p>
+							<p class="empty-text">Le classement apparaîtra dès la première demande.</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="col-12 col-lg-6">
+				<div class="chart-card">
+					<h2>Répartition par type de devis</h2>
+					<p class="chart-subtitle">Part de chaque formulaire</p>
+
+					{% if stats.quotes_total > 0 %}
+						<div class="chart-container">
+							{{ render_chart(typeChart) }}
+						</div>
+					{% else %}
+						<div class="empty-state">
+							<p class="empty-title">Aucun formulaire enregistré</p>
+							<p class="empty-text">La répartition s'affichera dès la création d'un devis.</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+		</div>
+
+		<div class="chart-card mb-4">
+			<div class="d-flex align-items-start justify-content-between mb-3 flex-wrap gap-2">
+				<div>
+					<h2>Évolution des demandes</h2>
+					<p class="chart-subtitle mb-0">30 derniers jours</p>
+				</div>
+				<span class="badge-primary-soft">
+					{{ stats.responses_last_30_days }}
+					demandes
+				</span>
+			</div>
+
+			{% if stats.responses_last_30_days > 0 %}
+				<div class="chart-container-lg">
+					{{ render_chart(evolutionChart) }}
+				</div>
+			{% else %}
+				<div class="empty-state">
+					<p class="empty-title">Aucune demande sur cette période</p>
+					<p class="empty-text">Les nouvelles demandes apparaîtront ici dès qu'elles seront reçues.</p>
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="table-card">
+			<div class="table-card-header">
+				<h2 class="mb-0">Classement des vans</h2>
+			</div>
+
+			{% if stats.van_usage|length > 0 %}
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="w-12">#</th>
+							<th>Van</th>
+							<th class="text-end">Demandes</th>
+							<th class="text-end">Part</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for van in stats.van_usage %}
+							<tr>
+								<td class="rank-number">{{ loop.index }}</td>
+								<td class="van-name">{{ van.name }}</td>
+								<td class="text-end van-count">{{ van.total }}</td>
+								<td class="text-end">
+									{% if stats.responses_total > 0 %}
+										{% set pct = (van.total / stats.responses_total * 100)|round(1) %}
+										<span class="badge-primary-soft">{{ pct }}%</span>
+									{% else %}
+										<span class="badge-primary-soft">0%</span>
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<div class="empty-state">
+					<p class="empty-title">Aucun van classé pour le moment</p>
+					<p class="empty-text">Dès que des demandes seront reçues, le classement des vans les plus populaires apparaîtra ici.</p>
+				</div>
+			{% endif %}
+		</div>
+
+	</div>
+{% endblock %}

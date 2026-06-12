@@ -7,6 +7,7 @@ use App\Controller\Admin\Quote\QuoteResponseCrudController;
 use App\Controller\Admin\Van\EquipmentCrudController;
 use App\Controller\Admin\Van\VanCrudController;
 use App\Entity\BlogPost;
+use App\Service\Admin\DashboardStatsService;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -21,6 +22,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private ChartBuilderInterface $chartBuilder,
+        private DashboardStatsService $statsService,
     ) {}
 
     public function configureAssets(): Assets
@@ -32,33 +34,100 @@ class DashboardController extends AbstractDashboardController
 
     public function index(): Response
     {
-        // Exemple de création d'un graphique avec Symfony UX Chart.js
-        // À adapter plus tard pour afficher des données réelles
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $stats = $this->statsService->getStats();
 
-        $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets' => [
-                [
-                    'label' => 'My First dataset',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
+        $evolutionChart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+
+        $evolutionChart->setData([
+            'labels' => array_column($stats['responses_evolution'], 'day'),
+            'datasets' => [[
+                'label' => 'Demandes de devis',
+                'backgroundColor' => [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(168, 85, 247, 0.8)',
+                    'rgba(236, 72, 153, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                ],
+                'data' => array_column($stats['responses_evolution'], 'total'),
+                'borderRadius' => 4,
+            ]],
+        ]);
+
+        $evolutionChart->setOptions([
+            'responsive' => true,
+            'maintainAspectRatio' => false,
+            'plugins' => [
+                'legend' => ['display' => false],
+            ],
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => ['stepSize' => 1],
                 ],
             ],
         ]);
 
-        $chart->setOptions([
+        $vanChart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+
+        $vanChart->setData([
+            'labels' => array_column($stats['van_usage'], 'name'),
+            'datasets' => [[
+                'label' => 'Demandes',
+                'data' => array_column($stats['van_usage'], 'total'),
+                'backgroundColor' => [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(168, 85, 247, 0.8)',
+                    'rgba(236, 72, 153, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                ],
+                'borderRadius' => 6,
+            ]],
+        ]);
+
+        $vanChart->setOptions([
+            'responsive' => true,
+            'maintainAspectRatio' => false,
+            'plugins' => [
+                'legend' => ['display' => false],
+            ],
             'scales' => [
                 'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
+                    'beginAtZero' => true,
+                    'ticks' => ['stepSize' => 1],
                 ],
+            ],
+        ]);
+
+        $typeChart = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+
+        $typeChart->setData([
+            'labels' => array_column($stats['quotes_by_type'], 'name'),
+            'datasets' => [[
+                'data' => array_column($stats['quotes_by_type'], 'total'),
+                'backgroundColor' => [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(168, 85, 247, 0.8)',
+                    'rgba(236, 72, 153, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                ],
+            ]],
+        ]);
+
+        $typeChart->setOptions([
+            'responsive' => true,
+            'maintainAspectRatio' => false,
+            'plugins' => [
+                'legend' => ['position' => 'bottom'],
             ],
         ]);
 
         return $this->render('admin/dashboard.html.twig', [
-            'chart' => $chart,
+            'stats' => $stats,
+            'evolutionChart' => $evolutionChart,
+            'vanChart' => $vanChart,
+            'typeChart' => $typeChart,
         ]);
     }
 
