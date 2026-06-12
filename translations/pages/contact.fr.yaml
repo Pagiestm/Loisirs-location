@@ -1,0 +1,10 @@
+hero_subtitle: "Besoin d'aide ?"
+hero_title: Contactez-nous
+contact_section_heading: 'Restons en contact'
+contact_section_description: "Une question, un projet de road trip, une demande de devis ?\n<br/>\nÉcrivez-nous et je vous répondrez dans les plus brefs délais."
+contact_email.value: contact@loisirs-location.fr
+contact_email.url: 'mailto:contact@loisirs-location.fr'
+contact_phone.value: '01 23 45 67 89'
+contact_phone.url: 'tel:+33123456789'
+contact_address: Hauts-de-France
+form_section_heading: 'Envoyez-nous un message'

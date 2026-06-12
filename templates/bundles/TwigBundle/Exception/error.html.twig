@@ -125,43 +125,43 @@
     }
     </style>
     <main class="relative mt-20">
-    <div class="ep-wrap">
-    <div class="ep-code">{{ status_code }}</div>
-    <div class="ep-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    </div>
-    <div class="ep-badge">Erreur {{ status_code }}</div>
+        <div class="ep-wrap">
+            <p class="ep-code">{{ status_code }}</p>
+            <div class="ep-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <p class="ep-badge">Erreur {{ status_code }}</p>
 
-    {% set base = 'error.' ~ status_code %}
+            {% set base = 'error.' ~ status_code %}
 
-    {% set titleKey = base ~ '.title' %}
-    {% set messageKey = base ~ '.message' %}
+            {% set titleKey = base ~ '.title' %}
+            {% set messageKey = base ~ '.message' %}
 
-    {% set titleTranslated = titleKey|trans({}, 'error') %}
-    {% set messageTranslated = messageKey|trans({}, 'error') %}
+            {% set titleTranslated = titleKey|trans({}, 'error') %}
+            {% set messageTranslated = messageKey|trans({}, 'error') %}
 
-    {% set title = titleTranslated == titleKey
-        ? 'error.default.title'|trans({}, 'error')
-        : titleTranslated
-    %}
+            {% set title = titleTranslated == titleKey
+                ? 'error.default.title'|trans({}, 'error')
+                : titleTranslated
+            %}
 
-    {% set message = messageTranslated == messageKey
-        ? 'error.default.message'|trans({}, 'error')
-        : messageTranslated
-    %}
+            {% set message = messageTranslated == messageKey
+                ? 'error.default.message'|trans({}, 'error')
+                : messageTranslated
+            %}
 
-    <h1 class="ep-title">{{ title }}</h1>
-    <p class="ep-msg">{{ message }}</p>
-    <a class="ep-btn" href="{{ path('app_home') }}">
-        <twig:ux:icon name="lucide:home" class="w-4 h-4" />
-        Retour à l'accueil
-    </a>
+            <h1 class="ep-title">{{ title }}</h1>
+            <p class="ep-msg">{{ message }}</p>
+            <a class="ep-btn" href="{{ path('app_home') }}">
+                <twig:ux:icon name="lucide:home" class="w-4 h-4" />
+                Retour à l'accueil
+            </a>
 
-    <img src="{{ asset('images/LL-favicon.png') }}" alt="Van Loisirs Location" class="ep-van">
+            <img src="{{ asset('images/LL-favicon.png') }}" alt="Van Loisirs Location" class="ep-van">
 
-    <svg class="ep-deco" viewBox="0 0 680 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,40 Q170,0 340,40 T680,40 L680,80 L0,80 Z" fill="#5a2e15"/>
-    </svg>
-    </div>
+            <svg class="ep-deco" viewBox="0 0 680 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,40 Q170,0 340,40 T680,40 L680,80 L0,80 Z" fill="#5a2e15"/>
+            </svg>
+        </div>
     </main>
 {% endblock %}

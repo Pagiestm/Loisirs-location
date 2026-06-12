@@ -4,13 +4,32 @@
 	<div class="max-w-6xl w-full mx-auto relative flex items-center gap-12">
 		{# Texte à gauche #}
 		<div class="flex-1">
-			<p class="font-body text-xs uppercase tracking-[0.3em] text-white mb-5">Actualités & Conseils</p>
-			<h1 class="font-display text-6xl md:text-8xl text-white leading-none mb-8">
-				Notre Blog
-			</h1>
-			<p class="font-body text-white text-sm max-w-sm leading-relaxed mb-10">
-				Découvrez nos conseils, astuces et actualités pour profiter au maximum de vos aventures en van.
-			</p>
+            <twig:Editable:Text
+                page="blog"
+                field="page_hero_subtitle"
+                placeholder="Sous-titre de la section héro du blog"
+            >
+			    <p class="font-body text-xs uppercase tracking-[0.3em] text-white mb-5">{{ parent() }}</p>
+            </twig:Editable:Text>
+            <twig:Editable:Text
+                page="blog"
+                field="page_hero_heading"
+                placeholder="Titre de la section héro du blog"
+            >
+                <h1 class="font-display text-6xl md:text-8xl text-white leading-none mb-8">
+                    {{ parent() }}
+                </h1>
+            </twig:Editable:Text>
+
+            <twig:Editable:Textarea
+                page="blog"
+                field="page_hero_description"
+                placeholder="Description de la section héro du blog"
+            >
+                <p class="font-body text-white text-sm max-w-sm leading-relaxed mb-10">
+                    {{ parent() }}
+                </p>
+            </twig:Editable:Textarea>
 
 			{% if count > 0 %}
 				<div class="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-5 py-2.5">
@@ -22,7 +41,11 @@
 
 		{# Image à droite #}
 		<div class="hidden lg:block flex-1 relative">
-			<img src="/images/Nos-vans.jpg" alt="Blog Loisirs Location" class="w-full h-80 object-cover rounded-2xl shadow-2xl">
+            <twig:Editable:Image
+                page="blog"
+                field="page_hero_image"
+                class="w-full h-80 object-cover rounded-2xl shadow-2xl"
+            />
 		</div>
 	</div>
 </section>

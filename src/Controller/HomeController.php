@@ -19,4 +19,16 @@ class HomeController extends AbstractController implements EditableControllerInt
             'vans'      => $vanRepository->findAllWithEquipments(),
         ]);
     }
+
+    #[Route('/mentions-legales', name: 'app_legal_mentions')]
+    public function legalMentions(): Response
+    {
+        return $this->render('pages/home/legal-mentions.html.twig');
+    }
+
+    #[Route('/politique-de-confidentialite', name: 'app_privacy_policy')]
+    public function privacyPolicy(): Response
+    {
+        return $this->render('pages/home/privacy-policy.html.twig');
+    }
 }

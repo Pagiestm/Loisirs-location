@@ -1,0 +1,44 @@
+<div {{ attributes }}>
+    {% if edit is true and app.user is defined and app.user.isAdmin is true %}
+        <div
+            data-controller="tinymce-editor"
+            data-tinymce-editor-content-value="{{ content|e('html_attr') }}"
+        >
+            <div class="border-shadow rounded-t-2xl flex items-center justify-between gap-3 px-4 py-2.5 bg-white">
+                <div class="flex items-center gap-2 text-sm text-gray-500">
+                    {{ ux_icon('lucide:file-edit', {class: 'w-4 h-4'}) }}
+                    <span>Édition</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span
+                        data-tinymce-editor-target="status"
+                        class="text-xs text-gray-400 italic"
+                    ></span>
+                    <button
+                        type="button"
+                        data-action="tinymce-editor#save live#action"
+                        data-tinymce-editor-target="saveButton"
+                        data-live-action-param="saveContent"
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                    >
+                        <span data-tinymce-editor-target="loader" class="hidden">
+                            {{ ux_icon('lucide:loader', {class: 'w-4 h-4 animate-spin'}) }}
+                        </span>
+                        {{ ux_icon('lucide:save', {class: 'w-4 h-4'}) }}
+                        <span>Enregistrer</span>
+                    </button>
+                </div>
+            </div>
+
+            <textarea
+                data-tinymce-editor-target="textarea"
+                data-model="norender|content"
+                class="w-full"
+            >{{ content|raw }}</textarea>
+        </div>
+    {% else %}
+        <div class="page-content bg-white rounded-2xl p-6 shadow-md">
+            {{ content|raw }}
+        </div>
+    {% endif %}
+</div>

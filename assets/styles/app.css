@@ -70,9 +70,17 @@ button {
     background-color: #ef7820 !important; /* couleur primaire */
     box-shadow: 0 0 8px rgba(239, 120, 32, 0.65) !important;
     z-index: 99999;
-    transition: width 0.25s ease, opacity 0.25s ease !important;
+    transition:
+        width 0.25s ease,
+        opacity 0.25s ease !important;
 }
 
 .turbo-progress-bar[style] {
-    transition: width 0.25s ease, opacity 0.25s ease !important;
+    transition:
+        width 0.25s ease,
+        opacity 0.25s ease !important;
+}
+
+.border-shadow {
+    box-shadow: 0 8px 0 #fff;
 }

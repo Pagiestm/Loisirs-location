@@ -29,7 +29,11 @@
 
 		{# Image à droite #}
 		<div class="hidden lg:block flex-1 relative">
-			<img src="/images/Nos-vans.jpg" alt="Nos vans aménagés" class="w-full h-80 object-cover rounded-2xl shadow-2xl">
+            <twig:Editable:Image
+                page="vans"
+                field="hero_image"
+                class="w-full h-80 object-cover rounded-2xl shadow-2xl"
+            />
 		</div>
 	</div>
 </section>
