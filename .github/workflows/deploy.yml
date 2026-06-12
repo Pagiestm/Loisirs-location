@@ -13,49 +13,29 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            # =========================
-            # PHP
-            # =========================
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: "8.4"
                   tools: composer
 
-            # =========================
-            # NODE
-            # =========================
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: "20"
 
-            # =========================
-            # PHP DEPENDENCIES (CI ONLY)
-            # =========================
+            # 🔥 INSTALL PHP DEPENDENCIES (CI SIDE)
             - name: Install PHP dependencies
-              run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+              run: composer install --no-interaction
 
-            # =========================
-            # JS BUILD
-            # =========================
+            # 🔥 INSTALL JS + BUILD
             - name: Install & build frontend
               run: |
                   npm install
                   npm run build
                   npm prune --omit=dev
 
-            # =========================
-            # SYMFONY FIX (IMPORTANT)
-            # =========================
-            - name: Symfony cache warmup (CI FIX)
-              run: |
-                  APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear --no-warmup || true
-                  APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup || true
-
-            # =========================
-            # CREATE ARTIFACT
-            # =========================
+            # 📦 CREATE FULL ARTIFACT (PHP + NODE)
             - name: Create deployment package
               run: |
                   tar -czf artifacts.tar.gz \
@@ -66,28 +46,20 @@ jobs:
                     config \
                     src \
                     templates \
-                    var \
                     composer.json \
                     composer.lock \
                     symfony.lock
 
-            # =========================
-            # SSH
-            # =========================
             - name: Install sshpass
               run: sudo apt-get update && sudo apt-get install -y sshpass
 
-            # =========================
-            # UPLOAD
-            # =========================
+            # 🚀 UPLOAD ONLY ARTIFACT
             - name: Upload artifact
               run: |
                   sshpass -e scp -o StrictHostKeyChecking=no artifacts.tar.gz \
                   ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
 
-            # =========================
-            # DEPLOY (NO COMPOSER HERE)
-            # =========================
+            # 🚀 DEPLOY (NO COMPOSER INSTALL HERE)
             - name: Deploy to server
               run: |
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
@@ -95,6 +67,7 @@ jobs:
                     git pull origin develop && \
                     tar -xzf artifacts.tar.gz && \
                     rm artifacts.tar.gz && \
+                    php bin/console cache:clear --env=prod --no-debug && \
                     php bin/console doctrine:migrations:sync-metadata-storage --env=prod --no-debug || true && \
                     php bin/console doctrine:migrations:status --env=prod --no-debug || true && \
                     php bin/console doctrine:migrations:migrate -n --env=prod --no-debug\
