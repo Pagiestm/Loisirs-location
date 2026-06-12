@@ -26,7 +26,7 @@ jobs:
 
             # 🔥 INSTALL PHP DEPENDENCIES (CI SIDE)
             - name: Install PHP dependencies
-              run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+              run: composer install --no-dev --optimize-autoloader
 
             # 🔥 INSTALL JS + BUILD
             - name: Install & build frontend
