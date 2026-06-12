@@ -1,77 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devis — Loisirs Location{% endblock %}
+{% block title %}Devis — Loisirs Location
+{% endblock %}
 
 {% block body %}
-<twig:Navbar />
+	<main class="relative min-h-screen flex flex-col bg-beige pb-16">
+		<twig:TextureBackground
+		type="sand" :overlay="0" :intensity="0.18"/>
 
-<main class="min-h-screen bg-slate-50 py-10 pt-24">
-	<div class="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-		<section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-			<div class="border-b border-slate-200 bg-gradient-to-r from-emerald-50 to-cyan-50 px-6 py-8 sm:px-8">
-				<p class="text-sm font-medium uppercase tracking-wide text-emerald-700">Demande de devis</p>
-				<h1 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-					{{ quote.name }}
-				</h1>
-				{% if quote.description %}
-					<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-						{{ quote.description|raw }}
-					</p>
-				{% endif %}
+		<section class="relative min-h-70 md:min-h-80 lg:min-h-90 flex items-center justify-center overflow-hidden bg-secondary">
+			<div class="absolute inset-0">
+				<twig:TextureBackground type="wood" :overlay="0.72"/>
 			</div>
-
-			<div class="px-6 py-8 sm:px-8">
-				{{ form_start(form, {
-					attr: {
-						class: 'space-y-6'
-					}
-				}) }}
-
-				{% for field in form %}
-					{% if field.vars.name != '_token' %}
-						<div class="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5">
-							<label for="{{ field.vars.id }}" class="mb-2 block text-sm font-semibold text-slate-800">
-								{{ field.vars.label ?? field.vars.name|title }}
-                                {% if field.vars.required %}
-                                    <span class="text-red-500" aria-hidden="true">*</span>
-                                {% endif %}
-							</label>
-
-							{{ form_widget(field, {
-								attr: (field.vars.attr|default({}))|merge({
-									class: ((field.vars.attr.class|default('')) ~ ' w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200')|trim
-								})
-							}) }}
-
-							{% if field.vars.help %}
-								<p class="mt-2 text-xs text-slate-500">{{ field.vars.help }}</p>
-							{% endif %}
-
-							<div class="mt-2 text-sm text-red-600">
-								{{ form_errors(field) }}
-							</div>
-						</div>
-					{% endif %}
-				{% endfor %}
-
-				{% if form._token is defined %}
-					{{ form_widget(form._token) }}
-				{% endif %}
-
-				<div class="flex justify-end pt-2">
-					<button
-						type="submit"
-						class="inline-flex items-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2"
-					>
-						Envoyer ma demande
-					</button>
-				</div>
-
-				{{ form_end(form, { render_rest: false }) }}
+			<div class="relative z-10 text-center px-4 sm:px-6 max-w-4xl pt-16">
+				<p class="font-body text-xs uppercase tracking-[0.35em] text-primary mb-4">Devis personnalisé</p>
+				<h1 class="font-display text-4xl sm:text-5xl md:text-6xl text-white mb-6">{{ quote.name }}</h1>
 			</div>
 		</section>
-	</div>
-</main>
 
-<twig:Footer />
+		{# Contenu principal en deux colonnes : Formulaire (gauche) / Récap & Réassurance (droite) #}
+		<section class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-12 lg:-mt-20">
+			<div
+				class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+
+				{# COLONNE GAUCHE: Formulaire de Devis #}
+				<div class="lg:w-2/3 bg-white rounded-3xl shadow-xl shadow-brown/5 p-6 sm:p-8 lg:p-10 order-2 lg:order-1">
+					<div class="mb-8">
+						<h2 class="font-display text-2xl sm:text-3xl text-secondary mb-2">Vos informations</h2>
+						{% if quote.description %}
+							<p class="text-sm text-gray-500 font-body">
+								{{ quote.description|raw }}
+							</p>
+						{% endif %}
+					</div>
+
+					{{ form_start(form, {
+                        'attr': {
+                            'class': 'space-y-6',
+                            'novalidate': 'novalidate'
+                        }
+                    }) }}
+
+					{% if not form.vars.valid %}
+						<div class="rounded-xl border border-red-200 bg-red-50 text-red-700 px-5 py-4 text-sm mb-6 flex items-start gap-3">
+							<twig:ux:icon name="lucide:alert-circle" class="w-5 h-5 shrink-0 mt-0.5"/>
+							<p>Merci de corriger les erreurs dans le formulaire ci-dessous.</p>
+						</div>
+					{% endif %}
+
+					<div class="space-y-6 flex flex-col">
+						{% for field in form %}
+							{% if field.vars.name != '_token' %}
+								<div>
+									{{ form_row(field) }}
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+
+					{% if form._token is defined %}
+						{{ form_widget(form._token) }}
+					{% endif %}
+
+					<div class="mt-8 pt-6 border-t border-gray-100 flex justify-end">
+						<twig:Button type="submit" variant="primary" size="lg" class="w-full sm:w-auto" attr="data-loading-class='opacity-50 cursor-not-allowed' data-loading-attr='disabled'">
+							Envoyer la demande
+						</twig:Button>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+
+				{# COLONNE DROITE: Détails du devis (Sticky sur Desktop) #}
+				<div class="lg:w-1/3 order-1 lg:order-2">
+					<div class="bg-white rounded-3xl shadow-xl shadow-brown/5 p-6 sm:p-8 sticky top-24">
+						<h3 class="font-display text-xl text-secondary mb-4">À propos de ce devis</h3>
+
+						<div class="prose prose-sm prose-gray font-body leading-relaxed mb-6">
+							Complétez ce formulaire pour que nous puissions traiter votre demande avec précision.
+						</div>
+
+						<div class="space-y-5 pt-6 border-t border-gray-100">
+							<div class="flex items-start gap-3">
+								<div class="bg-primary/10 rounded-full p-2 shrink-0 text-primary">
+									<twig:ux:icon name="lucide:clock" class="w-4 h-4"/>
+								</div>
+								<div>
+									<h4 class="text-sm font-semibold text-gray-900">Réponse rapide</h4>
+									<p class="text-xs text-gray-500 mt-1">Nous traitons généralement les devis sous 24 à 48 heures ouvrées.</p>
+								</div>
+							</div>
+							<div class="flex items-start gap-3">
+								<div class="bg-primary/10 rounded-full p-2 shrink-0 text-primary">
+									<twig:ux:icon name="lucide:shield-check" class="w-4 h-4"/>
+								</div>
+								<div>
+									<h4 class="text-sm font-semibold text-gray-900">Sans engagement</h4>
+									<p class="text-xs text-gray-500 mt-1">Cette demande est 100% gratuite et ne vous engage à rien.</p>
+								</div>
+							</div>
+							<div class="flex items-start gap-3">
+								<div class="bg-primary/10 rounded-full p-2 shrink-0 text-primary">
+									<twig:ux:icon name="lucide:file-text" class="w-4 h-4"/>
+								</div>
+								<div>
+									<h4 class="text-sm font-semibold text-gray-900">100% Personnalisé</h4>
+									<p class="text-xs text-gray-500 mt-1">Chaque demande est étudiée par notre équipe pour s'adapter à votre projet.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</main>
 {% endblock %}

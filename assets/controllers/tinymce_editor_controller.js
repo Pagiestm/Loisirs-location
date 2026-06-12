@@ -30,6 +30,7 @@ import "tinymce/plugins/wordcount";
 
 export default class extends Controller {
     static targets = ["textarea", "loader", "status", "saveButton"];
+
     static values = { content: String };
 
     connect() {
