@@ -32,3 +32,5 @@ yarn-error.log
 /public/uploads/blog
 /uploads/quotes
 ###< uploads ###
+
+/templates/pages/editable
