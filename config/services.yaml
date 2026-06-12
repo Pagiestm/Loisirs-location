@@ -13,6 +13,7 @@ parameters:
     mail_from_address: "%env(MAIL_FROM_ADDRESS)%"
     mail_from_name: "%env(MAIL_FROM_NAME)%"
     translations_pages_directory: "%kernel.project_dir%\\translations\\pages"
+    newsletter_secret: "%env(NEWSLETTER_SECRET)%"
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +34,10 @@ services:
         arguments:
             $defaultFromEmail: "%mail_from_address%"
             $defaultFromName: "%mail_from_name%"
+
+    App\Twig\NewsletterExtension:
+        arguments:
+            $newsletterSecret: "%newsletter_secret%"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

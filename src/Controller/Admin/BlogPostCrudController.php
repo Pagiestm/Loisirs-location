@@ -4,6 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\BlogPost;
 use App\Entity\User;
+use App\Repository\BlogPostRepository;
+use App\Repository\NewsletterRepository;
+use App\Service\MailService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BlogPostCrudController extends AbstractCrudController
 {
@@ -47,7 +51,7 @@ class BlogPostCrudController extends AbstractCrudController
                     ->setEntityId($post->getId())
                     ->generateUrl();
             })
-            ->displayIf(fn (BlogPost $post) => $post->getStatus() === 'draft');
+            ->displayIf(fn(BlogPost $post) => $post->getStatus() === 'draft');
 
         $unpublish = Action::new('unpublish', 'Dépublier', 'fa fa-times-circle')
             ->linkToUrl(function (BlogPost $post) {
@@ -57,14 +61,26 @@ class BlogPostCrudController extends AbstractCrudController
                     ->setEntityId($post->getId())
                     ->generateUrl();
             })
-            ->displayIf(fn (BlogPost $post) => $post->getStatus() === 'published');
+            ->displayIf(fn(BlogPost $post) => $post->getStatus() === 'published');
+
+        $sendToNewsletter = Action::new('sendToNewsletter', 'Envoyer à la newsletter', 'fa fa-paper-plane')
+            ->linkToUrl(function (BlogPost $post) {
+                return $this->container->get(AdminUrlGenerator::class)
+                    ->setController(self::class)
+                    ->setAction('sendMailToNewsletter')
+                    ->setEntityId($post->getId())
+                    ->generateUrl();
+            })
+            ->displayIf(fn(BlogPost $post) => $post->getStatus() === 'published');
 
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_INDEX, $publish)
             ->add(Crud::PAGE_INDEX, $unpublish)
             ->add(Crud::PAGE_EDIT, $publish)
-            ->add(Crud::PAGE_EDIT, $unpublish);
+            ->add(Crud::PAGE_EDIT, $unpublish)
+            ->add(Crud::PAGE_INDEX, $sendToNewsletter)
+            ->add(Crud::PAGE_DETAIL, $sendToNewsletter);
     }
 
     public function configureFields(string $pageName): iterable
@@ -141,7 +157,7 @@ class BlogPostCrudController extends AbstractCrudController
 
         if ($post instanceof BlogPost) {
             $post->setStatus('published');
-            
+
             if ($post->getPublishedAt() === null) {
                 $post->setPublishedAt(new \DateTimeImmutable());
             }
@@ -212,7 +228,7 @@ class BlogPostCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn): BlogPost
     {
         $post = new BlogPost();
-        
+
         $user = $this->getUser();
         if ($user instanceof User) {
             $post->setAuthor($user);
@@ -221,5 +237,36 @@ class BlogPostCrudController extends AbstractCrudController
         $post->setPublishedAt(new \DateTimeImmutable());
 
         return $post;
+    }
+
+    public function sendMailToNewsletter(AdminContext $context, MailService $mailService, NewsletterRepository $newsletterRepository, BlogPostRepository $blogPostRepository): RedirectResponse
+    {
+        $entityId = $context->getRequest()->query->get('entityId');
+        $allNewsletterEmails = $newsletterRepository->getAllEmails();
+
+        $post = $blogPostRepository->find($entityId);
+
+        if (!$post) {
+            throw new \InvalidArgumentException('Article non trouvé');
+        }
+
+        foreach ($allNewsletterEmails as $email) {
+            $mailService->sendMjmlEmail(
+                subject: 'Nouvel article de blog publié : ' . $post->getTitle(),
+                mjmlTemplate: 'email/new_blog_post.mjml.twig',
+                context: [
+                    'post' => $post,
+                    'recipientEmail' => $email,
+                ],
+                to: $email,
+            );
+        }
+
+        $url = $this->container->get(AdminUrlGenerator::class)
+            ->setController(self::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 }

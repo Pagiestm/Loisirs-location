@@ -1,0 +1,170 @@
+<mjml>
+    <mj-head>
+        <mj-title>Nouvel article - Loisirs Location</mj-title>
+        <mj-preview>{{ post.title }}</mj-preview>
+
+        <mj-attributes>
+            <mj-all font-family="'Atkinson Hyperlegible', Arial, sans-serif" />
+            <mj-text font-size="14px" color="#5a2e15" line-height="1.6" />
+            <mj-section padding="20px 0" />
+            <mj-button
+                background-color="#465b32"
+                color="#ffffff"
+                border-radius="6px"
+                font-weight="bold"
+                inner-padding="14px 28px"
+            />
+        </mj-attributes>
+
+        <mj-style inline="inline">
+            .link-nostyle {
+                color: inherit;
+                text-decoration: none;
+            }
+        </mj-style>
+    </mj-head>
+
+    <mj-body background-color="#eaccb1">
+
+        <!-- Header -->
+        <mj-section background-color="#465b32" padding="40px 20px">
+            <mj-column>
+                <mj-text
+                    align="center"
+                    color="#ffffff"
+                    font-size="32px"
+                    font-weight="bold"
+                    letter-spacing="2px"
+                >
+                    LOISIRS LOCATION
+                </mj-text>
+
+                <mj-text
+                    align="center"
+                    color="#eaccb1"
+                    font-size="14px"
+                    padding-top="5px"
+                >
+                    📰 Nouvel article disponible
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <!-- Content -->
+        <mj-section background-color="#ffffff" padding="40px 30px">
+            <mj-column>
+
+                <mj-text
+                    font-size="24px"
+                    font-weight="bold"
+                    color="#465b32"
+                    align="center"
+                    line-height="1.3"
+                >
+                    Un nouvel article vient d'être publié !
+                </mj-text>
+
+                <mj-divider
+                    border-color="#eaccb1"
+                    border-width="2px"
+                    width="60px"
+                    padding-top="20px"
+                    padding-bottom="30px"
+                />
+
+                {% if post.featuredImage %}
+                    <mj-image
+                        src="{{ absolute_url(asset('uploads/blog/' ~ post.featuredImage)) }}"
+                        alt="{{ post.title }}"
+                        border-radius="8px"
+                        padding-bottom="25px"
+                    />
+                {% endif %}
+
+                <mj-text
+                    font-size="22px"
+                    font-weight="bold"
+                    color="#465b32"
+                    align="center"
+                >
+                    {{ post.title }}
+                </mj-text>
+
+                {% if post.excerpt %}
+                    <mj-text align="center">
+                        {{ post.excerpt }}
+                    </mj-text>
+                {% else %}
+                    <mj-text align="center">
+                        Découvrez notre tout nouvel article sur notre blog et préparez votre prochaine aventure en van avec nos conseils, astuces et inspirations.
+                    </mj-text>
+                {% endif %}
+
+                <mj-button
+                    href="{{ absolute_url(path('app_blog_show', {'slug': post.slug})) }}"
+                    padding-top="30px"
+                >
+                    Lire l'article
+                </mj-button>
+
+                <mj-text
+                    align="center"
+                    padding-top="30px"
+                >
+                    Merci de suivre les actualités de <strong>Loisirs Location</strong> ❤️
+                </mj-text>
+
+            </mj-column>
+        </mj-section>
+
+        <!-- Footer -->
+        <mj-section background-color="#5a2e15" padding="30px 20px">
+            <mj-column>
+
+                <mj-text
+                    align="center"
+                    color="#eaccb1"
+                    font-size="12px"
+                >
+                    © {{ "now"|date("Y") }} Loisirs Location - Location de vans aménagés en Hauts-de-France
+                </mj-text>
+
+                <mj-text
+                    align="center"
+                    color="#eaccb1"
+                    font-size="11px"
+                    padding-top="10px"
+                >
+                    Une question ?
+                    <a
+                        href="mailto:contact@loisirs-location.fr"
+                        style="color:#ef7820;"
+                    >
+                        contact@loisirs-location.fr
+                    </a>
+                </mj-text>
+
+                <mj-text
+                    align="center"
+                    color="#eaccb1"
+                    font-size="10px"
+                    padding-top="15px"
+                >
+                    Vous recevez cet e-mail car vous êtes inscrit(e) à notre newsletter.
+                    <br />
+                    <a
+                        href="{{ absolute_url(path('app_newsletter_unsubscribe', {
+                            'email': recipientEmail,
+                            'token': unsubscribe_token(recipientEmail|default(''))
+                        })) }}"
+                        style="color:#ef7820;"
+                    >
+                        Se désabonner
+                    </a>
+                </mj-text>
+
+            </mj-column>
+        </mj-section>
+
+    </mj-body>
+</mjml>
