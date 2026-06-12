@@ -29,7 +29,8 @@ import "tinymce/plugins/help";
 import "tinymce/plugins/wordcount";
 
 export default class extends Controller {
-    static targets = ["textarea", "loader", "status"];
+    static targets = ["textarea", "loader", "status", "saveButton"];
+
     static values = { content: String };
 
     connect() {
@@ -81,7 +82,7 @@ export default class extends Controller {
                 "undo redo | blocks | bold italic underline | " +
                 "alignleft aligncenter alignright alignjustify | " +
                 "bullist numlist outdent indent | link image media | " +
-                "removeformat code fullscreen",
+                "removeformat code fullscreen saveContent",
             height: "calc(100vh - 56px)",
             menubar: true,
             menu: {
@@ -114,6 +115,12 @@ export default class extends Controller {
                     this._setStatus("Modifications non enregistrées…");
                 });
 
+                editor.on("init", () => {
+                    setTimeout(() => {
+                        editor.execCommand("mceFullScreen");
+                    }, 0);
+                });
+
                 editor.ui.registry.addMenuItem("previewPage", {
                     text: "Aperçu",
                     icon: "preview",
@@ -125,6 +132,20 @@ export default class extends Controller {
                             url.toString(),
                             "_blank",
                         );
+                    },
+                });
+
+                editor.ui.registry.addButton("saveContent", {
+                    icon: "save",
+                    tooltip: "Enregistrer",
+                    onAction: () => {
+                        if (this.saveButtonTarget) {
+                            this.saveButtonTarget.click();
+                            this.createSuccessNotification();
+                        } else {
+                            console.error("Bouton de sauvegarde non trouvé.");
+                            this.createErrorNotification();
+                        }
                     },
                 });
             },
@@ -178,4 +199,20 @@ export default class extends Controller {
     _setStatus(msg) {
         if (this.hasStatusTarget) this.statusTarget.textContent = msg;
     }
+
+    createSuccessNotification = () => {
+        this._editor.notificationManager.open({
+            text: "Contenu enregistré avec succès !",
+            type: "success",
+            timeout: 2000,
+        });
+    };
+
+    createErrorNotification = () => {
+        this._editor.notificationManager.open({
+            text: "Une erreur est survenue lors de l'enregistrement du contenu.",
+            type: "error",
+            timeout: 2000,
+        });
+    };
 }
