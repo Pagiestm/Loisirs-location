@@ -1,4 +1,5 @@
 name: CD
+
 on:
     push:
         branches: [develop]
@@ -8,6 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             SSHPASS: ${{ secrets.APP_PASS }}
+
         steps:
             - uses: actions/checkout@v4
 
@@ -22,28 +24,49 @@ jobs:
               with:
                   node-version: "20"
 
+            # 🔥 INSTALL PHP DEPENDENCIES (CI SIDE)
             - name: Install PHP dependencies
-              run: composer install --no-interaction --prefer-dist
+              run: composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
 
-            - name: Install sshpass
-              run: sudo apt-get update && sudo apt-get install -y sshpass
-
-            - name: Build assets and upload (via SCP/SFTP)
+            # 🔥 INSTALL JS + BUILD
+            - name: Install & build frontend
               run: |
                   npm install
                   npm run build
                   npm prune --omit=dev
-                  tar -czf artifacts.tar.gz node_modules public/build
-                  sshpass -e scp -o StrictHostKeyChecking=no artifacts.tar.gz ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
 
-            - name: Deploy to AlwaysData
+            # 📦 CREATE FULL ARTIFACT (PHP + NODE)
+            - name: Create deployment package
+              run: |
+                  tar -czf artifacts.tar.gz \
+                    vendor \
+                    node_modules \
+                    public/build \
+                    bin \
+                    config \
+                    src \
+                    templates \
+                    composer.json \
+                    composer.lock \
+                    symfony.lock
+
+            - name: Install sshpass
+              run: sudo apt-get update && sudo apt-get install -y sshpass
+
+            # 🚀 UPLOAD ONLY ARTIFACT
+            - name: Upload artifact
+              run: |
+                  sshpass -e scp -o StrictHostKeyChecking=no artifacts.tar.gz \
+                  ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}:www/Loisirs-location/
+
+            # 🚀 DEPLOY (NO COMPOSER INSTALL HERE)
+            - name: Deploy to server
               run: |
                   sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "\
                     cd www/Loisirs-location && \
                     git pull origin develop && \
                     tar -xzf artifacts.tar.gz && \
                     rm artifacts.tar.gz && \
-                    composer install --no-dev && \
                     php bin/console cache:clear --env=prod --no-debug && \
                     php bin/console doctrine:migrations:sync-metadata-storage --env=prod --no-debug || true && \
                     php bin/console doctrine:migrations:status --env=prod --no-debug || true && \
