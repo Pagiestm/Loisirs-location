@@ -1,0 +1,56 @@
+<section {{ attributes }} class="bg-white border-t-8 border-brown">
+    <div class="max-w-7xl mx-auto px-6 py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+            <div>
+                <h2 class="font-display text-4xl text-brown mb-3 flex flex-col sm:flex-row items-center gap-3">
+                    <twig:ux:icon name="lucide:bus" class="text-muted" style="font-size: 2rem;" />
+                    Rejoignez l'aventure
+                </h2>
+
+                <p class="text-gray-700 leading-relaxed max-w-lg text-sm">
+                    Recevez nos nouveautés, nos conseils pour voyager en van et
+                    nos idées d'itinéraires dans les Hauts-de-France directement dans votre boîte mail.
+                </p>
+            </div>
+
+            <div>
+                {{ form_start(form, {
+                    attr: {
+                        'data-action': 'live#action:prevent',
+                        'data-live-action-param': 'save'
+                    }
+                }) }}
+
+                <div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex-1">
+                            {{ form_widget(form.email, {
+                                attr: {
+                                    class: 'w-full rounded-xl border-2 border-brown/20 px-5 py-3 focus:border-primary focus:ring-0 outline-none transition',
+                                    placeholder: 'Votre adresse e-mail'
+                                }
+                            }) }}
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl px-8 py-3 transition whitespace-nowrap cursor-pointer"
+                        >
+                            S'inscrire
+                        </button>
+                    </div>
+                    {{ form_errors(form.email) }}
+                </div>
+
+
+                {{ form_end(form) }}
+
+                <p class="text-xs text-gray-500 mt-3">
+                    Pas de spam. Désinscription en un clic.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>

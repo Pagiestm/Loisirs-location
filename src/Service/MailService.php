@@ -24,7 +24,7 @@ class MailService
     /**
      * Envoie un email avec un template Twig
      *
-    * @param string|Address|null $to Destinataire (optionnel, utilise l'adresse par defaut si non fourni)
+     * @param string|Address|null $to Destinataire (optionnel, utilise l'adresse par defaut si non fourni)
      * @param string $subject Sujet de l'email
      * @param string $template Chemin du template Twig (ex: 'email/welcome.html.twig')
      * @param array<string, mixed> $context Variables à passer au template
@@ -109,7 +109,7 @@ class MailService
     /**
      * Envoie un email avec un template MJML
      *
-     * @param string|Address $to Destinataire
+     * @param string|Address|null $to Destinataire
      * @param string $subject Sujet de l'email
      * @param string $mjmlTemplate Chemin du template MJML (ex: 'email/welcome.mjml.twig')
      * @param array<string, mixed> $context Variables à passer au template

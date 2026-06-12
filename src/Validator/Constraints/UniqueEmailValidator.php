@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraints;
 
+use App\Repository\NewsletterRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -11,7 +12,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 class UniqueEmailValidator extends ConstraintValidator
 {
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private NewsletterRepository $newsletterRepository
     ) {}
 
     public function validate(mixed $value, Constraint $constraint): void
@@ -30,8 +32,13 @@ class UniqueEmailValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        // Vérifier si un utilisateur avec cet email existe déjà
-        $existingUser = $this->userRepository->findOneBy(['email' => $value]);
+        if ($constraint->repo === 'user') {
+            $existingUser = $this->userRepository->findOneBy(['email' => $value]);
+        } elseif ($constraint->repo === 'newsletter') {
+            $existingUser = $this->newsletterRepository->findOneBy(['email' => $value]);
+        } else {
+            throw new UnexpectedValueException($constraint->repo, 'string (either "user" or "newsletter")');
+        }
 
         if ($existingUser !== null) {
             $this->context->buildViolation($constraint->message)

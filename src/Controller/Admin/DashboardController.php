@@ -84,5 +84,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkTo(QuoteCrudController::class, 'Devis', 'fa fa-list'),
             MenuItem::linkTo(QuoteResponseCrudController::class, 'Réponses', 'fa fa-reply'),
         ]);
+        yield MenuItem::linkTo(NewsletterCrudController::class, 'Newsletter', 'fa fa-envelope');
     }
 }
