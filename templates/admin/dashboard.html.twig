@@ -3,17 +3,11 @@
 {% block head_stylesheets %}
 	{{ parent() }}
 	<style>
-		.dashboard-wrapper {
-			background-color: #ffffff;
-		}
-
 		.dashboard-header h1 {
 			font-weight: 700;
-			color: var(--color-secondary);
 		}
 
 		.dashboard-header p {
-			color: #6c757d;
 			font-size: 0.875rem;
 		}
 
@@ -29,10 +23,10 @@
 
 		/* Cartes KPI */
 		.kpi-card {
-			background: #fff;
+			background: var(--content-bg);
+			border: 1px solid var(--border-color);
 			border-radius: 0.5rem;
 			padding: 1.25rem;
-			border: 1px solid #e9ecef;
 			height: 100%;
 		}
 
@@ -41,19 +35,19 @@
 			font-weight: 600;
 			text-transform: uppercase;
 			letter-spacing: 0.05em;
-			color: #6c757d;
+			color: var(--text-muted);
 			margin-bottom: 0.25rem;
 		}
 
 		.kpi-card .kpi-value {
 			font-size: 1.875rem;
 			font-weight: 800;
-			color: #343a40;
+			color: var(--text-color);
 		}
 
 		.kpi-card .kpi-sub {
 			font-size: 0.75rem;
-			color: #6c757d;
+			color: var(--text-muted);
 			margin-top: 0.25rem;
 			margin-bottom: 0;
 		}
@@ -90,9 +84,9 @@
 
 		/* Cartes graphiques */
 		.chart-card {
-			background: #fff;
+			background: var(--content-bg);
+			border: 1px solid var(--border-color);
 			border-radius: 0.5rem;
-			border: 1px solid #e9ecef;
 			padding: 1.5rem;
 			height: 100%;
 		}
@@ -101,21 +95,21 @@
 		.table-card h2 {
 			font-size: 1rem;
 			font-weight: 600;
-			color: #343a40;
+			color: var(--text-color);
 			margin-bottom: 0.25rem;
 		}
 
 		.chart-card .chart-subtitle,
 		.table-card .table-subtitle {
 			font-size: 0.75rem;
-			color: #6c757d;
+			color: var(--text-muted);
 			margin-bottom: 1rem;
 		}
 
 		.badge-primary-soft {
 			font-size: 0.75rem;
 			font-weight: 600;
-			background-color: rgba(13, 110, 253, 0.1);
+			background-color: rgba(var(--color-primary-rgb), 0.1);
 			color: var(--color-primary);
 			padding: 0.25rem 0.75rem;
 			border-radius: 999px;
@@ -123,15 +117,15 @@
 
 		/* Table */
 		.table-card {
-			background: #fff;
+			background: var(--content-bg);
+			border: 1px solid var(--border-color);
 			border-radius: 0.5rem;
-			border: 1px solid #e9ecef;
 			overflow: hidden;
 		}
 
 		.table-card-header {
 			padding: 1rem 1.5rem;
-			border-bottom: 1px solid #e9ecef;
+			border-bottom: 1px solid var(--border-color);
 		}
 
 		.table-card table {
@@ -143,8 +137,8 @@
 			font-weight: 600;
 			text-transform: uppercase;
 			letter-spacing: 0.05em;
-			color: #6c757d;
-			border-bottom: 1px solid #e9ecef;
+			color: var(--text-muted);
+			border-bottom: 1px solid var(--border-color);
 			vertical-align: middle;
 		}
 
@@ -159,7 +153,7 @@
 
 		.van-name {
 			font-weight: 500;
-			color: #343a40;
+			color: var(--text-color);
 		}
 
 		.van-count {
@@ -171,12 +165,12 @@
 		.empty-state {
 			text-align: center;
 			padding: 2.5rem 1.5rem;
-			color: #6c757d;
+			color: var(--text-muted);
 		}
 
 		.empty-state .empty-title {
 			font-weight: 600;
-			color: #495057;
+			color: var(--text-color);
 			margin-bottom: 0.25rem;
 		}
 
@@ -188,8 +182,7 @@
 {% endblock %}
 
 {% block main %}
-	<div
-		class="dashboard-wrapper">
+	<div class="dashboard-wrapper">
 
 		<div class="dashboard-header mb-4">
 			<h1 class="h3 mb-1">Tableau de bord</h1>
